@@ -1,0 +1,42 @@
+{
+    "POWER J5115": {
+        "length": 140,
+        "offset_bottom": 29,
+        "offset_top": 111
+    },
+    "POWER J3015": {
+        "length": 140,
+        "offset_bottom": 29,
+        "offset_top": 111
+    },
+    "POWER J5111": {
+        "length": 140,
+        "offset_bottom": 29,
+        "offset_top": 111
+    },
+    "POWER J3002": {
+        "length": 140,
+        "offset_bottom": 29,
+        "offset_top": 111
+    },
+    "POWER J5101": {
+        "length": 97,
+        "offset_bottom": 27,
+        "offset_top": 70
+    },
+    "POWER J5102": {
+        "length": 162,
+        "offset_bottom": 36,
+        "offset_top": 126
+    },
+    "POWER 156 S": {
+        "length": 97,
+        "offset_bottom": 27,
+        "offset_top": 70
+    },
+    "POWER 1171-2617": {
+        "length": 185,
+        "offset_bottom": 127,
+        "offset_top": 58
+    }
+}
