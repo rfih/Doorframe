@@ -320,7 +320,7 @@
             "lock_length": "Masukkan panjang kunci dari bagian bawah atau atas pintu.",
             "lock_height": "Masukkan tinggi kunci dari bagian bawah atau atas pintu.",
             "lock_direction": "Pilih arah pengukuran kunci, dari atas atau bawah pintu.",
-            "concealed_door_closer_name": "Pilih opsi jika pintu memiliki concealed door closer.",
+            "concealed_door_closer_name": "Pilih opsi jika pintu memiliki yingongqi.",
             "frame_height": "Masukkan tinggi pintu yang belum dipotong sesuai pesanan.",
             "frame_width": "Masukkan lebar pintu yang belum dipotong sesuai pesanan."
         }
