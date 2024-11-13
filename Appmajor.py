@@ -154,6 +154,12 @@ class DoorFrameCalculator:
             "id": os.path.join(application_path, 'electric_indo.png')
         }
         
+        self.guidance_images_box = {
+            "en": os.path.join(application_path, 'box_english.png'),
+            "zh": os.path.join(application_path, 'box_mandarin.png'),
+            "id": os.path.join(application_path, 'box_indo.png')
+        }
+        
         self.original_image = None
         self.photo = None
         self.canvas = None
@@ -741,12 +747,12 @@ class DoorFrameCalculator:
 
         outer_wood_bottom = inner_wood_bottom = outer_wood_upper = inner_wood_upper = None
         if door_type == self.electric_lock_label:
-            if lock_direction == "bottom":
+            if lock_direction == self.bottom_label:
                 outer_wood_bottom = electric_lock_height - lock_offset_bottom
                 inner_wood_bottom = outer_wood_bottom - 30
                 outer_wood_upper = frame_height - (outer_wood_bottom + lock_length)
                 inner_wood_upper = outer_wood_upper - 30
-            if lock_direction == "top":
+            if lock_direction == self.top_label:
                 outer_wood_upper = electric_lock_height - lock_offset_top
                 inner_wood_upper = outer_wood_upper - 75
                 outer_wood_bottom = frame_height - (outer_wood_upper + lock_length)
@@ -765,12 +771,12 @@ class DoorFrameCalculator:
             #     very_upper_horizontal_piece_length = 0
                 
         if door_type == self.box_lock_label:
-            if lock_direction == "bottom":
+            if lock_direction == self.bottom_label:
                 outer_wood_bottom = box_lock_height - lock_offset_bottom
                 inner_wood_bottom = outer_wood_bottom - 30
                 outer_wood_upper = frame_height - (outer_wood_bottom + lock_length)
                 inner_wood_upper = outer_wood_upper - 30
-            if lock_direction == "top":
+            if lock_direction == self.top_label:
                 outer_wood_upper = box_lock_height - lock_offset_top
                 inner_wood_upper = outer_wood_upper - 30
                 outer_wood_bottom = frame_height - (outer_wood_upper + lock_length)
@@ -1280,9 +1286,33 @@ class DoorFrameCalculator:
         guidance_window.protocol("WM_DELETE_WINDOW", lambda: self.close_guidance(guidance_window))
         
     def box_lock_help(self):
-        guidance_window = tk.Toplevel(root)
+        guidance_window = tk.Toplevel(self.root)
         guidance_window.title("Application Guidance")
-        tk.Label(guidance_window, text="Step-by-Step Guide").pack()
+
+        # Add a label for the title
+        tk.Label(guidance_window, text="Step-by-Step Guide", font=("Helvetica", 16, "bold")).pack(pady=10)
+
+        # Local canvas for the help window
+        help_canvas = tk.Canvas(guidance_window, width=600, height=400)
+        help_canvas.pack(fill=tk.BOTH, expand=True)
+        
+        # Load the image based on the current language
+        image_path = self.guidance_images_box.get(self.current_language, self.guidance_images_box["en"])
+        original_image = Image.open(image_path)
+        photo = ImageTk.PhotoImage(original_image)
+        
+        # Display the image on the local canvas
+        help_canvas.create_image(0, 0, anchor="nw", image=photo)
+        help_canvas.image = photo  # Keep a reference to prevent garbage collection
+        
+        # Bind scroll and drag events for this specific canvas
+        # guidance_window.bind("<MouseWheel>", self.zoom_image)
+        help_canvas.bind("<MouseWheel>", lambda event: self.zoom_image(event, help_canvas))
+        help_canvas.bind("<ButtonPress-1>", self.start_drag)
+        help_canvas.bind("<B1-Motion>", lambda event: self.drag_image(event, help_canvas))
+        
+        # Set guidance window reference to destroy tooltip if the window closes
+        guidance_window.protocol("WM_DELETE_WINDOW", lambda: self.close_guidance(guidance_window))
         
     def toggle_tooltips(self):
         """Enable or disable tooltips based on user preference."""
