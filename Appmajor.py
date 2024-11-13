@@ -371,13 +371,19 @@ class DoorFrameCalculator:
         self.language_menu.entryconfig(1, label="中文")
         self.language_menu.entryconfig(2, label="Bahasa")
         
-    def add_annotations(self, image_path, vertical_length, horizontal_length, door_type, outer_wood_upper, inner_wood_upper, outer_wood_bottom, inner_wood_bottom, concealed_length, very_upper_horizontal_piece_length):
+    def add_annotations(self, image_path, vertical_length, horizontal_length, door_type, outer_wood_upper, inner_wood_upper, outer_wood_bottom, inner_wood_bottom, concealed_length, very_upper_horizontal_piece_length, concealed_door_closer_name):
         # Open the image file
         image = Image.open(image_path)
         draw = ImageDraw.Draw(image)
         
         # Define font and size
         font = ImageFont.truetype("arial.ttf", 24)  # Ensure the font file is available
+        
+        if concealed_door_closer_name in concealeds:
+            concealed_length = concealeds[concealed_door_closer_name]['length']
+        else:
+            # Set default values if no concealed door closer is selected
+            concealed_length = 0
 
         # Annotation positions can be adjusted based on door_type
         if door_type == self.simple_label:
@@ -385,7 +391,7 @@ class DoorFrameCalculator:
             f"{horizontal_length} mm": ((100, 20), "red"),   # Position and color for horizontal length
             f"{vertical_length} mm": ((10, 210), "blue")     # Position and color for vertical length
         }
-        elif door_type == self.electric_lock_label and self.concealed_label:
+        elif door_type == self.electric_lock_label and concealed_length > 0:
             annotations = {
                 f"{very_upper_horizontal_piece_length} mm": ((130, 20), "magenta"),
                 f"{outer_wood_upper} mm": ((10, 80), "green"),
@@ -396,7 +402,7 @@ class DoorFrameCalculator:
                 f"{horizontal_length} mm": ((200, 430), "red"),
                 f"{concealed_length} mm": ((280, 20), "black")
             }
-        elif door_type == self.electric_lock_label:
+        elif door_type == self.electric_lock_label and concealed_length == 0:
             annotations = {
                 f"{horizontal_length} mm": ((130, 20), "red"),
                 f"{outer_wood_upper} mm": ((10, 80), "green"),
@@ -405,7 +411,7 @@ class DoorFrameCalculator:
                 f"{inner_wood_bottom} mm": ((10, 380), "brown"),
                 f"{vertical_length} mm": ((390, 260), "blue")
             }
-        elif door_type == self.box_lock_label and self.concealed_label:
+        elif door_type == self.box_lock_label and concealed_length > 0:
             annotations = {
                 f"{very_upper_horizontal_piece_length} mm": ((130, 20), "magenta"),
                 f"{outer_wood_upper} mm": ((10, 80), "green"),
@@ -416,7 +422,7 @@ class DoorFrameCalculator:
                 f"{horizontal_length} mm": ((200, 430), "red"),
                 f"{concealed_length} mm": ((280, 20), "black")
             }
-        elif door_type == self.box_lock_label:
+        elif door_type == self.box_lock_label and concealed_length == 0:
             annotations = {
                 f"{horizontal_length} mm": ((130, 20), "red"),
                 f"{outer_wood_upper} mm": ((10, 80), "green"),
@@ -508,6 +514,7 @@ class DoorFrameCalculator:
                 #     if not self.entries[key][1].get().strip().isdigit():
                 #         raise ValueError(f"Please enter a valid number for {translations[self.current_language][key]}")
                 box_lock_name = self.entries["box_lock_name"][1].get().strip()
+                concealed_door_closer_name = self.entries["concealed_door_closer_name"][1].get().strip()
                 if box_lock_name in box_locks:
                     lock_length = box_locks[box_lock_name]['length']
                     lock_offset_bottom = box_locks[box_lock_name]['offset_bottom']
@@ -518,7 +525,7 @@ class DoorFrameCalculator:
                     lock_length = int(self.entries["lock_length"][1].get())
                     lock_offset_bottom = int(self.entries["lock_offset_bottom"][1].get())
                     lock_offset_top = lock_length - lock_offset_bottom
-                    concealed_length = int(self.entries["lock_length"][1].get())
+                    # concealed_length = ""
                 box_lock_height = int(self.entries["lock_height"][1].get())
                 lock_direction = self.entries["lock_direction"][1].get().strip().lower()
                 # concealed_door_closer = self.entries["concealed_door_closer"][1].get().strip().lower()
@@ -529,17 +536,19 @@ class DoorFrameCalculator:
                 #     if not self.entries[key][1].get().strip().isdigit():
                 #         raise ValueError(f"Please enter a valid number for {translations[self.current_language][key]}")
                 electric_lock_name = self.entries["electric_lock_name"][1].get().strip()
+                concealed_door_closer_name = self.entries["concealed_door_closer_name"][1].get().strip()
                 if electric_lock_name in electric_locks:
                     lock_length = electric_locks[electric_lock_name]['length']
                     lock_offset_bottom = electric_locks[electric_lock_name]['offset_bottom']
                     lock_offset_top = electric_locks[electric_lock_name]['offset_top']
                 elif concealed_door_closer_name in concealeds:
                     concealed_length = concealeds[concealed_door_closer_name]['length']
+                    # print(f"\nelectriiicccconcealed_door_closer_name: {concealed_door_closer_name}")
                 else:
                     lock_length = int(self.entries["lock_length"][1].get())
                     lock_offset_bottom = int(self.entries["lock_offset_bottom"][1].get())
                     lock_offset_top = lock_length - lock_offset_bottom
-                    concealed_length = int(self.entries["lock_length"][1].get())
+                    # concealed_length = ""
                 electric_lock_height = int(self.entries["lock_height"][1].get())
                 lock_direction = self.entries["lock_direction"][1].get().strip().lower()
                 # concealed_door_closer = self.entries["concealed_door_closer"][1].get().strip().lower()
@@ -561,8 +570,6 @@ class DoorFrameCalculator:
                 frame_height += 5
                 frame_width += 5
                 
-            
-
 
             inner_width, plywood_width, plywood_height, total_length_all_doors, vertical_piece_length, \
                 horizontal_pieces_length, frame_width, outer_wood_bottom, inner_wood_bottom, \
@@ -586,17 +593,23 @@ class DoorFrameCalculator:
             # print(f"door_type: '{door_type}'")
             # print(f"Expected: simple_label='{self.simple_label}', ub_label='{self.ub_label}', electric_lock_label='{self.electric_lock_label}', box_lock_label='{self.box_lock_label}'")
 
+            if concealed_door_closer_name in concealeds:
+                concealed_length = concealeds[concealed_door_closer_name]['length']
+            else:
+                # Set default values if no concealed door closer is selected
+                concealed_length = 0            
+
             if door_type == self.simple_label:
                 image_path = os.path.join(application_path, 'simple.png')
             elif door_type == self.ub_label:
                 image_path = os.path.join(application_path, 'UB.png')
-            elif door_type == self.electric_lock_label and self.concealed_label:
+            elif door_type == self.electric_lock_label and concealed_length > 0:
                 image_path = os.path.join(application_path, 'kunci menkongqi.png')
-            elif door_type == self.box_lock_label and self.concealed_label:
+            elif door_type == self.box_lock_label and concealed_length > 0:
                 image_path = os.path.join(application_path, 'kunci menkongqi.png')
-            elif door_type == self.electric_lock_label:
+            elif door_type == self.electric_lock_label and concealed_length == 0:
                 image_path = os.path.join(application_path, 'kunci.png')
-            elif door_type == self.box_lock_label:
+            elif door_type == self.box_lock_label and concealed_length == 0:
                 image_path = os.path.join(application_path, 'kunci.png')
             else:
                 # print("No match found, defaulting to None")
@@ -612,7 +625,7 @@ class DoorFrameCalculator:
                 raise FileNotFoundError(f"Image file not found at {image_path}")
             
             # Annotate the image
-            annotated_image_path = self.add_annotations(image_path, vertical_piece_length, horizontal_pieces_length, door_type, outer_wood_upper, inner_wood_upper, outer_wood_bottom, inner_wood_bottom, concealed_door_closer_name, very_upper_horizontal_piece_length)
+            annotated_image_path = self.add_annotations(image_path, vertical_piece_length, horizontal_pieces_length, door_type, outer_wood_upper, inner_wood_upper, outer_wood_bottom, inner_wood_bottom, concealed_length, very_upper_horizontal_piece_length,  concealed_door_closer_name)
             
             # Configure text tags for styling
             self.result_text.tag_configure("title", foreground="black", font=("Helvetica", 13, "bold"))
@@ -720,8 +733,6 @@ class DoorFrameCalculator:
         # print("test3", horizontal_pieces_length)
         very_upper_horizontal_piece_width = 100
         very_upper_horizontal_piece_length = horizontal_pieces_length
-        print(f"\n111Very Upper Horizontal Piece Length: {very_upper_horizontal_piece_length}")
-
 
         total_length_per_door = vertical_piece_length * 2 + horizontal_pieces_length * 2
         total_length_all_doors = total_length_per_door * num_doors
@@ -741,11 +752,13 @@ class DoorFrameCalculator:
                 outer_wood_bottom = frame_height - (outer_wood_upper + lock_length)
                 inner_wood_bottom = outer_wood_bottom - 30
                 
-            if concealed_door_closer_name == self.concealed_label:
+            if concealed_door_closer_name in concealeds:
+                concealed_length = concealeds[concealed_door_closer_name]['length']
                 very_upper_horizontal_piece_width = 100
                 very_upper_horizontal_piece_length -= concealed_length
                 very_upper_horizontal_piece_length = horizontal_pieces_length - concealed_length
-        print(f"\n222Very Upper Horizontal Piece Length: {very_upper_horizontal_piece_length}")
+            #     print(f"\nConcealed Length: {concealed_length}")
+            # print(f"\n222Very Upper Horizontal Piece Length: {very_upper_horizontal_piece_length}")
 
             # if concealed_door_closer == "no":
             #     very_upper_horizontal_piece_width = 0
@@ -763,11 +776,10 @@ class DoorFrameCalculator:
                 outer_wood_bottom = frame_height - (outer_wood_upper + lock_length)
                 inner_wood_bottom = outer_wood_bottom - 30
                 
-            if concealed_door_closer_name == self.concealed_label:
+            if concealed_door_closer_name in concealeds:
                 very_upper_horizontal_piece_width = 100
                 very_upper_horizontal_piece_length -= concealed_length
                 very_upper_horizontal_piece_length = horizontal_pieces_length - concealed_length
-                print(f"\nVery Upper Horizontal Piece Length: {very_upper_horizontal_piece_length}")
 
                 
         if (door_type == self.electric_lock_label or door_type == self.box_lock_label) and concealed_door_closer_name == self.concealed_label:
@@ -775,8 +787,7 @@ class DoorFrameCalculator:
             plywood_height = frame_height - upper_horizontal_piece_width - lower_horizontal_piece_width - very_upper_horizontal_piece_width
             plywood_width = inner_width
             # print("test4", inner_width)
-            print(f"\nConcealed Door Closer: {concealed_door_closer_name}")
-            print(f"\nConcealed Length: {concealed_length}")
+
 
         return inner_width, plywood_width, plywood_height, total_length_all_doors, vertical_piece_length, \
                horizontal_pieces_length, frame_width, outer_wood_bottom, inner_wood_bottom, outer_wood_upper, inner_wood_upper, very_upper_horizontal_piece_width,\
@@ -854,8 +865,10 @@ class DoorFrameCalculator:
             for width, data in unique_horizontal_widths.items():
                 report += f"""
                 Width {width} mm:"""
+            if concealed_door_closer_name in concealeds:
+                report += f"""
+            - {translations[lang]["concealed_door_closer"]}: {concealed_door_closer_name} {very_upper_horizontal_piece_length} mm"""
             report += f"""
-            - {translations[lang]["concealed_door_closer"]} : {concealed_door_closer_name} {very_upper_horizontal_piece_length} mm
             - {translations[lang]["length_each_pieceh"]}: {inner_width} mm
             - {translations[lang]["num_pieces_per_door"]}: {len([inner_width, inner_width, very_upper_horizontal_piece_length])}
             - {translations[lang]["total_num_pieces"]}: {(len([inner_width, inner_width, very_upper_horizontal_piece_length]))*num_doors}
@@ -904,8 +917,11 @@ class DoorFrameCalculator:
             for width, data in unique_horizontal_widths.items():
                 report += f"""
                 Width {width} mm:"""
+            if concealed_door_closer_name in concealeds:
+                report += f"""
+            - {translations[lang]["concealed_door_closer"]}: {concealed_door_closer_name} {very_upper_horizontal_piece_length} mm
+                """
             report += f"""
-            - {translations[lang]["concealed_door_closer"]} : {concealed_door_closer_name} {very_upper_horizontal_piece_length} mm
             - {translations[lang]["length_each_pieceh"]}: {inner_width} mm
             - {translations[lang]["num_pieces_per_door"]}: {len([inner_width, inner_width, very_upper_horizontal_piece_length])}
             - {translations[lang]["total_num_pieces"]}: {(len([inner_width, inner_width, very_upper_horizontal_piece_length]))*num_doors}
