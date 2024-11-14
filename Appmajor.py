@@ -526,6 +526,8 @@ class DoorFrameCalculator:
             concealed_length = 0
             box_lock_name = ""
             box_lock_height = 0
+            gap_width = 0
+            slats_width = 0
 
 
             if door_type == self.ub_label:
@@ -769,10 +771,10 @@ class DoorFrameCalculator:
             if max_height - min_height > upper_horizontal_piece_width:
                 raise ValueError(f"the difference height should not exceed wood width\n 高度差異不應超過角材的寬度\n Perbedaan tinggi tidak boleh melebihi lebar kayu sisi")
             
-        # slats_length = 0
-        # total_blocks = 0
-        # slats_count = 0
-        # gap_width = 0
+        slats_length = 0
+        total_blocks = 0
+        slats_count = 0
+        gap_width = 0
         slats_length = inner_width
         plywood_width = inner_width
         vertical_piece_length = frame_height
@@ -829,8 +831,6 @@ class DoorFrameCalculator:
                 very_upper_horizontal_piece_length = horizontal_pieces_length - concealed_length
                 
         elif door_type == self.yipaiyikong_label:
-            # slats_width = int(self.entries["slats_width"][1].get())
-            # gap_width = int(self.entries["gap_width"][1].get())
             slats_length = inner_width
             slats_count = frame_height // (slats_width + gap_width)
             total_blocks = slats_count + 4
