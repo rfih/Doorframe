@@ -181,7 +181,7 @@ class DoorFrameCalculator:
         
         frame = ttk.Frame(self.scrollable_frame, padding="10")
         frame.grid(row=0, column=0, sticky="nsew")
-        frame.grid(row=21, column=0, columnspan=3, sticky="nsew")
+        frame.grid(row=22, column=0, columnspan=3, sticky="nsew")
 
         self.menu_bar = tk.Menu(self.root)
         self.root.config(menu=self.menu_bar)
@@ -247,38 +247,40 @@ class DoorFrameCalculator:
         
         self.create_label_and_entry(frame, "slats_width", 12)
         self.tooltips["slats_width"] = ToolTip(self.entries["slats_width"][1], translations[self.current_language]["tooltips"]["slats_width"], self)
+        self.create_label_and_entry(frame, "gap_width", 13)
+        self.tooltips["gap_width"] = ToolTip(self.entries["gap_width"][1], translations[self.current_language]["tooltips"]["gap_width"], self)
 
-        self.create_label_and_entry(frame, "lock_length", 13)
+        self.create_label_and_entry(frame, "lock_length", 14)
         self.tooltips["lock_length"] = ToolTip(self.entries["lock_length"][1], translations[self.current_language]["tooltips"]["lock_length"], self)
-        self.create_label_and_entry(frame, "lock_height", 14)
+        self.create_label_and_entry(frame, "lock_height", 15)
         self.tooltips["lock_height"] = ToolTip(self.entries["lock_height"][1], translations[self.current_language]["tooltips"]["lock_height"], self)
-        self.create_label_and_entry(frame, "lock_direction", 15, "lock_direction")
+        self.create_label_and_entry(frame, "lock_direction", 16, "lock_direction")
         self.entries["lock_direction"][1]['values'] = ("top", "bottom")
         self.tooltips["lock_direction"] = ToolTip(self.entries["lock_direction"][1], translations[self.current_language]["tooltips"]["lock_direction"], self)
-        self.create_label_and_entry(frame, "concealed_door_closer_name", 16, "concealed_door_closer_name")
+        self.create_label_and_entry(frame, "concealed_door_closer_name", 17, "concealed_door_closer_name")
         self.entries["concealed_door_closer_name"][1]['values'] = list(concealeds.keys())
         self.tooltips["concealed_door_closer_name"] = ToolTip(self.entries["concealed_door_closer_name"][1], translations[self.current_language]["tooltips"]["concealed_door_closer_name"], self)
 
-        self.create_label_and_entry(frame, "lock_offset_bottom", 17)
-        self.create_label_and_entry(frame, "frame_height", 18)
+        self.create_label_and_entry(frame, "lock_offset_bottom", 18)
+        self.create_label_and_entry(frame, "frame_height", 19)
         self.tooltips["frame_height"] = ToolTip(self.entries["frame_height"][1], translations[self.current_language]["tooltips"]["frame_height"], self)
-        self.create_label_and_entry(frame, "frame_width", 19)
+        self.create_label_and_entry(frame, "frame_width", 20)
         self.tooltips["frame_width"] = ToolTip(self.entries["frame_width"][1], translations[self.current_language]["tooltips"]["frame_width"], self)
 
         calculate_button = ttk.Button(frame, text=translations[self.current_language]["calculate"], command=self.calculate_material)
-        calculate_button.grid(row=20, column=0, columnspan=2)
+        calculate_button.grid(row=21, column=0, columnspan=2)
         
         scrollbar = ttk.Scrollbar(frame)
-        scrollbar.grid(row=21, column=2, sticky="nsew", padx=(0, 200), pady=(10, 10))
+        scrollbar.grid(row=22, column=2, sticky="nsew", padx=(0, 200), pady=(10, 10))
 
         self.result_text = tk.Text(frame, width=100, height=30, font=("Helvetica", 13))
-        self.result_text.grid(row=21, column=0, columnspan=2, sticky="nsew", padx=(0, 0), pady=(0, 0))
+        self.result_text.grid(row=22, column=0, columnspan=2, sticky="nsew", padx=(0, 0), pady=(0, 0))
         self.result_image = tk.Text(frame, width=50, height=30)
-        self.result_image.grid(row=21, column=1, columnspan=3, sticky="nsew", padx=(0,0), pady=(0,0))
+        self.result_image.grid(row=22, column=1, columnspan=3, sticky="nsew", padx=(0,0), pady=(0,0))
         scrollbar.config(command=self.result_text.yview)
         scrollbar.config(command=self.result_image.yview)
         trademark_label = ttk.Label(frame, text="© 2024 HBB", font=("Helvetica", 8))
-        trademark_label.grid(row=20, column=0, columnspan=3, padx=(0, 1000))
+        trademark_label.grid(row=21, column=0, columnspan=3, padx=(0, 1000))
         
         self.update_inputs()
 
@@ -309,12 +311,12 @@ class DoorFrameCalculator:
             self.show_entries(["box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], True)
             self.show_entries(["max_height", "min_height", "electric_lock_name"], False)
         elif door_type == self.yipaiyikong_label:
-            self.show_entries(["slats_width", "left_vpiece_width"], True)
+            self.show_entries(["slats_width", "left_vpiece_width", "gap_width"], True)
             self.show_entries(["electric_lock_name", "box_lock_name", "lock_length", "lock_height", "lock_direction", "lock_offset_bottom"], False)
-            self.show_entries(["max_height", "min_height"], False)
+            self.show_entries(["max_height", "min_height", "concealed_door_closer_name"], False)
         else:
             self.show_entries(["left_vpiece_width"], True)
-            self.show_entries(["electric_lock_name", "lock_length", "lock_height", "lock_direction", "lock_offset_bottom", "max_height", "min_height", "box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], False)
+            self.show_entries(["electric_lock_name", "lock_length", "lock_height", "lock_direction", "lock_offset_bottom", "max_height", "min_height", "box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name", "gap_width", "slats_width"], False)
 
     def show_entries(self, keys, show):
         for key in keys:
@@ -338,7 +340,7 @@ class DoorFrameCalculator:
         self.electric_lock_label = translations[self.current_language]["electric lock"].lower()
         self.ub_label = translations[self.current_language]["UB"].lower()
         self.box_lock_label = translations[self.current_language]["box lock"].lower()
-        self.yipaiyikong_label = translations[self.current_language]["yipayikong"].lower()
+        self.yipaiyikong_label = translations[self.current_language]["yipaiyikong"].lower()
         self.top_label = translations[self.current_language]["top"].lower()
         self.bottom_label = translations[self.current_language]["bottom"].lower()
         self.concealed_label = translations[self.current_language]["concealed door closer"].lower()
@@ -371,7 +373,8 @@ class DoorFrameCalculator:
         translations[self.current_language]["simple"],
         translations[self.current_language]["UB"],
         translations[self.current_language]["electric lock"],
-        translations[self.current_language]["box lock"]
+        translations[self.current_language]["box lock"],
+        translations[self.current_language]["yipaiyikong"]
         )
         self.entries["edge_sealing_type"][1]['values'] = ("實木", "白木 4 mm", "鋁封邊", "ABS", "鐡封邊+石墨片", "鐡封邊")
         self.entries["electric_lock_name"][1]['values'] = list(electric_locks.keys())
@@ -386,7 +389,7 @@ class DoorFrameCalculator:
         self.language_menu.entryconfig(1, label="中文")
         self.language_menu.entryconfig(2, label="Bahasa")
         
-    def add_annotations(self, image_path, vertical_length, horizontal_length, door_type, outer_wood_upper, inner_wood_upper, outer_wood_bottom, inner_wood_bottom, concealed_length, very_upper_horizontal_piece_length, concealed_door_closer_name):
+    def add_annotations(self, image_path, vertical_length, horizontal_length, door_type, outer_wood_upper, inner_wood_upper, outer_wood_bottom, inner_wood_bottom, concealed_length, very_upper_horizontal_piece_length, concealed_door_closer_name, slats_count):
         # Open the image file
         image = Image.open(image_path)
         draw = ImageDraw.Draw(image)
@@ -450,6 +453,12 @@ class DoorFrameCalculator:
             annotations = {
                 f"{horizontal_length} mm": ((100, 20), "red"),   # Position and color for horizontal length
                 f"{vertical_length} mm": ((10, 210), "blue")
+                }
+        elif door_type == self.yipaiyikong_label:
+            annotations = {
+                f"{horizontal_length} mm": ((100, 20), "red"),   # Position and color for horizontal length
+                f"{vertical_length} mm": ((10, 210), "blue"),
+                f"{slats_count}": ((370, 260), "green")
                 }
 
         for text, (position, color) in annotations.items():
@@ -577,6 +586,8 @@ class DoorFrameCalculator:
             else:
                 frame_height = int(self.entries["frame_height"][1].get())
                 frame_width = int(self.entries["frame_width"][1].get())
+                gap_width = int(self.entries["gap_width"][1].get())
+                slats_width = int(self.entries["slats_width"][1].get())
 
             if edge_sealing_type == "ABS":
                 frame_height += 10
@@ -586,15 +597,16 @@ class DoorFrameCalculator:
                 frame_width += 5
                 
 
-            inner_width, plywood_width, plywood_height, total_length_all_doors, vertical_piece_length, \
+            inner_width, slats_length, plywood_width, plywood_height, total_length_all_doors, vertical_piece_length, \
                 horizontal_pieces_length, frame_width, outer_wood_bottom, inner_wood_bottom, \
-                outer_wood_upper, inner_wood_upper,very_upper_horizontal_piece_width,very_upper_horizontal_piece_length = self.calculate_material_requirements(
+                outer_wood_upper, inner_wood_upper,very_upper_horizontal_piece_width,very_upper_horizontal_piece_length, gap_width, slats_width,\
+                    slats_count, total_blocks = self.calculate_material_requirements(
                     door_type, num_doors, frame_height, right_vertical_piece_width, left_vertical_piece_width,
                     upper_horizontal_piece_width, lower_horizontal_piece_width, edge_sealing, max_height, min_height,
                     vertical_piece_width, horizontal_piece_width, frame_width, electric_lock_name, box_lock_name, lock_length,
-                    electric_lock_height, box_lock_height, lock_direction, concealed_door_closer_name, concealed_length, lock_offset_bottom, lock_offset_top)
+                    electric_lock_height, box_lock_height, lock_direction, concealed_door_closer_name, concealed_length, lock_offset_bottom, lock_offset_top, gap_width, slats_width)
 
-            report = self.generate_report(door_type, num_doors, inner_width, plywood_width, plywood_height, total_length_all_doors,
+            report = self.generate_report(door_type, num_doors, inner_width, slats_length, gap_width, slats_count, total_blocks, plywood_width, plywood_height, total_length_all_doors,
                                           vertical_piece_length, horizontal_pieces_length, right_vertical_piece_width,
                                           left_vertical_piece_width, upper_horizontal_piece_width, lower_horizontal_piece_width,
                                           edge_sealing, max_height, min_height, vertical_piece_width, horizontal_piece_width,
@@ -626,6 +638,8 @@ class DoorFrameCalculator:
                 image_path = os.path.join(application_path, 'kunci.png')
             elif door_type == self.box_lock_label and concealed_length == 0:
                 image_path = os.path.join(application_path, 'kunci.png')
+            elif door_type == self.yipaiyikong_label:
+                image_path = os.path.join(application_path, 'yipaiyikong.png')
             else:
                 # print("No match found, defaulting to None")
                 image_path = None
@@ -640,7 +654,7 @@ class DoorFrameCalculator:
                 raise FileNotFoundError(f"Image file not found at {image_path}")
             
             # Annotate the image
-            annotated_image_path = self.add_annotations(image_path, vertical_piece_length, horizontal_pieces_length, door_type, outer_wood_upper, inner_wood_upper, outer_wood_bottom, inner_wood_bottom, concealed_length, very_upper_horizontal_piece_length,  concealed_door_closer_name)
+            annotated_image_path = self.add_annotations(image_path, vertical_piece_length, horizontal_pieces_length, door_type, outer_wood_upper, inner_wood_upper, outer_wood_bottom, inner_wood_bottom, concealed_length, very_upper_horizontal_piece_length, concealed_door_closer_name, slats_count)
             
             # Configure text tags for styling
             self.result_text.tag_configure("title", foreground="black", font=("Helvetica", 13, "bold"))
@@ -652,6 +666,7 @@ class DoorFrameCalculator:
             self.result_text.tag_configure("inner_wood_bottom", foreground="brown", font=("Helvetica", 12))
             self.result_text.tag_configure("horizontal_length", foreground="red", font=("Helvetica", 12))
             self.result_text.tag_configure("very_upper_horizontal_piece_length", foreground="magenta", font=("Helvetica", 12))
+            self.result_text.tag_configure("slats_count", foreground="green", font=("Helvetica", 12))
             
             self.result_text.tag_configure("highlight", foreground="red", font=("Helvetica", 12))
             self.result_text.tag_configure("normal", font=("Helvetica", 12))
@@ -668,6 +683,10 @@ class DoorFrameCalculator:
             inner_wood_bottom_label = translations[lang]["inner_wood_bottom_part"]
             horizontal_length_label = translations[lang]["length_each_pieceh"]
             very_upper_horizontal_piece_length_label = translations[lang]["very_upper_horizontal_piece_length"]
+            gap_width_label = translations[lang]["gap_width"]
+            slats_length_label = translations[lang]["slats_length"]
+            slats_count = translations[lang]["slats_count"]
+            total_blocks = translations[lang]["total_blocks"]
         
             # Insert the report with different styles based on content
             lines = report.split('\n')
@@ -690,6 +709,8 @@ class DoorFrameCalculator:
                     self.result_text.insert(tk.END, line + "\n", "horizontal_length")
                 elif very_upper_horizontal_piece_length_label in line:
                     self.result_text.insert(tk.END, line + "\n", "very_upper_horizontal_piece_length")
+                elif slats_count in line:
+                    self.result_text.insert(tk.END, line + "\n", "slats_count")
                 else:
                     self.result_text.insert(tk.END, line + "\n", "normal")  # Default style
             
@@ -726,7 +747,7 @@ class DoorFrameCalculator:
                                         left_vertical_piece_width, upper_horizontal_piece_width, lower_horizontal_piece_width,
                                         edge_sealing, max_height, min_height, vertical_piece_width, horizontal_piece_width,
                                         frame_width, electric_lock_name, box_lock_name, lock_length, electric_lock_height, box_lock_height, lock_direction, concealed_door_closer_name, concealed_length, 
-                                        lock_offset_bottom, lock_offset_top):
+                                        lock_offset_bottom, lock_offset_top, gap_width, slats_width):
         if door_type in [self.electric_lock_label, self.box_lock_label]:
             inner_width = frame_width - right_vertical_piece_width - (left_vertical_piece_width * 2)
         else:
@@ -737,11 +758,17 @@ class DoorFrameCalculator:
         else:
             plywood_height = frame_height - upper_horizontal_piece_width - lower_horizontal_piece_width
             
+        if door_type == self.yipaiyikong_label:
+            inner_width = frame_width - right_vertical_piece_width - left_vertical_piece_width
+            
         if door_type == self.ub_label:
             if max_height - min_height > upper_horizontal_piece_width:
                 raise ValueError(f"the difference height should not exceed wood width\n 高度差異不應超過角材的寬度\n Perbedaan tinggi tidak boleh melebihi lebar kayu sisi")
             
-
+        slats_length = 0
+        total_blocks = 0
+        slats_count = 0
+        slats_length = inner_width
         plywood_width = inner_width
         vertical_piece_length = frame_height
         horizontal_pieces_length = inner_width
@@ -795,7 +822,14 @@ class DoorFrameCalculator:
                 very_upper_horizontal_piece_width = 100
                 very_upper_horizontal_piece_length -= concealed_length
                 very_upper_horizontal_piece_length = horizontal_pieces_length - concealed_length
-
+                
+        if door_type == self.yipaiyikong_label:
+            # slats_width = int(self.entries["slats_width"][1].get())
+            # gap_width = int(self.entries["gap_width"][1].get())
+            slats_length = inner_width
+            slats_count = frame_height // (slats_width + gap_width)
+            total_blocks = slats_count + 4
+            # print("test4", slats_length)
                 
         if (door_type == self.electric_lock_label or door_type == self.box_lock_label) and concealed_door_closer_name == self.concealed_label:
             inner_width = frame_width - right_vertical_piece_width - (left_vertical_piece_width * 2)
@@ -804,11 +838,11 @@ class DoorFrameCalculator:
             # print("test4", inner_width)
 
 
-        return inner_width, plywood_width, plywood_height, total_length_all_doors, vertical_piece_length, \
+        return inner_width, slats_length, plywood_width, plywood_height, total_length_all_doors, vertical_piece_length, \
                horizontal_pieces_length, frame_width, outer_wood_bottom, inner_wood_bottom, outer_wood_upper, inner_wood_upper, very_upper_horizontal_piece_width,\
-               very_upper_horizontal_piece_length
+               very_upper_horizontal_piece_length, gap_width, slats_width, slats_count, total_blocks
 
-    def generate_report(self, door_type, num_doors, inner_width, plywood_width, plywood_height, total_length_all_doors,
+    def generate_report(self, door_type, num_doors, inner_width, slats_length, gap_width, slats_count, total_blocks, plywood_width, plywood_height, total_length_all_doors,
                         vertical_piece_length, horizontal_pieces_length, right_vertical_piece_width,
                         left_vertical_piece_width, upper_horizontal_piece_width, lower_horizontal_piece_width,
                         edge_sealing, max_height, min_height, vertical_piece_width, horizontal_piece_width,
@@ -822,7 +856,7 @@ class DoorFrameCalculator:
             total_left_vertical_pieces = num_doors * 4
 
         total_horizontal_pieces = num_doors * sum(h is not None for h in [upper_horizontal_piece_width, lower_horizontal_piece_width])
-        # print("test 3",outer_wood_bottom)
+        # print("test 3",slats_length)
 
 
         if door_type == self.ub_label:
@@ -943,6 +977,42 @@ class DoorFrameCalculator:
             - {translations[lang]["total_wood_length"]}: {(very_upper_horizontal_piece_length + inner_width + inner_width)*num_doors:.2f} mm
             - {translations[lang]["total_wood"]}: {math.ceil(((very_upper_horizontal_piece_length + inner_width + inner_width)*num_doors)/2400)}
             """
+        elif door_type == self.yipaiyikong_label:
+            report = f"""
+            {translations[lang]["app_title"]}
+
+            {translations[lang]["door_type"]}: {door_type.upper()}
+            {translations[lang]["num_doors"]}: {num_doors}
+            {translations[lang]["slats_length"]}: {slats_length} mm 
+            {translations[lang]["edge_sealing"]}: {edge_sealing} mm
+            {translations[lang]["slats_count"]}: {slats_count} 
+            {translations[lang]["gap_width"]}: {gap_width} mm
+            {translations[lang]["total_blocks"]}: {total_blocks}
+            {translations[lang]["yipaiyikong_note"]}
+            
+            """
+            report += f"""
+            {translations[lang]["right_vertical_pieces"]} ({right_vertical_piece_width}mm):
+              - {translations[lang]["length_each_piecev"]}: {vertical_piece_length} mm
+              - {translations[lang]["num_pieces_per_door"]}: {num_doors}
+              - {translations[lang]["total_num_pieces"]}: {total_right_vertical_pieces}
+              - {translations[lang]["total_wood_length"]}: {(vertical_piece_length)*num_doors:.2f} mm
+              - {translations[lang]["total_wood"]}: {math.ceil(((vertical_piece_length)*num_doors)/2400)}
+
+            {translations[lang]["left_vertical_pieces"]} ({left_vertical_piece_width}mm):
+              - {translations[lang]["length_each_piecev"]}: {vertical_piece_length} mm
+              - {translations[lang]["num_pieces_per_door"]}: {num_doors}
+              - {translations[lang]["total_num_pieces"]}: {total_left_vertical_pieces}
+              - {translations[lang]["total_wood_length"]}: {(vertical_piece_length)*num_doors:.2f} mm
+              - {translations[lang]["total_wood"]}: {math.ceil(((vertical_piece_length)*num_doors)/2400)}
+            """
+            report +=f""" 
+            {translations[lang]["horizontal_pieces"]} ({horizontal_piece_width}mm):
+              - {translations[lang]["length_each_pieceh"]}: {inner_width} mm
+              - {translations[lang]["num_pieces_per_door"]}: {num_doors * 2}
+              - {translations[lang]["total_num_pieces"]}: {total_horizontal_pieces}
+              - {translations[lang]["total_wood_length"]}: {(inner_width)*num_doors:.2f} mm
+              - {translations[lang]["total_wood"]}: {math.ceil(((inner_width)*num_doors)/2400)}"""
         else:
             report += f"""
             {translations[lang]["total_wood_length"]}: {total_length_all_doors:.2f} mm
@@ -999,6 +1069,8 @@ class DoorFrameCalculator:
                   - {translations[lang]["total_wood_length"]}: {(inner_width)*num_doors:.2f} mm
                   - {translations[lang]["total_wood"]}: {math.ceil(((inner_width)*num_doors)/2400)}
                     """
+        
+        
         if door_type == self.ub_label:
             report += f"""
             {translations[lang]["ub_note"]}

@@ -87,6 +87,13 @@
         "concealed door closer": "Concealed Door Closer",
         "concealed_door_closer": "Concealed Door Closer",
         "very_upper_horizontal_piece_length": "Very upper wood",
+        "yipaiyikong": "yipaiyikong",
+        "slats_width": "Slats Width",
+        "gap_width": "Gap Width",
+        "slats_length": "Slats Length",
+        "slats_count": "Slats Count",
+        "total_blocks": "Total Woods (Include four outer sides)",
+        "yipaiyikong_note": "Total woods does not include 6 woods for the door knob",
         "tooltips": {
             "door_type": "Select the type of door frame you are using. Options include:\n- Simple: Standard door frame without complex lock mechanisms.\n- UB: Designed for UB-type locks, typically requires specific height adjustments.\n- Electric Lock: Suitable for frames with electric locks, requires measurements for lock and hinge positions.\n- Box Lock: For frames with box locks, additional specifications include height and lock offset.",
             "num_doors": "Enter the total number of doors for calculation.",
@@ -105,7 +112,9 @@
             "lock_direction": "Select the option of lock measuring direction, from top or bottom of the door.",
             "concealed_door_closer_name": "Select the option if the door has the concealed door closer",
             "frame_height": "Enter the uncutted height of the door based on the order.",
-            "frame_width": "Enter the uncutted width of the door based on the order."
+            "frame_width": "Enter the uncutted width of the door based on the order.",
+            "slats_width": "Slats width",
+            "gap_width": "Gap Width"
         }
     },
     "zh": {
@@ -196,6 +205,13 @@
         "concealed door closer": "隱藏弓器",
         "concealed_door_closer": "隱藏弓器",
         "very_upper_horizontal_piece_length": "最上的角材",
+        "yipaiyikong": "一排一空",
+        "slats_width": "内角材的寬度",
+        "gap_width": "空間的寬度",
+        "slats_length": "中間角材的長度",
+        "slats_count": "中間角材的數量",
+        "total_blocks": "角材數量 (已包含四個外的角材)",
+        "yipaiyikong_note": "門把手的角材數量尚未包含在內的 6 小角材",
         "tooltips": {
             "door_type": "選擇您正在使用的框架類型。選項包括：\n- 簡單：標準的框架，沒有複雜的鎖機制。\n- UB：專為UB型鎖設計的門框，通常需要特定的高度調整。\n- 電子鎖：適用於帶有電子鎖的門的框架，需要測量鎖和鉸鏈的位置。\n- 匣式鎖：適用於帶有匣式鎖的門的框架，附加的規格包括高度和鎖偏移量。",
             "num_doors": "輸入要計算的門的總數。",
@@ -214,7 +230,9 @@
             "lock_direction": "選擇鎖的測量方向選項，從門的上部或下部。",
             "concealed_door_closer_name": "選擇門是否配有隱藏弓器的選項。",
             "frame_height": "輸入根據派工單要求的未切割門高度。",
-            "frame_width": "輸入根據派工單要求的未切割門寬度。"
+            "frame_width": "輸入根據派工單要求的未切割門寬度。",
+            "slats_width": "内角材的寬度",
+            "gap_width": "空間的寬度"
         }
     },
     "id": {
@@ -304,6 +322,13 @@
         "concealed door closer": "penutup pintu otomatis",
         "concealed_door_closer": "penutup pintu otomatis",
         "very_upper_horizontal_piece_length": "Kayu paling atas",
+        "yipaiyikong": "yipaiyikong",
+        "slats_width": "Lebar kayu ditengah",
+        "gap_width": "Jarak antara kayu ditengah",
+        "slats_length": "Panjang kayu ditengah",
+        "slats_count": "Jumlah kayu ditengah",
+        "total_blocks": "Jumlah Kayu (sudah dengan keempat sisinya)",
+        "yipaiyikong_note": "Jumlah kayu belum termasuk 6 balok untuk gagang pintu",
         "tooltips": {
             "door_type": "Pilih jenis bingkai pintu yang Anda gunakan. Pilihan meliputi:\n- Simple: Bingkai pintu standar tanpa mekanisme kunci yang rumit.\n- UB: Dirancang untuk tipe pintu UB, biasanya memerlukan penyesuaian tinggi khusus.\n- Electric Lock: Cocok untuk bingkai dengan kunci elektrik, membutuhkan pengukuran untuk posisi kunci dan engsel.\n- Box Lock: Untuk bingkai dengan kunci kotak, spesifikasi tambahan termasuk tinggi dan posisi kunci.",
             "num_doors": "Masukkan jumlah pintu yang dibuat.",
@@ -322,7 +347,9 @@
             "lock_direction": "Pilih arah pengukuran kunci, dari atas atau bawah pintu.",
             "concealed_door_closer_name": "Pilih opsi jika pintu memiliki yingongqi.",
             "frame_height": "Masukkan tinggi pintu yang belum dipotong sesuai pesanan.",
-            "frame_width": "Masukkan lebar pintu yang belum dipotong sesuai pesanan"
+            "frame_width": "Masukkan lebar pintu yang belum dipotong sesuai pesanan",
+            "slats_width": "Ukuran lebar kayu ditengah",
+            "gap_width": "Ukuran spasi antara kayu ditengah"
         }
     }
 }
