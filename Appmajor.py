@@ -53,7 +53,7 @@ def load_concealed_door():
 # Save box lock types to file
 def save_concealed_door(concealeds):
     with open(CONCEALED_FILE, 'w', encoding='utf-8') as file:
-        json.dump(CONCEALED_FILE, file, ensure_ascii=False, indent=4)
+        json.dump(concealeds, file, ensure_ascii=False, indent=4)
 
 # Load translations from file
 def load_translations():
@@ -1140,7 +1140,7 @@ class DoorFrameCalculator:
 
         ttk.Label(remove_window, text=translations[self.current_language]["removeelectric"], font=("Helvetica", 13)).grid(row=0, column=0, sticky=tk.W)
         lock_to_remove_var = tk.StringVar()
-        lock_to_remove_menu = ttk.Combobox(remove_window, textvariable=lock_to_remove_var)
+        # lock_to_remove_menu = ttk.Combobox(remove_window, textvariable=lock_to_remove_var)
         lock_to_remove_menu = ttk.Combobox(remove_window, textvariable=lock_to_remove_var, font=("Helvetica", 13))
         lock_to_remove_menu.grid(row=0, column=1, sticky=tk.E)
         lock_to_remove_menu['values'] = list(electric_locks.keys())
@@ -1202,7 +1202,7 @@ class DoorFrameCalculator:
 
         ttk.Label(remove_window, text=translations[self.current_language]["removebox"], font=("Helvetica", 13)).grid(row=0, column=0, sticky=tk.W)
         lock_to_remove_var = tk.StringVar()
-        lock_to_remove_menu = ttk.Combobox(remove_window, textvariable=lock_to_remove_var)
+        # lock_to_remove_menu = ttk.Combobox(remove_window, textvariable=lock_to_remove_var)
         lock_to_remove_menu = ttk.Combobox(remove_window, textvariable=lock_to_remove_var, font=("Helvetica", 13))
         lock_to_remove_menu.grid(row=0, column=1, sticky=tk.E)
         lock_to_remove_menu['values'] = list(box_locks.keys())
@@ -1254,7 +1254,7 @@ class DoorFrameCalculator:
 
         ttk.Label(remove_window, text=translations[self.current_language]["concealedremove"], font=("Helvetica", 13)).grid(row=0, column=0, sticky=tk.W)
         concealed_to_remove_var = tk.StringVar()
-        lock_to_remove_menu = ttk.Combobox(remove_window, textvariable=concealed_to_remove_var)
+        # lock_to_remove_menu = ttk.Combobox(remove_window, textvariable=concealed_to_remove_var)
         lock_to_remove_menu = ttk.Combobox(remove_window, textvariable=concealed_to_remove_var, font=("Helvetica", 13))
         lock_to_remove_menu.grid(row=0, column=1, sticky=tk.E)
         lock_to_remove_menu['values'] = list(concealeds.keys())
