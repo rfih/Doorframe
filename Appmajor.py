@@ -737,7 +737,7 @@ class DoorFrameCalculator:
             
             # Add the annotated image inside the same frame, next to the text
             image = Image.open(annotated_image_path)
-            image = image.resize((300, 400), Image.ANTIALIAS)  # Resize as needed
+            image = image.resize((300, 400), Image.LANCZOS)  # Resize as needed
             photo = ImageTk.PhotoImage(image)
             
             image_label = tk.Label(result_imageframe, image=photo)
