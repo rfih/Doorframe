@@ -302,14 +302,14 @@ class DoorFrameCalculator:
         if door_type == self.electric_lock_label:
             self.show_entries(["left_vpiece_width"], False)
             self.show_entries(["electric_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], True)
-            self.show_entries(["max_height", "min_height", "box_lock_name"], False)
+            self.show_entries(["max_height", "min_height", "box_lock_name","slats_width", "gap_width"], False)
         elif door_type == self.ub_label:
-            self.show_entries(["electric_lock_name", "lock_length", "lock_height", "lock_direction", "lock_offset_bottom", "frame_height"], False)
+            self.show_entries(["electric_lock_name", "lock_length", "lock_height", "lock_direction", "lock_offset_bottom", "frame_height","slats_width", "gap_width"], False)
             self.show_entries(["max_height", "min_height"], True)
         elif door_type == self.box_lock_label:
             self.show_entries(["left_vpiece_width"], False)
             self.show_entries(["box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], True)
-            self.show_entries(["max_height", "min_height", "electric_lock_name"], False)
+            self.show_entries(["max_height", "min_height", "electric_lock_name","slats_width", "gap_width"], False)
         elif door_type == self.yipaiyikong_label:
             self.show_entries(["slats_width", "left_vpiece_width", "gap_width"], True)
             self.show_entries(["electric_lock_name", "box_lock_name", "lock_length", "lock_height", "lock_direction", "lock_offset_bottom"], False)
@@ -582,12 +582,16 @@ class DoorFrameCalculator:
                 if edge_sealing_type == "鐡封邊+石墨片" or "鐡封邊":
                     electric_lock_height += 3
                     box_lock_height += 3
-
+                    
+            elif door_type == self.yipaiyikong_label:
+                gap_width = int(self.entries["gap_width"][1].get())
+                slats_width = int(self.entries["slats_width"][1].get())
+                frame_height = int(self.entries["frame_height"][1].get())
+                frame_width = int(self.entries["frame_width"][1].get())
             else:
                 frame_height = int(self.entries["frame_height"][1].get())
                 frame_width = int(self.entries["frame_width"][1].get())
-                gap_width = int(self.entries["gap_width"][1].get())
-                slats_width = int(self.entries["slats_width"][1].get())
+                
 
             if edge_sealing_type == "ABS":
                 frame_height += 10
@@ -765,9 +769,10 @@ class DoorFrameCalculator:
             if max_height - min_height > upper_horizontal_piece_width:
                 raise ValueError(f"the difference height should not exceed wood width\n 高度差異不應超過角材的寬度\n Perbedaan tinggi tidak boleh melebihi lebar kayu sisi")
             
-        slats_length = 0
-        total_blocks = 0
-        slats_count = 0
+        # slats_length = 0
+        # total_blocks = 0
+        # slats_count = 0
+        # gap_width = 0
         slats_length = inner_width
         plywood_width = inner_width
         vertical_piece_length = frame_height
@@ -823,7 +828,7 @@ class DoorFrameCalculator:
                 very_upper_horizontal_piece_length -= concealed_length
                 very_upper_horizontal_piece_length = horizontal_pieces_length - concealed_length
                 
-        if door_type == self.yipaiyikong_label:
+        elif door_type == self.yipaiyikong_label:
             # slats_width = int(self.entries["slats_width"][1].get())
             # gap_width = int(self.entries["gap_width"][1].get())
             slats_length = inner_width
@@ -1098,7 +1103,7 @@ class DoorFrameCalculator:
                 lock_window.destroy()
                 self.entries["electric_lock_name"][1]['values'] = list(electric_locks.keys())
             else:
-                messagebox.showerror("Error", "Electric lock name cannot be empty.")
+                messagebox.showerror("Error", "Electric lock data cannot be empty.")
 
         lock_window = tk.Toplevel(self.root)
         lock_window.title(translations[self.current_language]["add_electric_lock"])
@@ -1160,7 +1165,7 @@ class DoorFrameCalculator:
                 lock_window.destroy()
                 self.entries["box_lock_name"][1]['values'] = list(box_locks.keys())
             else:
-                messagebox.showerror("Error", "box lock name cannot be empty.")
+                messagebox.showerror("Error", "box lock data cannot be empty.")
 
         lock_window = tk.Toplevel(self.root)
         lock_window.title(translations[self.current_language]["add_box_lock"])
@@ -1218,7 +1223,7 @@ class DoorFrameCalculator:
                 concealed_window.destroy()
                 self.entries["concealed_door_closer_name"][1]['values'] = list(concealeds.keys())
             else:
-                messagebox.showerror("Error", "Concealed door closer name cannot be empty.")
+                messagebox.showerror("Error", "Concealed door closer data cannot be empty.")
 
         concealed_window = tk.Toplevel(self.root)
         concealed_window.title(translations[self.current_language]["add_concealed"])
