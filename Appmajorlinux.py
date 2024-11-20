@@ -6,10 +6,14 @@ import sys
 from PIL import Image, ImageTk, ImageDraw, ImageFont
 import math
 
+try:
+    import PIL._tkinter_finder
+except ImportError:
+    pass
 
 # Determine the path to the JSON files
-if getattr(sys, 'frozen', False):
-    application_path = sys._MEIPASS
+if getattr(os, 'frozen', False):
+    application_path = os.path.expanduser(sys.executable)
 else:
     application_path = os.path.dirname(__file__)
 
@@ -23,6 +27,7 @@ CONCEALED_FILE = os.path.join(application_path, 'concealeds.json')
 def load_electric_locks():
     if os.path.exists(LOCK_FILE):
         with open(LOCK_FILE, 'r', encoding='utf-8') as file:
+            print(f"Loaded from{LOCK_FILE}")
             return json.load(file)
     return {}
 
@@ -30,11 +35,13 @@ def load_electric_locks():
 def save_electric_locks(electric_locks):
     with open(LOCK_FILE, 'w', encoding='utf-8') as file:
         json.dump(electric_locks, file, ensure_ascii=False, indent=4)
+        print(f"Saved to {LOCK_FILE}")
         
 # Load box lock types from file
 def load_box_locks():
     if os.path.exists(BOXLOCK_FILE):
         with open(BOXLOCK_FILE, 'r', encoding='utf-8') as file:
+            print(f"Loaded from{BOXLOCK_FILE}")
             return json.load(file)
     return {}
 
@@ -42,11 +49,13 @@ def load_box_locks():
 def save_box_locks(box_locks):
     with open(BOXLOCK_FILE, 'w', encoding='utf-8') as file:
         json.dump(box_locks, file, ensure_ascii=False, indent=4)
+        print(f"Saved to {BOXLOCK_FILE}")
         
 # Load box lock types from file
 def load_concealed_door():
     if os.path.exists(CONCEALED_FILE):
         with open(CONCEALED_FILE, 'r', encoding='utf-8') as file:
+            print(f"Loaded from{CONCEALED_FILE}")
             return json.load(file)
     return {}
 
@@ -54,6 +63,7 @@ def load_concealed_door():
 def save_concealed_door(concealeds):
     with open(CONCEALED_FILE, 'w', encoding='utf-8') as file:
         json.dump(concealeds, file, ensure_ascii=False, indent=4)
+        print(f"Saved to {CONCEALED_FILE}")
 
 # Load translations from file
 def load_translations():
