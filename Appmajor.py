@@ -774,7 +774,7 @@ class DoorFrameCalculator:
         slats_length = 0
         total_blocks = 0
         slats_count = 0
-        gap_width = 0
+        # gap_width = 0
         slats_length = inner_width
         plywood_width = inner_width
         vertical_piece_length = frame_height
@@ -834,7 +834,9 @@ class DoorFrameCalculator:
             slats_length = inner_width
             slats_count = frame_height // (slats_width + gap_width)
             total_blocks = slats_count + 4
-            # print("test4", slats_length)
+            # print("test4", slats_width)
+            # print("test4", gap_width)
+
                 
         if (door_type == self.electric_lock_label or door_type == self.box_lock_label) and concealed_door_closer_name == self.concealed_label:
             inner_width = frame_width - right_vertical_piece_width - (left_vertical_piece_width * 2)
