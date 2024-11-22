@@ -111,7 +111,7 @@ class DoorFrameCalculator:
         self.scrollable_frame = ttk.Frame(self.canvas)
 
         
-        self.tooltips_enabled = tk.BooleanVar(value=True)
+        self.tooltips_enabled = tk.BooleanVar(value=False)
 
         self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
         self.canvas.configure(yscrollcommand=self.scrollbar.set)
