@@ -412,8 +412,8 @@ class DoorFrameCalculator:
         elif door_type == self.electric_lock_label and concealed_length > 0:
             annotations = {
                 f"{very_upper_horizontal_piece_length} mm": ((130, 20), "magenta"),
-                f"{outer_wood_upper} mm": ((10, 80), "green"),
-                f"{inner_wood_upper} mm": ((10, 190), "purple"),
+                f"{outer_wood_upper} mm": ((10, 190), "green"),
+                f"{inner_wood_upper} mm": ((10, 80), "purple"),
                 f"{outer_wood_bottom} mm": ((10, 280), "orange"),
                 f"{inner_wood_bottom} mm": ((10, 380), "brown"),
                 f"{vertical_length} mm": ((390, 250), "blue"),
@@ -423,8 +423,8 @@ class DoorFrameCalculator:
         elif door_type == self.electric_lock_label and concealed_length == 0:
             annotations = {
                 f"{horizontal_length} mm": ((130, 20), "red"),
-                f"{outer_wood_upper} mm": ((10, 80), "green"),
-                f"{inner_wood_upper} mm": ((10, 190), "purple"),
+                f"{outer_wood_upper} mm": ((10, 190), "green"),
+                f"{inner_wood_upper} mm": ((10, 80), "purple"),
                 f"{outer_wood_bottom} mm": ((10, 280), "orange"),
                 f"{inner_wood_bottom} mm": ((10, 380), "brown"),
                 f"{vertical_length} mm": ((390, 260), "blue")
@@ -432,8 +432,8 @@ class DoorFrameCalculator:
         elif door_type == self.box_lock_label and concealed_length > 0:
             annotations = {
                 f"{very_upper_horizontal_piece_length} mm": ((130, 20), "magenta"),
-                f"{outer_wood_upper} mm": ((10, 80), "green"),
-                f"{inner_wood_upper} mm": ((10, 190), "purple"),
+                f"{outer_wood_upper} mm": ((10, 190), "green"),
+                f"{inner_wood_upper} mm": ((10, 80), "purple"),
                 f"{outer_wood_bottom} mm": ((10, 280), "orange"),
                 f"{inner_wood_bottom} mm": ((10, 380), "brown"),
                 f"{vertical_length} mm": ((390, 250), "blue"),
@@ -443,8 +443,8 @@ class DoorFrameCalculator:
         elif door_type == self.box_lock_label and concealed_length == 0:
             annotations = {
                 f"{horizontal_length} mm": ((130, 20), "red"),
-                f"{outer_wood_upper} mm": ((10, 80), "green"),
-                f"{inner_wood_upper} mm": ((10, 190), "purple"),
+                f"{outer_wood_upper} mm": ((10, 190), "green"),
+                f"{inner_wood_upper} mm": ((10, 80), "purple"),
                 f"{outer_wood_bottom} mm": ((10, 280), "orange"),
                 f"{inner_wood_bottom} mm": ((10, 380), "brown"),
                 f"{vertical_length} mm": ((390, 260), "blue")
