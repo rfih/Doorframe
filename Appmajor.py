@@ -102,7 +102,7 @@ class DoorFrameCalculator:
     def __init__(self, root):
         self.root = root
         self.root.geometry("950x775")
-        self.current_language = "en"
+        self.current_language = "zh"
         self.entries = {}
             
         # Create a canvas and a scrollbar for the entire application
@@ -181,7 +181,7 @@ class DoorFrameCalculator:
         
         frame = ttk.Frame(self.scrollable_frame, padding="10")
         frame.grid(row=0, column=0, sticky="nsew")
-        frame.grid(row=22, column=0, columnspan=3, sticky="nsew")
+        # frame.grid(row=22, column=0, columnspan=3, sticky="nsew")
 
         self.menu_bar = tk.Menu(self.root)
         self.root.config(menu=self.menu_bar)
@@ -212,87 +212,102 @@ class DoorFrameCalculator:
         self.menu_bar.add_cascade(label="Guidance", menu=self.view_menu)
         self.view_menu.add_checkbutton(label=translations[self.current_language]["Enable_"], variable=self.tooltips_enabled, command=self.toggle_tooltips)
         
-        self.create_label_and_entry(frame, "door_type", 0, "door_type")
+        current_row = 0
+        current_row= self.create_label_and_entry(frame, "door_type", current_row, "door_type")
         self.entries["door_type"][1]['values'] = ("simple", "UB", "electric lock", "box lock", "yipaiyikong")
         self.tooltips["door_type"] = ToolTip(self.entries["door_type"][1], translations[self.current_language]["tooltips"]["door_type"], self)
         self.entries["door_type"][1].bind("<<ComboboxSelected>>", self.update_inputs)
 
-        self.create_label_and_entry(frame, "num_doors", 1)
+        current_row= self.create_label_and_entry(frame, "num_doors", current_row, add_separator=True)
         self.tooltips["num_doors"] = ToolTip(self.entries["num_doors"][1], translations[self.current_language]["tooltips"]["num_doors"], self)
-        self.create_label_and_entry(frame, "right_vpiece_width", 2)
+        current_row= self.create_label_and_entry(frame, "right_vpiece_width", current_row)
         self.tooltips["right_vpiece_width"] = ToolTip(self.entries["right_vpiece_width"][1], translations[self.current_language]["tooltips"]["right_vpiece_width"], self)
-        self.create_label_and_entry(frame, "left_vpiece_width", 3)
+        current_row= self.create_label_and_entry(frame, "left_vpiece_width", current_row)
         self.tooltips["left_vpiece_width"] = ToolTip(self.entries["left_vpiece_width"][1], translations[self.current_language]["tooltips"]["left_vpiece_width"], self)
-        self.create_label_and_entry(frame, "upper_hpiece_width", 4)
+        current_row= self.create_label_and_entry(frame, "upper_hpiece_width", current_row)
         self.tooltips["upper_hpiece_width"] = ToolTip(self.entries["upper_hpiece_width"][1], translations[self.current_language]["tooltips"]["upper_hpiece_width"], self)
-        self.create_label_and_entry(frame, "lower_hpiece_width", 5)
+        current_row= self.create_label_and_entry(frame, "lower_hpiece_width", current_row, add_separator=True)
         self.tooltips["lower_hpiece_width"] = ToolTip(self.entries["lower_hpiece_width"][1], translations[self.current_language]["tooltips"]["lower_hpiece_width"], self)
+        # separator = ttk.Separator(frame, orient="horizontal")
+        # separator.grid(row=6, column=0, columnspan=3, sticky="ew", pady=10)  # Adjust the row and columns
+
         
-        self.create_label_and_entry(frame, "edge_sealing_type", 6, "edge_sealing_type")
+        current_row= self.create_label_and_entry(frame, "edge_sealing_type", current_row, "edge_sealing_type")
         self.entries["edge_sealing_type"][1]['values'] = ("實木", "白木 4 mm", "鋁封邊", "ABS", "鐡封邊+石墨片", "鐡封邊")
         self.tooltips["edge_sealing_type"] = ToolTip(self.entries["edge_sealing_type"][1], translations[self.current_language]["tooltips"]["edge_sealing_type"], self)
 
-        self.create_label_and_entry(frame, "edge_sealing_thickness", 7)
+        current_row= self.create_label_and_entry(frame, "edge_sealing_thickness", current_row, add_separator=True)
         self.tooltips["edge_sealing_thickness"] = ToolTip(self.entries["edge_sealing_thickness"][1], translations[self.current_language]["tooltips"]["edge_sealing_thickness"], self)
-        self.create_label_and_entry(frame, "max_height", 8)
+        current_row= self.create_label_and_entry(frame, "max_height", current_row)
         self.tooltips["max_height"] = ToolTip(self.entries["max_height"][1], translations[self.current_language]["tooltips"]["max_height"], self)
-        self.create_label_and_entry(frame, "min_height", 9)
+        current_row= self.create_label_and_entry(frame, "min_height", current_row, add_separator=True)
         self.tooltips["min_height"] = ToolTip(self.entries["min_height"][1], translations[self.current_language]["tooltips"]["min_height"], self)
-        self.create_label_and_entry(frame, "electric_lock_name", 10, "electric_lock_name")
+        current_row= self.create_label_and_entry(frame, "electric_lock_name", current_row, "electric_lock_name")
         self.entries["electric_lock_name"][1]['values'] = list(electric_locks.keys())
         self.tooltips["electric_lock_name"] = ToolTip(self.entries["electric_lock_name"][1], translations[self.current_language]["tooltips"]["electric_lock_name"], self)
-        self.create_label_and_entry(frame, "box_lock_name", 11, "box_lock_name")
+        current_row= self.create_label_and_entry(frame, "box_lock_name", current_row, "box_lock_name")
         self.entries["box_lock_name"][1]['values'] = list(box_locks.keys())
         self.tooltips["box_lock_name"] = ToolTip(self.entries["box_lock_name"][1], translations[self.current_language]["tooltips"]["box_lock_name"], self)
         
-        self.create_label_and_entry(frame, "slats_width", 12)
+        current_row= self.create_label_and_entry(frame, "slats_width", current_row)
         self.tooltips["slats_width"] = ToolTip(self.entries["slats_width"][1], translations[self.current_language]["tooltips"]["slats_width"], self)
-        self.create_label_and_entry(frame, "gap_width", 13)
+        current_row= self.create_label_and_entry(frame, "gap_width", current_row)
         self.tooltips["gap_width"] = ToolTip(self.entries["gap_width"][1], translations[self.current_language]["tooltips"]["gap_width"], self)
 
-        self.create_label_and_entry(frame, "lock_length", 14)
+        current_row= self.create_label_and_entry(frame, "lock_length", current_row)
         self.tooltips["lock_length"] = ToolTip(self.entries["lock_length"][1], translations[self.current_language]["tooltips"]["lock_length"], self)
-        self.create_label_and_entry(frame, "lock_height", 15)
+        current_row= self.create_label_and_entry(frame, "lock_height", current_row)
         self.tooltips["lock_height"] = ToolTip(self.entries["lock_height"][1], translations[self.current_language]["tooltips"]["lock_height"], self)
-        self.create_label_and_entry(frame, "lock_direction", 16, "lock_direction")
+        current_row= self.create_label_and_entry(frame, "lock_direction", current_row, "lock_direction")
         self.entries["lock_direction"][1]['values'] = ("top", "bottom")
         self.tooltips["lock_direction"] = ToolTip(self.entries["lock_direction"][1], translations[self.current_language]["tooltips"]["lock_direction"], self)
-        self.create_label_and_entry(frame, "concealed_door_closer_name", 17, "concealed_door_closer_name")
+        current_row= self.create_label_and_entry(frame, "concealed_door_closer_name", current_row, "concealed_door_closer_name", add_separator=True)
         self.entries["concealed_door_closer_name"][1]['values'] = list(concealeds.keys())
         self.tooltips["concealed_door_closer_name"] = ToolTip(self.entries["concealed_door_closer_name"][1], translations[self.current_language]["tooltips"]["concealed_door_closer_name"], self)
 
-        self.create_label_and_entry(frame, "lock_offset_bottom", 18)
-        self.create_label_and_entry(frame, "frame_height", 19)
+        current_row= self.create_label_and_entry(frame, "lock_offset_bottom", current_row)
+        current_row= self.create_label_and_entry(frame, "frame_height", current_row)
         self.tooltips["frame_height"] = ToolTip(self.entries["frame_height"][1], translations[self.current_language]["tooltips"]["frame_height"], self)
-        self.create_label_and_entry(frame, "frame_width", 20)
+        current_row= self.create_label_and_entry(frame, "frame_width", current_row)
         self.tooltips["frame_width"] = ToolTip(self.entries["frame_width"][1], translations[self.current_language]["tooltips"]["frame_width"], self)
 
         calculate_button = ttk.Button(frame, text=translations[self.current_language]["calculate"], command=self.calculate_material)
-        calculate_button.grid(row=21, column=0, columnspan=2)
+        calculate_button.grid(row=current_row, column=0, columnspan=2, pady=(10, 0))
+        current_row +=1
         
         scrollbar = ttk.Scrollbar(frame)
-        scrollbar.grid(row=22, column=2, sticky="nsew", padx=(0, 200), pady=(10, 10))
+        scrollbar.grid(row=current_row, column=2, sticky="nsew", padx=(0, 200), pady=(10, 10))
 
         self.result_text = tk.Text(frame, width=100, height=30, font=("Helvetica", 13))
-        self.result_text.grid(row=22, column=0, columnspan=2, sticky="nsew", padx=(0, 0), pady=(0, 0))
+        self.result_text.grid(row=current_row, column=0, columnspan=2, sticky="nsew", padx=(0, 0), pady=(0, 0))
+        # current_row +=1
         self.result_image = tk.Text(frame, width=50, height=30)
-        self.result_image.grid(row=22, column=1, columnspan=3, sticky="nsew", padx=(0,0), pady=(0,0))
+        self.result_image.grid(row=current_row, column=1, columnspan=3, sticky="nsew", padx=(0,0), pady=(0,0))
         scrollbar.config(command=self.result_text.yview)
         scrollbar.config(command=self.result_image.yview)
         trademark_label = ttk.Label(frame, text="© 2024 HBB", font=("Helvetica", 8))
-        trademark_label.grid(row=21, column=0, columnspan=3, padx=(0, 1000))
+        trademark_label.grid(row=current_row-1, column=0, columnspan=3, padx=(0, 1000))
         
         self.update_inputs()
 
-    def create_label_and_entry(self, frame, key, row, entry_type="entry"):
+    def create_label_and_entry(self, frame, key, row, entry_type="entry", add_separator=False):
         label = ttk.Label(frame, text=translations[self.current_language][key], font=("Helvetica", 13))
         label.grid(row=row, column=0, sticky=tk.W)
         if entry_type == "entry":
             entry = ttk.Entry(frame, font=("Helvetica", 13))
         elif entry_type == "door_type" or entry_type == "edge_sealing_type" or entry_type == "electric_lock_name" or entry_type == "lock_direction" or entry_type == "concealed_door_closer_name" or entry_type == "box_lock_name":
             entry = ttk.Combobox(frame, font=("Helvetica", 13))
-        entry.grid(row=row, column=1, sticky=tk.E)
+        entry.grid(row=row, column=1, sticky=tk.E, padx=5, pady=1)
         self.entries[key] = (label, entry)  
+        # Add an optional separator after this row
+        # Add an optional separator after this row
+        separator = None
+        if add_separator:
+            separator = ttk.Separator(frame, orient="horizontal")
+            separator.grid(row=row + 1, column=0, columnspan=2, sticky="ew", pady=10)
+            self.entries[f"{key}_separator"] = separator  # Store separator in entries dictionary
+    
+        return row + (2 if add_separator else 1)  # Increment rows correctly
 
     def update_inputs(self, *args):
         door_type = self.entries["door_type"][1].get().strip().lower()
@@ -318,14 +333,26 @@ class DoorFrameCalculator:
             self.show_entries(["left_vpiece_width"], True)
             self.show_entries(["electric_lock_name", "lock_length", "lock_height", "lock_direction", "lock_offset_bottom", "max_height", "min_height", "box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name", "gap_width", "slats_width"], False)
 
+
     def show_entries(self, keys, show):
         for key in keys:
-            if show:
-                self.entries[key][0].grid()
-                self.entries[key][1].grid()
-            else:
-                self.entries[key][0].grid_remove()
-                self.entries[key][1].grid_remove()
+            if key in self.entries:
+                label, widget = self.entries[key]
+                if show:
+                    label.grid()
+                    widget.grid()
+                else:
+                    label.grid_remove()
+                    widget.grid_remove()
+    
+                # Check for an associated separator
+                separator_key = f"{key}_separator"
+                if separator_key in self.entries:
+                    separator = self.entries[separator_key]
+                    if show:
+                        separator.grid()
+                    else:
+                        separator.grid_remove()
 
     def change_language(self, language):
         self.current_language = language
@@ -357,8 +384,7 @@ class DoorFrameCalculator:
 
         
         self.menu_bar.entryconfig(2, label=translations[self.current_language]["language"])
-        for key, (label, entry) in self.entries.items():
-            label.config(text=translations[self.current_language][key])
+        
         
         self.menu_bar.entryconfig(3, label=translations[self.current_language]["help"])
         self.help_menu.entryconfig(0, label=translations[self.current_language]["simple_help"])
@@ -368,6 +394,17 @@ class DoorFrameCalculator:
         
         self.menu_bar.entryconfig(4, label=translations[self.current_language]["Guidance"])
         self.view_menu.entryconfig(0, label=translations[self.current_language]["Enable_"])
+        
+        for key, value in self.entries.items():
+            if isinstance(value, tuple) and len(value) == 2:
+                label, entry = value
+                if isinstance(label, tk.Widget):
+                    label.config(text=translations[self.current_language].get(key, key))
+                if isinstance(entry, tk.Widget):
+                    if hasattr(entry, "set"):  # For comboboxes
+                        values_key = f"{key}_values"
+                        if values_key in translations[self.current_language]:
+                            entry['values'] = translations[self.current_language][values_key]
         
         self.entries["door_type"][1]['values'] = (
         translations[self.current_language]["simple"],
@@ -384,7 +421,6 @@ class DoorFrameCalculator:
         translations[self.current_language]["top"],
         translations[self.current_language]["bottom"]
         )
-        self.entries["concealed_door_closer_name"][1]['values'] = list(concealeds.keys())
         self.language_menu.entryconfig(0, label="English")
         self.language_menu.entryconfig(1, label="中文")
         self.language_menu.entryconfig(2, label="Bahasa")
