@@ -27,7 +27,6 @@ CONCEALED_FILE = os.path.join(application_path, 'concealeds.json')
 def load_electric_locks():
     if os.path.exists(LOCK_FILE):
         with open(LOCK_FILE, 'r', encoding='utf-8') as file:
-            print(f"Loaded from{LOCK_FILE}")
             return json.load(file)
     return {}
 
@@ -35,13 +34,11 @@ def load_electric_locks():
 def save_electric_locks(electric_locks):
     with open(LOCK_FILE, 'w', encoding='utf-8') as file:
         json.dump(electric_locks, file, ensure_ascii=False, indent=4)
-        print(f"Saved to {LOCK_FILE}")
         
 # Load box lock types from file
 def load_box_locks():
     if os.path.exists(BOXLOCK_FILE):
         with open(BOXLOCK_FILE, 'r', encoding='utf-8') as file:
-            print(f"Loaded from{BOXLOCK_FILE}")
             return json.load(file)
     return {}
 
@@ -49,13 +46,11 @@ def load_box_locks():
 def save_box_locks(box_locks):
     with open(BOXLOCK_FILE, 'w', encoding='utf-8') as file:
         json.dump(box_locks, file, ensure_ascii=False, indent=4)
-        print(f"Saved to {BOXLOCK_FILE}")
         
 # Load box lock types from file
 def load_concealed_door():
     if os.path.exists(CONCEALED_FILE):
         with open(CONCEALED_FILE, 'r', encoding='utf-8') as file:
-            print(f"Loaded from{CONCEALED_FILE}")
             return json.load(file)
     return {}
 
@@ -63,7 +58,6 @@ def load_concealed_door():
 def save_concealed_door(concealeds):
     with open(CONCEALED_FILE, 'w', encoding='utf-8') as file:
         json.dump(concealeds, file, ensure_ascii=False, indent=4)
-        print(f"Saved to {CONCEALED_FILE}")
 
 # Load translations from file
 def load_translations():
@@ -121,7 +115,7 @@ class DoorFrameCalculator:
         self.scrollable_frame = ttk.Frame(self.canvas)
 
         
-        self.tooltips_enabled = tk.BooleanVar(value=True)
+        self.tooltips_enabled = tk.BooleanVar(value=False)
 
         self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
         self.canvas.configure(yscrollcommand=self.scrollbar.set)
@@ -784,7 +778,7 @@ class DoorFrameCalculator:
         slats_length = 0
         total_blocks = 0
         slats_count = 0
-        gap_width = 0
+        # gap_width = 0
         slats_length = inner_width
         plywood_width = inner_width
         vertical_piece_length = frame_height
