@@ -576,9 +576,9 @@ class DoorFrameCalculator:
                 frame_height = max_height
                 frame_width = int(self.entries["frame_width"][1].get())
             elif door_type == self.box_lock_label:
-                # for key in ["num_doors", "right_vpiece_width", "upper_hpiece_width", "lower_hpiece_width", "lock_height", "frame_height", "frame_width"]:
-                #     if not self.entries[key][1].get().strip().isdigit():
-                #         raise ValueError(f"Please enter a valid number for {translations[self.current_language][key]}")
+                for key in ["num_doors", "right_vpiece_width", "upper_hpiece_width", "lower_hpiece_width", "lock_height", "frame_height", "frame_width"]:
+                    if not self.entries[key][1].get().strip().isdigit():
+                        raise ValueError(f"請輸入有效的數字以 {translations[self.current_language][key]}")
                 box_lock_name = self.entries["box_lock_name"][1].get().strip()
                 concealed_door_closer_name = self.entries["concealed_door_closer_name"][1].get().strip()
                 if box_lock_name in box_locks:
@@ -598,9 +598,9 @@ class DoorFrameCalculator:
                 frame_height = int(self.entries["frame_height"][1].get())
                 frame_width = int(self.entries["frame_width"][1].get())
             elif door_type == self.electric_lock_label:
-                # for key in ["num_doors", "right_vpiece_width", "upper_hpiece_width", "lower_hpiece_width", "lock_height", "frame_height", "frame_width"]:
-                #     if not self.entries[key][1].get().strip().isdigit():
-                #         raise ValueError(f"Please enter a valid number for {translations[self.current_language][key]}")
+                for key in ["num_doors", "right_vpiece_width", "upper_hpiece_width", "lower_hpiece_width", "lock_height", "frame_height", "frame_width"]:
+                    if not self.entries[key][1].get().strip().isdigit():
+                        raise ValueError(f"請輸入有效的數字以 {translations[self.current_language][key]}")
                 electric_lock_name = self.entries["electric_lock_name"][1].get().strip()
                 concealed_door_closer_name = self.entries["concealed_door_closer_name"][1].get().strip()
                 if electric_lock_name in electric_locks:
