@@ -237,7 +237,7 @@ class DoorFrameCalculator:
 
         
         current_row= self.create_label_and_entry(frame, "edge_sealing_type", current_row, "edge_sealing_type")
-        self.entries["edge_sealing_type"][1]['values'] = ("實木", "白木 4 mm", "鋁封邊", "ABS", "鐡封邊+石墨片", "鐡封邊")
+        self.entries["edge_sealing_type"][1]['values'] = ("6mm 實木", "4mm 白木", "6mm 鋁封邊", "1mm 鐡封邊 + 1mm 石墨片", "1mm 鐡封邊", "1mm 不織布", "0.8mm 美耐板", "0.5mm ABS")
         self.tooltips["edge_sealing_type"] = ToolTip(self.entries["edge_sealing_type"][1], translations[self.current_language]["tooltips"]["edge_sealing_type"], self)
 
         current_row= self.create_label_and_entry(frame, "edge_sealing_thickness", current_row, add_separator=True)
@@ -417,7 +417,7 @@ class DoorFrameCalculator:
         translations[self.current_language]["box lock"],
         translations[self.current_language]["yipaiyikong"]
         )
-        self.entries["edge_sealing_type"][1]['values'] = ("實木", "白木 4 mm", "鋁封邊", "ABS", "鐡封邊+石墨片", "鐡封邊")
+        self.entries["edge_sealing_type"][1]['values'] = ("6mm 實木", "4mm 白木", "6mm 鋁封邊", "1mm 鐡封邊 + 1mm 石墨片", "1mm 鐡封邊", "1mm 不織布", "0.8mm 美耐板", "0.5mm ABS")
         self.entries["electric_lock_name"][1]['values'] = list(electric_locks.keys())
         self.entries["box_lock_name"][1]['values'] = list(box_locks.keys())
         self.entries["concealed_door_closer_name"][1]['values'] = list(concealeds.keys())
@@ -531,12 +531,14 @@ class DoorFrameCalculator:
             lower_horizontal_piece_width = int(self.entries["lower_hpiece_width"][1].get())
 
             edge_sealing_options = {
-                "實木": 6,
-                "鋁封邊": 6,
-                "ABS": 0.5,
-                "鐡封邊+石墨片": 2,
-                "鐡封邊": 1,
-                "白木 4 mm":4
+                "6mm 實木": 6,
+                "6mm 鋁封邊": 6,
+                "0.5mm ABS": 0.5,
+                "1mm 鐡封邊 + 1mm 石墨片": 2,
+                "1mm 鐡封邊": 1,
+                "4mm 白木": 4,
+                "0.8mm 美耐板": 0.8,
+                "1mm 不織布": 1
             }
 
             edge_sealing_type = self.entries["edge_sealing_type"][1].get().strip()
@@ -621,9 +623,13 @@ class DoorFrameCalculator:
                 frame_height = int(self.entries["frame_height"][1].get())
                 frame_width = int(self.entries["frame_width"][1].get())
 
-                if edge_sealing_type == "鐡封邊+石墨片" or "鐡封邊":
+                if edge_sealing_type in ["1mm 鐡封邊 + 1mm 石墨片"]:
                     electric_lock_height += 3
                     box_lock_height += 3
+                    
+                elif edge_sealing_type in ["1mm 鐡封邊", "0.5mm ABS", "0.8mm 美耐板", "1mm 不織布"]:
+                    electric_lock_height += 4
+                    box_lock_height += 4
                     
             elif door_type == self.yipaiyikong_label:
                 gap_width = int(self.entries["gap_width"][1].get())
@@ -635,10 +641,10 @@ class DoorFrameCalculator:
                 frame_width = int(self.entries["frame_width"][1].get())
                 
 
-            if edge_sealing_type == "ABS":
+            if edge_sealing_type in ["0.5mm ABS", "0.8mm 美耐板", "1mm 不織布"]:
                 frame_height += 10
                 frame_width += 10
-            elif edge_sealing_type in ["鐡封邊+石墨片", "鐡封邊", "白木 4 mm"]:
+            elif edge_sealing_type in ["1mm 鐡封邊 + 1mm 石墨片", "1mm 鐡封邊", "4mm 白木"]:
                 frame_height += 5
                 frame_width += 5
                 
