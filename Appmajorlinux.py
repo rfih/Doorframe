@@ -106,7 +106,7 @@ class DoorFrameCalculator:
     def __init__(self, root):
         self.root = root
         self.root.geometry("950x775")
-        self.current_language = "en"
+        self.current_language = "zh"
         self.entries = {}
             
         # Create a canvas and a scrollbar for the entire application
@@ -663,7 +663,7 @@ class DoorFrameCalculator:
                                           left_vertical_piece_width, upper_horizontal_piece_width, lower_horizontal_piece_width,
                                           edge_sealing, max_height, min_height, vertical_piece_width, horizontal_piece_width,
                                           electric_lock_name, box_lock_name, lock_length, electric_lock_height, box_lock_height, lock_direction, concealed_door_closer_name, concealed_length,
-                                          outer_wood_bottom, inner_wood_bottom, outer_wood_upper, inner_wood_upper,very_upper_horizontal_piece_width,very_upper_horizontal_piece_length)
+                                          outer_wood_bottom, inner_wood_bottom, outer_wood_upper, inner_wood_upper,very_upper_horizontal_piece_width,very_upper_horizontal_piece_length, frame_width)
             
             # Determine the image to display based on door type
             door_type = self.entries["door_type"][1].get().strip().lower()
@@ -728,6 +728,7 @@ class DoorFrameCalculator:
             door_type_label = translations[lang]["door_type"]
             electric_lock_label = translations[lang]["electric_lock"]
             plywood_dimensions_label = translations[lang]["plywood_dimensions"]
+            xisuangai_label = translations[lang]["xisuangai"]
             vertical_length_label = translations[lang]["length_each_piecev"]
             outer_wood_upper_label = translations[lang]["outer_wood_upper_part"]
             inner_wood_upper_label = translations[lang]["inner_wood_upper_part"]
@@ -746,6 +747,8 @@ class DoorFrameCalculator:
                 if door_type_label in line or electric_lock_label in line:
                     self.result_text.insert(tk.END, line + "\n", "title")  # Apply the "title" style
                 elif plywood_dimensions_label in line:
+                    self.result_text.insert(tk.END, line + "\n", "titlelow")
+                elif xisuangai_label in line:
                     self.result_text.insert(tk.END, line + "\n", "titlelow")
                 elif vertical_length_label in line:
                     self.result_text.insert(tk.END, line + "\n", "vertical_length")
@@ -898,7 +901,7 @@ class DoorFrameCalculator:
                         left_vertical_piece_width, upper_horizontal_piece_width, lower_horizontal_piece_width,
                         edge_sealing, max_height, min_height, vertical_piece_width, horizontal_piece_width,
                         electric_lock_name, box_lock_name, lock_length, electric_lock_height, box_lock_height, lock_direction, concealed_door_closer_name, concealed_length, outer_wood_bottom,
-                        inner_wood_bottom, outer_wood_upper, inner_wood_upper,very_upper_horizontal_piece_width,very_upper_horizontal_piece_length):
+                        inner_wood_bottom, outer_wood_upper, inner_wood_upper,very_upper_horizontal_piece_width,very_upper_horizontal_piece_length, frame_width):
         lang = self.current_language
         total_right_vertical_pieces = num_doors if right_vertical_piece_width else 0
         total_left_vertical_pieces = num_doors if left_vertical_piece_width else 0
@@ -920,6 +923,7 @@ class DoorFrameCalculator:
         {translations[lang]["door_type"]}: {door_type.upper()}
         {translations[lang]["num_doors"]}: {num_doors}
         {translations[lang]["plywood_dimensions"]}: {plywood_width} mm x {plywood_height} mm 
+        {translations[lang]["xisuangai"]}: {frame_width} mm x {vertical_piece_length} mm 
         {translations[lang]["edge_sealing"]}: {edge_sealing} mm
         """
 
