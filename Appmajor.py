@@ -840,7 +840,7 @@ class DoorFrameCalculator:
                 outer_wood_bottom = electric_lock_height - lock_offset_bottom
                 inner_wood_bottom = outer_wood_bottom - 30
                 outer_wood_upper = frame_height - (outer_wood_bottom + lock_length)
-                inner_wood_upper = outer_wood_upper - 30
+                inner_wood_upper = outer_wood_upper - 75
             if lock_direction == self.top_label:
                 outer_wood_upper = electric_lock_height - lock_offset_top
                 inner_wood_upper = outer_wood_upper - 75
