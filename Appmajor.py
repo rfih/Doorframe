@@ -125,26 +125,29 @@ class DoorFrameCalculator:
         # Enable scrolling with the mouse wheel
         # self.canvas.bind_all("<MouseWheel>", lambda e: self.canvas.yview_scroll(-1 * (e.delta // 120), "units"))
         
-        self.door_categories = {
-            "fireproof": ["simple", "UB", "electric lock", "box lock"],
-            "non_fireproof": {
-                "honeycomb_paper": ["simple", "UB", "electric lock", "box lock"],
-                "yipaiyikong": ["simple", "UB", "electric lock", "box lock"],
-                "honeycomb_board": ["simple", "UB", "electric lock", "box lock"]
-            }
-        }
+        # self.door_categories = {
+        #     "fireproof": ["simple", "UB", "electric lock", "box lock"],
+        #     "non_fireproof": {
+        #         "honeycomb_paper": ["simple", "UB", "electric lock", "box lock"],
+        #         "yipaiyikong": ["simple", "UB", "electric lock", "box lock"],
+        #         "honeycomb_board": ["simple", "UB", "electric lock", "box lock"]
+        #     }
+        # }
         
         # Initialize translated door type labels
         self.simple_label = translations[self.current_language]["simple"].lower()
         self.electric_lock_label = translations[self.current_language]["electric lock"].lower()
         self.ub_label = translations[self.current_language]["UB"].lower()
         self.box_lock_label = translations[self.current_language]["box lock"].lower()
+        
         self.yipaiyikong_label = translations[self.current_language]["yipaiyikong"].lower()
         self.top_label = translations[self.current_language]["top"].lower()
         self.bottom_label = translations[self.current_language]["bottom"].lower()
         self.concealed_label = translations[self.current_language]["concealed door closer"].lower()
         self.fireproof_label = translations[self.current_language]["fireproof"].lower()
         self.non_fireproof_label = translations[self.current_language]["non_fireproof"].lower()
+        self.honeycomb_paper_label = translations[self.current_language]["honeycomb_paper"].lower()
+        self.honeycomb_board_label = translations[self.current_language]["honeycomb_board"].lower()
         
         self.tooltips = {}
         
@@ -234,22 +237,22 @@ class DoorFrameCalculator:
     
         # Structure Type Dropdown (for Non-Fireproof)
         current_row = self.create_label_and_entry(frame, "structure_type", current_row, "structure_type")
-        self.entries["structure_type"][1]['values'] = (
-            translations[self.current_language]["honeycomb_paper"],
-            translations[self.current_language]["yipaiyikong"],
-            translations[self.current_language]["honeycomb_board"]
-        )
+        self.entries["structure_type"][1]['values'] = ("honeycomb_paper", "yipaiyikong", "honeycomb_board")
+        #     translations[self.current_language]["honeycomb_paper"],
+        #     translations[self.current_language]["yipaiyikong"],
+        #     translations[self.current_language]["honeycomb_board"]
+        # )
         # self.entries["structure_type"][0].grid_remove()  # Initially hidden
         self.entries["structure_type"][1].bind("<<ComboboxSelected>>", self.update_inputs)
     
         # Door Type Dropdown
         current_row = self.create_label_and_entry(frame, "door_type", current_row, "door_type")
-        self.entries["door_type"][1]['values'] = ("simple", "UB", "electric lock", "box lock")  # Initially empty
+        self.entries["door_type"][1]['values'] = ("simple", "UB", "electric lock", "box lock")
+        self.tooltips["door_type"] = ToolTip(self.entries["door_type"][1], translations[self.current_language]["tooltips"]["door_type"], self)
         self.entries["door_type"][1].bind("<<ComboboxSelected>>", self.update_inputs)
 
         # current_row= self.create_label_and_entry(frame, "door_type", current_row, "door_type")
         # self.entries["door_type"][1]['values'] = ("simple", "UB", "electric lock", "box lock", "yipaiyikong")
-        # self.tooltips["door_type"] = ToolTip(self.entries["door_type"][1], translations[self.current_language]["tooltips"]["door_type"], self)
         # self.entries["door_type"][1].bind("<<ComboboxSelected>>", self.update_inputs)
 
         current_row= self.create_label_and_entry(frame, "num_doors", current_row, add_separator=True)
@@ -344,41 +347,54 @@ class DoorFrameCalculator:
         return row + (2 if add_separator else 1)  # Increment rows correctly
 
     def update_inputs(self, *args):
+        
+        all_fields = [
+            "door_type", "structure_type", "slats_width", "gap_width", "left_vpiece_width",
+            "electric_lock_name", "lock_length", "lock_height", "lock_direction",
+            "lock_offset_bottom", "max_height", "min_height", "box_lock_name",
+            "concealed_door_closer_name"
+        ]
+        self.show_entries(all_fields, False)
+        
         category = self.entries["category"][1].get().strip().lower()
         if category == self.fireproof_label:
             self.show_entries(["door_type"], True)
-            self.show_entries(["structure_type"], False)
+            self.entries["door_type"][1]['values'] = (
+            self.simple_label,
+            self.ub_label,
+            self.electric_lock_label,
+            self.box_lock_label
+            )
         elif category == self.non_fireproof_label:
-            self.show_entries(["structure_type"], True)
-            self.show_entries(["door_type"], True)
+            self.show_entries(["door_type", "structure_type"], True)
             self.entries["door_type"][1]['values'] = (
                 self.simple_label,
                 self.electric_lock_label,
                 self.box_lock_label
             )
         else:
-            self.show_entries(["category"], True)
-            self.show_entries(["door_type", "structure_type"], False)
+            return
+            
+        structure_type = self.entries["structure_type"][1].get().strip().lower()
+        if structure_type == self.yipaiyikong_label:
+            self.show_entries(["slats_width", "gap_width"], True)
             
         door_type = self.entries["door_type"][1].get().strip().lower()
-        if door_type == self.electric_lock_label:
-            self.show_entries(["left_vpiece_width"], False)
+        if door_type == self.simple_label:
+            self.show_entries(["left_vpiece_width"], True)
+        elif door_type == self.electric_lock_label:
             self.show_entries(["electric_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], True)
-            self.show_entries(["max_height", "min_height", "box_lock_name","slats_width", "gap_width"], False)
         elif door_type == self.ub_label:
-            self.show_entries(["electric_lock_name", "lock_length", "lock_height", "lock_direction", "lock_offset_bottom", "frame_height","slats_width", "gap_width"], False)
             self.show_entries(["max_height", "min_height"], True)
         elif door_type == self.box_lock_label:
-            self.show_entries(["left_vpiece_width"], False)
             self.show_entries(["box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], True)
-            self.show_entries(["max_height", "min_height", "electric_lock_name","slats_width", "gap_width"], False)
-        elif door_type == self.yipaiyikong_label:
-            self.show_entries(["slats_width", "left_vpiece_width", "gap_width"], True)
-            self.show_entries(["electric_lock_name", "box_lock_name", "lock_length", "lock_height", "lock_direction", "lock_offset_bottom"], False)
-            self.show_entries(["max_height", "min_height", "concealed_door_closer_name"], False)
+        # elif door_type == self.yipaiyikong_label:
+        #     self.show_entries(["slats_width", "left_vpiece_width", "gap_width"], True)
+        #     self.show_entries(["electric_lock_name", "box_lock_name", "lock_length", "lock_height", "lock_direction", "lock_offset_bottom"], False)
+        #     self.show_entries(["max_height", "min_height", "concealed_door_closer_name"], False)
         else:
-            self.show_entries(["left_vpiece_width"], True)
-            self.show_entries(["electric_lock_name", "lock_length", "lock_height", "lock_direction", "lock_offset_bottom", "max_height", "min_height", "box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name", "gap_width", "slats_width"], False)
+            self.show_entries(["electric_lock_name", "lock_length", "lock_height", "lock_direction", "lock_offset_bottom",
+                               "max_height", "min_height", "box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], False)
 
 
     def show_entries(self, keys, show):
@@ -420,6 +436,8 @@ class DoorFrameCalculator:
         self.concealed_label = translations[self.current_language]["concealed door closer"].lower()
         self.fireproof_label = translations[self.current_language]["fireproof"].lower()
         self.non_fireproof_label = translations[self.current_language]["non_fireproof"].lower()
+        self.honeycomb_paper_label = translations[self.current_language]["honeycomb_paper"].lower()
+        self.honeycomb_board_label = translations[self.current_language]["honeycomb_board"].lower()
 
     def update_language(self):
         self.root.title(translations[self.current_language]["app_title"])
@@ -430,10 +448,8 @@ class DoorFrameCalculator:
         self.edit_menu.entryconfig(3, label=translations[self.current_language]["remove_box_lock"])
         self.edit_menu.entryconfig(4, label=translations[self.current_language]["add_concealed_door_closer"])
         self.edit_menu.entryconfig(5, label=translations[self.current_language]["remove_concealed_door_closer"])
-
         
         self.menu_bar.entryconfig(2, label=translations[self.current_language]["language"])
-        
         
         self.menu_bar.entryconfig(3, label=translations[self.current_language]["help"])
         self.help_menu.entryconfig(0, label=translations[self.current_language]["simple_help"])
@@ -501,7 +517,7 @@ class DoorFrameCalculator:
             concealed_length = 0
 
         # Annotation positions can be adjusted based on door_type
-        # Fireproof!!!#
+# Fireproof!!!#
         if category == self.fireproof_label and door_type == self.simple_label:
             annotations = {
             f"{horizontal_length} mm": ((100, 20), "red"),   # Position and color for horizontal length
@@ -552,7 +568,10 @@ class DoorFrameCalculator:
                 f"{horizontal_length} mm": ((100, 20), "red"),   # Position and color for horizontal length
                 f"{vertical_length} mm": ((10, 210), "blue")
                 }
-        elif door_type == self.yipaiyikong_label:
+            
+# Non Fireproof!!##
+
+        elif category == self.non_fireproof_label and door_type == self.yipaiyikong_label:
             annotations = {
                 f"{horizontal_length} mm": ((100, 20), "red"),   # Position and color for horizontal length
                 f"{vertical_length} mm": ((10, 210), "blue"),
