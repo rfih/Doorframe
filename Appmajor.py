@@ -106,24 +106,35 @@ class DoorFrameCalculator:
         self.entries = {}
             
         # Create a canvas and a scrollbar for the entire application
-        self.canvas = tk.Canvas(root)
+        self.canvas = tk.Canvas(root, width=950, height=775)
         self.scrollbar = ttk.Scrollbar(root, orient="vertical", command=self.canvas.yview)
+        self.scrollbar.pack(side="right", fill="y")
         self.scrollable_frame = ttk.Frame(self.canvas)
-
-        
         self.tooltips_enabled = tk.BooleanVar(value=False)
-
         self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
         self.canvas.configure(yscrollcommand=self.scrollbar.set)
 
-        self.scrollbar.pack(side="right", fill="y")
+        
         self.canvas.pack(side="left", fill="both", expand=True)
         
         # Bind the scroll region configuration to the scrollable frame's size changes
         self.scrollable_frame.bind(
             "<Configure>",
-            lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all"))
-        )
+            lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")) if self.canvas else None)
+
+        # Enable scrolling with the mouse wheel
+        # self.canvas.bind_all("<MouseWheel>", lambda e: self.canvas.yview_scroll(-1 * (e.delta // 120), "units"))
+
+        
+        
+        self.door_categories = {
+            "fireproof": ["simple", "UB", "electric lock", "box lock"],
+            "non_fireproof": {
+                "honeycomb_paper": ["simple", "UB", "electric lock", "box lock"],
+                "yipaiyikong": ["simple", "UB", "electric lock", "box lock"],
+                "honeycomb_board": ["simple", "UB", "electric lock", "box lock"]
+            }
+        }
         
         # Initialize translated door type labels
         self.simple_label = translations[self.current_language]["simple"].lower()
@@ -134,6 +145,8 @@ class DoorFrameCalculator:
         self.top_label = translations[self.current_language]["top"].lower()
         self.bottom_label = translations[self.current_language]["bottom"].lower()
         self.concealed_label = translations[self.current_language]["concealed door closer"].lower()
+        self.fireproof_label = translations[self.current_language]["fireproof"].lower()
+        self.non_fireproof_label = translations[self.current_language]["non_fireproof"].lower()
         
         self.tooltips = {}
         
@@ -175,6 +188,9 @@ class DoorFrameCalculator:
         
         self.create_widgets()
         
+    # def _on_mousewheel(self, event):
+    #     self.canvas.yview_scroll(-1 * int(event.delta / 120), "units")
+        
         
     def create_widgets(self):
         self.root.title("Door Frame Material Calculator")
@@ -213,10 +229,32 @@ class DoorFrameCalculator:
         self.view_menu.add_checkbutton(label=translations[self.current_language]["Enable_"], variable=self.tooltips_enabled, command=self.toggle_tooltips)
         
         current_row = 0
-        current_row= self.create_label_and_entry(frame, "door_type", current_row, "door_type")
-        self.entries["door_type"][1]['values'] = ("simple", "UB", "electric lock", "box lock", "yipaiyikong")
-        self.tooltips["door_type"] = ToolTip(self.entries["door_type"][1], translations[self.current_language]["tooltips"]["door_type"], self)
+        current_row = self.create_label_and_entry(frame, "category", current_row, "category")
+        self.entries["category"][1]['values'] = (
+            translations[self.current_language]["fireproof"],
+            translations[self.current_language]["non_fireproof"]
+        )
+        self.entries["category"][1].bind("<<ComboboxSelected>>", self.update_inputs)
+    
+        # Structure Type Dropdown (for Non-Fireproof)
+        current_row = self.create_label_and_entry(frame, "structure_type", current_row, "structure_type")
+        self.entries["structure_type"][1]['values'] = (
+            translations[self.current_language]["honeycomb_paper"],
+            translations[self.current_language]["yipaiyikong"],
+            translations[self.current_language]["honeycomb_board"]
+        )
+        # self.entries["structure_type"][0].grid_remove()  # Initially hidden
+        self.entries["structure_type"][1].bind("<<ComboboxSelected>>", self.update_inputs)
+    
+        # Door Type Dropdown
+        current_row = self.create_label_and_entry(frame, "door_type", current_row, "door_type")
+        self.entries["door_type"][1]['values'] = ("simple", "UB", "electric lock", "box lock")  # Initially empty
         self.entries["door_type"][1].bind("<<ComboboxSelected>>", self.update_inputs)
+
+        # current_row= self.create_label_and_entry(frame, "door_type", current_row, "door_type")
+        # self.entries["door_type"][1]['values'] = ("simple", "UB", "electric lock", "box lock", "yipaiyikong")
+        # self.tooltips["door_type"] = ToolTip(self.entries["door_type"][1], translations[self.current_language]["tooltips"]["door_type"], self)
+        # self.entries["door_type"][1].bind("<<ComboboxSelected>>", self.update_inputs)
 
         current_row= self.create_label_and_entry(frame, "num_doors", current_row, add_separator=True)
         self.tooltips["num_doors"] = ToolTip(self.entries["num_doors"][1], translations[self.current_language]["tooltips"]["num_doors"], self)
@@ -295,7 +333,7 @@ class DoorFrameCalculator:
         label.grid(row=row, column=0, sticky=tk.W)
         if entry_type == "entry":
             entry = ttk.Entry(frame, font=("Helvetica", 13))
-        elif entry_type == "door_type" or entry_type == "edge_sealing_type" or entry_type == "electric_lock_name" or entry_type == "lock_direction" or entry_type == "concealed_door_closer_name" or entry_type == "box_lock_name":
+        elif entry_type == "category" or entry_type == "structure_type" or entry_type == "door_type" or entry_type == "edge_sealing_type" or entry_type == "electric_lock_name" or entry_type == "lock_direction" or entry_type == "concealed_door_closer_name" or entry_type == "box_lock_name":
             entry = ttk.Combobox(frame, font=("Helvetica", 13))
         entry.grid(row=row, column=1, sticky=tk.E, padx=5, pady=1)
         self.entries[key] = (label, entry)  
@@ -310,10 +348,17 @@ class DoorFrameCalculator:
         return row + (2 if add_separator else 1)  # Increment rows correctly
 
     def update_inputs(self, *args):
+        category = self.entries["category"][1].get().strip().lower()
+        if category == self.fireproof_label:
+            self.show_entries(["door_type"], True)
+            self.show_entries(["structure_type"], False)
+        elif category == self.non_fireproof_label:
+            self.show_entries(["structure_type"], True)
+        else:
+            self.show_entries(["category"], True)
+            self.show_entries(["door_type", "structure_type"], False)
+            
         door_type = self.entries["door_type"][1].get().strip().lower()
-        # electric_lock_label = translations[self.current_language]["electric lock"].lower()
-        # ub_label = translations[self.current_language]["UB"].lower()
-        # box_lock_label = translations[self.current_language]["box lock"].lower()
         if door_type == self.electric_lock_label:
             self.show_entries(["left_vpiece_width"], False)
             self.show_entries(["electric_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], True)
@@ -405,13 +450,22 @@ class DoorFrameCalculator:
                         values_key = f"{key}_values"
                         if values_key in translations[self.current_language]:
                             entry['values'] = translations[self.current_language][values_key]
-        
+                            
+        self.entries["category"][1]['values'] = (
+            translations[self.current_language]["fireproof"],
+            translations[self.current_language]["non_fireproof"]
+        )
+        self.entries["structure_type"][1]['values'] = (
+            translations[self.current_language]["honeycomb_paper"],
+            translations[self.current_language]["yipaiyikong"],
+            translations[self.current_language]["honeycomb_board"]
+        )
         self.entries["door_type"][1]['values'] = (
         translations[self.current_language]["simple"],
         translations[self.current_language]["UB"],
         translations[self.current_language]["electric lock"],
-        translations[self.current_language]["box lock"],
-        translations[self.current_language]["yipaiyikong"]
+        translations[self.current_language]["box lock"]
+        # translations[self.current_language]["yipaiyikong"]
         )
         self.entries["edge_sealing_type"][1]['values'] = ("6mm 實木", "4mm 白木", "6mm 鋁封邊", "1mm 鐡封邊 + 1mm 石墨片", "1mm 鐡封邊", "1mm 不織布", "0.8mm 美耐板", "0.5mm ABS")
         self.entries["electric_lock_name"][1]['values'] = list(electric_locks.keys())
