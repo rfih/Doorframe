@@ -124,8 +124,6 @@ class DoorFrameCalculator:
 
         # Enable scrolling with the mouse wheel
         # self.canvas.bind_all("<MouseWheel>", lambda e: self.canvas.yview_scroll(-1 * (e.delta // 120), "units"))
-
-        
         
         self.door_categories = {
             "fireproof": ["simple", "UB", "electric lock", "box lock"],
@@ -188,8 +186,6 @@ class DoorFrameCalculator:
         
         self.create_widgets()
         
-    # def _on_mousewheel(self, event):
-    #     self.canvas.yview_scroll(-1 * int(event.delta / 120), "units")
         
         
     def create_widgets(self):
@@ -354,6 +350,12 @@ class DoorFrameCalculator:
             self.show_entries(["structure_type"], False)
         elif category == self.non_fireproof_label:
             self.show_entries(["structure_type"], True)
+            self.show_entries(["door_type"], True)
+            self.entries["door_type"][1]['values'] = (
+                self.simple_label,
+                self.electric_lock_label,
+                self.box_lock_label
+            )
         else:
             self.show_entries(["category"], True)
             self.show_entries(["door_type", "structure_type"], False)
@@ -416,6 +418,8 @@ class DoorFrameCalculator:
         self.top_label = translations[self.current_language]["top"].lower()
         self.bottom_label = translations[self.current_language]["bottom"].lower()
         self.concealed_label = translations[self.current_language]["concealed door closer"].lower()
+        self.fireproof_label = translations[self.current_language]["fireproof"].lower()
+        self.non_fireproof_label = translations[self.current_language]["non_fireproof"].lower()
 
     def update_language(self):
         self.root.title(translations[self.current_language]["app_title"])
@@ -479,10 +483,13 @@ class DoorFrameCalculator:
         self.language_menu.entryconfig(1, label="中文")
         self.language_menu.entryconfig(2, label="Bahasa")
         
-    def add_annotations(self, image_path, vertical_length, horizontal_length, door_type, outer_wood_upper, inner_wood_upper, outer_wood_bottom, inner_wood_bottom, concealed_length, very_upper_horizontal_piece_length, concealed_door_closer_name, slats_count):
+    def add_annotations(self, image_path, vertical_length, horizontal_length, door_type, outer_wood_upper, inner_wood_upper, outer_wood_bottom, 
+                        inner_wood_bottom, concealed_length, very_upper_horizontal_piece_length, concealed_door_closer_name, slats_count,
+                        category):
         # Open the image file
         image = Image.open(image_path)
         draw = ImageDraw.Draw(image)
+        structure_type = self.entries["structure_type"][1].get().strip().lower()
         
         # Define font and size
         font = ImageFont.truetype("arial.ttf", 24)  # Ensure the font file is available
@@ -494,12 +501,13 @@ class DoorFrameCalculator:
             concealed_length = 0
 
         # Annotation positions can be adjusted based on door_type
-        if door_type == self.simple_label:
+        # Fireproof!!!#
+        if category == self.fireproof_label and door_type == self.simple_label:
             annotations = {
             f"{horizontal_length} mm": ((100, 20), "red"),   # Position and color for horizontal length
             f"{vertical_length} mm": ((10, 210), "blue")     # Position and color for vertical length
         }
-        elif door_type == self.electric_lock_label and concealed_length > 0:
+        elif category == self.fireproof_label and door_type == self.electric_lock_label and concealed_length > 0:
             annotations = {
                 f"{very_upper_horizontal_piece_length} mm": ((130, 20), "magenta"),
                 f"{outer_wood_upper} mm": ((10, 190), "green"),
@@ -510,7 +518,7 @@ class DoorFrameCalculator:
                 f"{horizontal_length} mm": ((200, 430), "red"),
                 f"{concealed_length} mm": ((280, 20), "black")
             }
-        elif door_type == self.electric_lock_label and concealed_length == 0:
+        elif category == self.fireproof_label and door_type == self.electric_lock_label and concealed_length == 0:
             annotations = {
                 f"{horizontal_length} mm": ((130, 20), "red"),
                 f"{outer_wood_upper} mm": ((10, 190), "green"),
@@ -519,7 +527,7 @@ class DoorFrameCalculator:
                 f"{inner_wood_bottom} mm": ((10, 380), "brown"),
                 f"{vertical_length} mm": ((390, 260), "blue")
             }
-        elif door_type == self.box_lock_label and concealed_length > 0:
+        elif category == self.fireproof_label and door_type == self.box_lock_label and concealed_length > 0:
             annotations = {
                 f"{very_upper_horizontal_piece_length} mm": ((130, 20), "magenta"),
                 f"{outer_wood_upper} mm": ((10, 190), "green"),
@@ -530,7 +538,7 @@ class DoorFrameCalculator:
                 f"{horizontal_length} mm": ((200, 430), "red"),
                 f"{concealed_length} mm": ((280, 20), "black")
             }
-        elif door_type == self.box_lock_label and concealed_length == 0:
+        elif category == self.fireproof_label and door_type == self.box_lock_label and concealed_length == 0:
             annotations = {
                 f"{horizontal_length} mm": ((130, 20), "red"),
                 f"{outer_wood_upper} mm": ((10, 190), "green"),
@@ -539,7 +547,7 @@ class DoorFrameCalculator:
                 f"{inner_wood_bottom} mm": ((10, 380), "brown"),
                 f"{vertical_length} mm": ((390, 260), "blue")
             }
-        elif door_type == self.ub_label:
+        elif category == self.fireproof_label and door_type == self.ub_label:
             annotations = {
                 f"{horizontal_length} mm": ((100, 20), "red"),   # Position and color for horizontal length
                 f"{vertical_length} mm": ((10, 210), "blue")
@@ -566,6 +574,7 @@ class DoorFrameCalculator:
             #     if not self.entries[key][1].get().strip().isdigit():
             #         raise ValueError(f"請輸入有效的數字以 {translations[self.current_language][key]}")
             door_type = self.entries["door_type"][1].get().strip().lower()
+            category = self.entries["category"][1].get().strip().lower()
             num_doors = int(self.entries["num_doors"][1].get())
 
             right_vertical_piece_width = int(self.entries["right_vpiece_width"][1].get())
@@ -760,7 +769,9 @@ class DoorFrameCalculator:
                 raise FileNotFoundError(f"Image file not found at {image_path}")
             
             # Annotate the image
-            annotated_image_path = self.add_annotations(image_path, vertical_piece_length, horizontal_pieces_length, door_type, outer_wood_upper, inner_wood_upper, outer_wood_bottom, inner_wood_bottom, concealed_length, very_upper_horizontal_piece_length, concealed_door_closer_name, slats_count)
+            annotated_image_path = self.add_annotations(image_path, vertical_piece_length, horizontal_pieces_length, door_type, outer_wood_upper, inner_wood_upper,
+                                                        outer_wood_bottom, inner_wood_bottom,concealed_length, very_upper_horizontal_piece_length, concealed_door_closer_name, slats_count,
+                                                        category)
             
             # Configure text tags for styling
             self.result_text.tag_configure("title", foreground="black", font=("Helvetica", 13, "bold"))
@@ -1517,10 +1528,6 @@ class DoorFrameCalculator:
         if self.canvas is None:
             self.canvas = tk.Canvas(window, width=600, height=400)
             self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-
-    def _on_mousewheel_help(self, event, canvas):
-        """Scroll the help canvas with the mouse wheel."""
-        canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
     
     def close_guidance(self, window):
         """Handle the closure of the guidance window and clean up resources."""
