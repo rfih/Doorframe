@@ -197,6 +197,8 @@ class DoorFrameCalculator:
         frame = ttk.Frame(self.scrollable_frame, padding="10")
         frame.grid(row=0, column=0, sticky="nsew")
         # frame.grid(row=22, column=0, columnspan=3, sticky="nsew")
+        
+        # self.create_mode_selection(frame)
 
         self.menu_bar = tk.Menu(self.root)
         self.root.config(menu=self.menu_bar)
@@ -227,6 +229,7 @@ class DoorFrameCalculator:
         self.menu_bar.add_cascade(label="Guidance", menu=self.view_menu)
         self.view_menu.add_checkbutton(label=translations[self.current_language]["Enable_"], variable=self.tooltips_enabled, command=self.toggle_tooltips)
         
+        
         current_row = 0
         current_row = self.create_label_and_entry(frame, "category", current_row, "category")
         self.entries["category"][1]['values'] = (
@@ -234,6 +237,34 @@ class DoorFrameCalculator:
             translations[self.current_language]["non_fireproof"]
         )
         self.entries["category"][1].bind("<<ComboboxSelected>>", self.update_inputs)
+        current_row += 1
+        
+        self.mode_selection = ttk.Label(
+            frame,
+            text=translations[self.current_language]["mode_selection"],
+            font=("Helvetica", 13)
+        )
+        self.mode_selection.grid(row=current_row, column=0, sticky=tk.W)
+
+        self.mode_selection_label = tk.StringVar(value="Normal")  # Default mode
+        self.normal_mode_button = ttk.Radiobutton(
+            frame,
+            text=translations[self.current_language]["normal_mode"],
+            variable=self.mode_selection,
+            value="Normal",
+            command=self.update_mode_widgets
+        )
+        self.ub_mode_button = ttk.Radiobutton(
+            frame,
+            text=translations[self.current_language]["ub_mode"],
+            variable=self.mode_selection,
+            value="UB",
+            command=self.update_mode_widgets
+        )
+        
+        self.normal_mode_button.grid(row=current_row, column=1, sticky=tk.W, padx=0)
+        self.ub_mode_button.grid(row=current_row, column=1, sticky=tk.W, padx=100)
+        current_row += 1
     
         # Structure Type Dropdown (for Non-Fireproof)
         current_row = self.create_label_and_entry(frame, "structure_type", current_row, "structure_type")
@@ -247,7 +278,7 @@ class DoorFrameCalculator:
     
         # Door Type Dropdown
         current_row = self.create_label_and_entry(frame, "door_type", current_row, "door_type")
-        self.entries["door_type"][1]['values'] = ("simple", "UB", "electric lock", "box lock")
+        self.entries["door_type"][1]['values'] = ("simple", "electric lock", "box lock")
         self.tooltips["door_type"] = ToolTip(self.entries["door_type"][1], translations[self.current_language]["tooltips"]["door_type"], self)
         self.entries["door_type"][1].bind("<<ComboboxSelected>>", self.update_inputs)
 
@@ -326,6 +357,19 @@ class DoorFrameCalculator:
         trademark_label.grid(row=current_row-1, column=0, columnspan=3, padx=(0, 1000))
         
         self.update_inputs()
+        
+    def update_mode_widgets(self):
+        mode = self.mode_selection.get()
+        if mode == "UB":
+            self.show_entries(["structure_type", "frame_height"], False)
+            self.show_entries(["num_doors", "right_vpiece_width", "left_vpiece_width", "door_type", "max_height", "min_height"], True)
+            # Show UB-specific widgets here (if any)
+        else:  # Normal mode
+            self.show_entries(["structure_type", "door_type"], True)
+            self.show_entries(["num_doors", "right_vpiece_width", "left_vpiece_width", "frame_height"], True)
+            self.show_entries(["max_height", "min_height", "structure_type"], False)
+            
+            # Hide UB-specific widgets here (if any)
 
     def create_label_and_entry(self, frame, key, row, entry_type="entry", add_separator=False):
         label = ttk.Label(frame, text=translations[self.current_language][key], font=("Helvetica", 13))
@@ -336,7 +380,6 @@ class DoorFrameCalculator:
             entry = ttk.Combobox(frame, font=("Helvetica", 13))
         entry.grid(row=row, column=1, sticky=tk.E, padx=5, pady=1)
         self.entries[key] = (label, entry)  
-        # Add an optional separator after this row
         # Add an optional separator after this row
         separator = None
         if add_separator:
@@ -359,12 +402,13 @@ class DoorFrameCalculator:
         category = self.entries["category"][1].get().strip().lower()
         if category == self.fireproof_label:
             self.show_entries(["door_type"], True)
+            self.show_entries(["structure_type"], False)
             self.entries["door_type"][1]['values'] = (
-            self.simple_label,
-            self.ub_label,
-            self.electric_lock_label,
-            self.box_lock_label
+                self.simple_label,
+                self.electric_lock_label,
+                self.box_lock_label
             )
+            self.ub_mode_button.grid()
         elif category == self.non_fireproof_label:
             self.show_entries(["door_type", "structure_type"], True)
             self.entries["door_type"][1]['values'] = (
@@ -372,6 +416,9 @@ class DoorFrameCalculator:
                 self.electric_lock_label,
                 self.box_lock_label
             )
+            self.normal_mode_button.grid()
+            self.ub_mode_button.grid_remove()
+            self.mode_selection_label.set("Normal")
         else:
             return
             
@@ -384,14 +431,10 @@ class DoorFrameCalculator:
             self.show_entries(["left_vpiece_width"], True)
         elif door_type == self.electric_lock_label:
             self.show_entries(["electric_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], True)
-        elif door_type == self.ub_label:
-            self.show_entries(["max_height", "min_height"], True)
+        # elif door_type == self.ub_label:
+        #     self.show_entries(["max_height", "min_height"], True)
         elif door_type == self.box_lock_label:
             self.show_entries(["box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], True)
-        # elif door_type == self.yipaiyikong_label:
-        #     self.show_entries(["slats_width", "left_vpiece_width", "gap_width"], True)
-        #     self.show_entries(["electric_lock_name", "box_lock_name", "lock_length", "lock_height", "lock_direction", "lock_offset_bottom"], False)
-        #     self.show_entries(["max_height", "min_height", "concealed_door_closer_name"], False)
         else:
             self.show_entries(["electric_lock_name", "lock_length", "lock_height", "lock_direction", "lock_offset_bottom",
                                "max_height", "min_height", "box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], False)
@@ -482,7 +525,7 @@ class DoorFrameCalculator:
         )
         self.entries["door_type"][1]['values'] = (
         translations[self.current_language]["simple"],
-        translations[self.current_language]["UB"],
+        # translations[self.current_language]["UB"],
         translations[self.current_language]["electric lock"],
         translations[self.current_language]["box lock"]
         # translations[self.current_language]["yipaiyikong"]
@@ -498,6 +541,13 @@ class DoorFrameCalculator:
         self.language_menu.entryconfig(0, label="English")
         self.language_menu.entryconfig(1, label="中文")
         self.language_menu.entryconfig(2, label="Bahasa")
+        
+        if hasattr(self, "normal_mode_button"):
+            self.normal_mode_button.config(text=translations[self.current_language]["normal_mode"])
+        if hasattr(self, "ub_mode_button"):
+            self.ub_mode_button.config(text=translations[self.current_language]["ub_mode"])
+        if hasattr(self, "mode_selection"):
+            self.mode_selection.config(text=translations[self.current_language]["mode_selection"])
         
     def add_annotations(self, image_path, vertical_length, horizontal_length, door_type, outer_wood_upper, inner_wood_upper, outer_wood_bottom, 
                         inner_wood_bottom, concealed_length, very_upper_horizontal_piece_length, concealed_door_closer_name, slats_count,
@@ -589,6 +639,13 @@ class DoorFrameCalculator:
 
     def calculate_material(self):
         try:
+            mode = self.mode_var.get()
+            if mode == "normal":
+                self.calculate_normal()
+            elif mode == "ub":
+                self.calculate_ub()
+        except Exception as e:
+            messagebox.showerror("Error", str(e))
             # for key in ["num_doors", "right_vpiece_width", "left_vpiece_width", "upper_hpiece_width", "lower_hpiece_width", "lock_height", "frame_height", "frame_width"]:
             #     if not self.entries[key][1].get().strip().isdigit():
             #         raise ValueError(f"請輸入有效的數字以 {translations[self.current_language][key]}")
@@ -881,6 +938,14 @@ class DoorFrameCalculator:
             self.result_image.window_create("end", window=result_imageframe)
         except Exception as e:
             messagebox.showerror("Error", str(e))
+            
+    def calculate_normal(self):
+        # Logic for Normal calculation
+        print("Calculating Normal...")
+    
+    def calculate_ub(self):
+        # Logic for UB-specific calculation
+        print("Calculating UB...")
 
     def calculate_material_requirements(self, door_type, num_doors, frame_height, right_vertical_piece_width,
                                         left_vertical_piece_width, upper_horizontal_piece_width, lower_horizontal_piece_width,
