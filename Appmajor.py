@@ -104,7 +104,7 @@ class DoorFrameCalculator:
         self.root.geometry("950x775")
         self.current_language = "zh"
         self.entries = {}
-            
+
         # Create a canvas and a scrollbar for the entire application
         self.canvas = tk.Canvas(root, width=950, height=775)
         self.scrollbar = ttk.Scrollbar(root, orient="vertical", command=self.canvas.yview)
@@ -121,18 +121,6 @@ class DoorFrameCalculator:
         self.scrollable_frame.bind(
             "<Configure>",
             lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")) if self.canvas else None)
-
-        # Enable scrolling with the mouse wheel
-        # self.canvas.bind_all("<MouseWheel>", lambda e: self.canvas.yview_scroll(-1 * (e.delta // 120), "units"))
-        
-        # self.door_categories = {
-        #     "fireproof": ["simple", "UB", "electric lock", "box lock"],
-        #     "non_fireproof": {
-        #         "honeycomb_paper": ["simple", "UB", "electric lock", "box lock"],
-        #         "yipaiyikong": ["simple", "UB", "electric lock", "box lock"],
-        #         "honeycomb_board": ["simple", "UB", "electric lock", "box lock"]
-        #     }
-        # }
         
         # Initialize translated door type labels
         self.simple_label = translations[self.current_language]["simple"].lower()
@@ -196,9 +184,6 @@ class DoorFrameCalculator:
         
         frame = ttk.Frame(self.scrollable_frame, padding="10")
         frame.grid(row=0, column=0, sticky="nsew")
-        # frame.grid(row=22, column=0, columnspan=3, sticky="nsew")
-        
-        # self.create_mode_selection(frame)
 
         self.menu_bar = tk.Menu(self.root)
         self.root.config(menu=self.menu_bar)
@@ -239,14 +224,14 @@ class DoorFrameCalculator:
         self.entries["category"][1].bind("<<ComboboxSelected>>", self.update_inputs)
         current_row += 1
         
-        self.mode_selection = ttk.Label(
+        self.mode_selection_label = ttk.Label(
             frame,
             text=translations[self.current_language]["mode_selection"],
             font=("Helvetica", 13)
         )
-        self.mode_selection.grid(row=current_row, column=0, sticky=tk.W)
+        self.mode_selection_label.grid(row=current_row, column=0, sticky=tk.W)
 
-        self.mode_selection_label = tk.StringVar(value="Normal")  # Default mode
+        self.mode_selection = tk.StringVar(value="Normal")  # Default mode
         self.normal_mode_button = ttk.Radiobutton(
             frame,
             text=translations[self.current_language]["normal_mode"],
@@ -269,11 +254,7 @@ class DoorFrameCalculator:
         # Structure Type Dropdown (for Non-Fireproof)
         current_row = self.create_label_and_entry(frame, "structure_type", current_row, "structure_type")
         self.entries["structure_type"][1]['values'] = ("honeycomb_paper", "yipaiyikong", "honeycomb_board")
-        #     translations[self.current_language]["honeycomb_paper"],
-        #     translations[self.current_language]["yipaiyikong"],
-        #     translations[self.current_language]["honeycomb_board"]
-        # )
-        # self.entries["structure_type"][0].grid_remove()  # Initially hidden
+
         self.entries["structure_type"][1].bind("<<ComboboxSelected>>", self.update_inputs)
     
         # Door Type Dropdown
@@ -281,10 +262,6 @@ class DoorFrameCalculator:
         self.entries["door_type"][1]['values'] = ("simple", "electric lock", "box lock")
         self.tooltips["door_type"] = ToolTip(self.entries["door_type"][1], translations[self.current_language]["tooltips"]["door_type"], self)
         self.entries["door_type"][1].bind("<<ComboboxSelected>>", self.update_inputs)
-
-        # current_row= self.create_label_and_entry(frame, "door_type", current_row, "door_type")
-        # self.entries["door_type"][1]['values'] = ("simple", "UB", "electric lock", "box lock", "yipaiyikong")
-        # self.entries["door_type"][1].bind("<<ComboboxSelected>>", self.update_inputs)
 
         current_row= self.create_label_and_entry(frame, "num_doors", current_row, add_separator=True)
         self.tooltips["num_doors"] = ToolTip(self.entries["num_doors"][1], translations[self.current_language]["tooltips"]["num_doors"], self)
@@ -296,9 +273,6 @@ class DoorFrameCalculator:
         self.tooltips["upper_hpiece_width"] = ToolTip(self.entries["upper_hpiece_width"][1], translations[self.current_language]["tooltips"]["upper_hpiece_width"], self)
         current_row= self.create_label_and_entry(frame, "lower_hpiece_width", current_row, add_separator=True)
         self.tooltips["lower_hpiece_width"] = ToolTip(self.entries["lower_hpiece_width"][1], translations[self.current_language]["tooltips"]["lower_hpiece_width"], self)
-        # separator = ttk.Separator(frame, orient="horizontal")
-        # separator.grid(row=6, column=0, columnspan=3, sticky="ew", pady=10)  # Adjust the row and columns
-
         
         current_row= self.create_label_and_entry(frame, "edge_sealing_type", current_row, "edge_sealing_type")
         self.entries["edge_sealing_type"][1]['values'] = ("6mm 實木", "4mm 白木", "6mm 鋁封邊", "1mm 鐡封邊 + 1mm 石墨片", "1mm 鐡封邊", "1mm 不織布", "0.8mm 美耐板", "0.5mm ABS")
@@ -369,8 +343,6 @@ class DoorFrameCalculator:
             self.show_entries(["num_doors", "right_vpiece_width", "left_vpiece_width", "frame_height"], True)
             self.show_entries(["max_height", "min_height", "structure_type"], False)
             
-            # Hide UB-specific widgets here (if any)
-
     def create_label_and_entry(self, frame, key, row, entry_type="entry", add_separator=False):
         label = ttk.Label(frame, text=translations[self.current_language][key], font=("Helvetica", 13))
         label.grid(row=row, column=0, sticky=tk.W)
@@ -418,7 +390,7 @@ class DoorFrameCalculator:
             )
             self.normal_mode_button.grid()
             self.ub_mode_button.grid_remove()
-            self.mode_selection_label.set("Normal")
+            self.mode_selection.set("Normal")
         else:
             return
             
@@ -547,7 +519,7 @@ class DoorFrameCalculator:
         if hasattr(self, "ub_mode_button"):
             self.ub_mode_button.config(text=translations[self.current_language]["ub_mode"])
         if hasattr(self, "mode_selection"):
-            self.mode_selection.config(text=translations[self.current_language]["mode_selection"])
+            self.mode_selection_label.config(text=translations[self.current_language]["mode_selection"])
         
     def add_annotations(self, image_path, vertical_length, horizontal_length, door_type, outer_wood_upper, inner_wood_upper, outer_wood_bottom, 
                         inner_wood_bottom, concealed_length, very_upper_horizontal_piece_length, concealed_door_closer_name, slats_count,
@@ -877,8 +849,8 @@ class DoorFrameCalculator:
             inner_wood_bottom_label = translations[lang]["inner_wood_bottom_part"]
             horizontal_length_label = translations[lang]["length_each_pieceh"]
             very_upper_horizontal_piece_length_label = translations[lang]["very_upper_horizontal_piece_length"]
-            gap_width_label = translations[lang]["gap_width"]
-            slats_length_label = translations[lang]["slats_length"]
+            # gap_width_label = translations[lang]["gap_width"]
+            # slats_length_label = translations[lang]["slats_length"]
             slats_count = translations[lang]["slats_count"]
             total_blocks = translations[lang]["total_blocks"]
         
@@ -1471,24 +1443,6 @@ class DoorFrameCalculator:
 
         # Add a label for the title
         tk.Label(guidance_window, text="Step-by-Step Guide", font=("Helvetica", 16, "bold")).pack(pady=10)
-
-        # # Load the image based on the current language
-        # image_path = self.guidance_images_simple.get(self.current_language, self.guidance_images_simple["en"])  # Default to English if no match
-        # self.original_image = Image.open(image_path)
-        # self.image_display_size = (1200, 600)  # Initial display size
-        
-        # self.create_canvas(guidance_window)
-        
-        # self.display_image()  # Show the initial image
-
-        # # Add further text or instructions if needed
-        # # tk.Label(guidance_window, text="Follow the steps in the guide to complete the configuration.").pack(pady=5)
-        # # Bind mouse scroll for zoom and dragging
-        # guidance_window.bind("<MouseWheel>", self.zoom_image)
-        # guidance_window.bind("<Button-4>", self.zoom_image)  # For Linux scroll up
-        # guidance_window.bind("<Button-5>", self.zoom_image)  # For Linux scroll down
-        # self.canvas.bind("<ButtonPress-1>", self.start_drag)
-        # self.canvas.bind("<B1-Motion>", self.drag_image)
         
         # Local canvas for the help window
         help_canvas = tk.Canvas(guidance_window, width=600, height=400)
