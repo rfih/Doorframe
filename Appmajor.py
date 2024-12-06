@@ -611,13 +611,22 @@ class DoorFrameCalculator:
 
     def calculate_material(self):
         try:
-            mode = self.mode_var.get()
-            if mode == "normal":
-                self.calculate_normal()
-            elif mode == "ub":
-                self.calculate_ub()
-        except Exception as e:
-            messagebox.showerror("Error", str(e))
+            mode = self.mode_selection.get()
+            # Initialize shared variables
+            frame_height = frame_width = max_height = min_height = None
+    
+            if mode == "UB":
+                # UB-specific fields
+                max_height = int(self.entries["max_height"][1].get())
+                min_height = int(self.entries["min_height"][1].get())
+                frame_width = int(self.entries["frame_width"][1].get())
+                frame_height = max_height  # Frame height equals max height in UB mode
+    
+                # Validate UB-specific constraints
+                if max_height - min_height > int(self.entries["upper_hpiece_width"][1].get()):
+                    raise ValueError("the difference height should not exceed wood width\n 高度差異不應超過角材的寬度\n Perbedaan tinggi tidak boleh melebihi lebar kayu sisi")
+
+        
             # for key in ["num_doors", "right_vpiece_width", "left_vpiece_width", "upper_hpiece_width", "lower_hpiece_width", "lock_height", "frame_height", "frame_width"]:
             #     if not self.entries[key][1].get().strip().isdigit():
             #         raise ValueError(f"請輸入有效的數字以 {translations[self.current_language][key]}")
@@ -632,8 +641,6 @@ class DoorFrameCalculator:
             else:
                 left_vertical_piece_width = 70
                 
-            
-
             upper_horizontal_piece_width = int(self.entries["upper_hpiece_width"][1].get())
             lower_horizontal_piece_width = int(self.entries["lower_hpiece_width"][1].get())
             
@@ -678,16 +685,15 @@ class DoorFrameCalculator:
             gap_width = 0
             slats_width = 0
 
-
+            for key in ["num_doors", "right_vpiece_width", "upper_hpiece_width", "lower_hpiece_width", "lock_height", "frame_height", "frame_width"]:
+                if not self.entries[key][1].get().strip().isdigit():
+                    raise ValueError(f"請輸入有效的數字以 {translations[self.current_language][key]}")
             if door_type == self.ub_label:
                 max_height = int(self.entries["max_height"][1].get())
                 min_height = int(self.entries["min_height"][1].get())
                 frame_height = max_height
                 frame_width = int(self.entries["frame_width"][1].get())
             elif door_type == self.box_lock_label:
-                for key in ["num_doors", "right_vpiece_width", "upper_hpiece_width", "lower_hpiece_width", "lock_height", "frame_height", "frame_width"]:
-                    if not self.entries[key][1].get().strip().isdigit():
-                        raise ValueError(f"請輸入有效的數字以 {translations[self.current_language][key]}")
                 box_lock_name = self.entries["box_lock_name"][1].get().strip()
                 concealed_door_closer_name = self.entries["concealed_door_closer_name"][1].get().strip()
                 if box_lock_name in box_locks:
@@ -704,12 +710,12 @@ class DoorFrameCalculator:
                 box_lock_height = int(self.entries["lock_height"][1].get())
                 lock_direction = self.entries["lock_direction"][1].get().strip().lower()
                 # concealed_door_closer = self.entries["concealed_door_closer"][1].get().strip().lower()
-                frame_height = int(self.entries["frame_height"][1].get())
-                frame_width = int(self.entries["frame_width"][1].get())
+                frame_height = int(self.entries["frame_height"][1].get()) if frame_height is None else frame_height
+                frame_width = int(self.entries["frame_width"][1].get()) if frame_width is None else frame_width
             elif door_type == self.electric_lock_label:
-                for key in ["num_doors", "right_vpiece_width", "upper_hpiece_width", "lower_hpiece_width", "lock_height", "frame_height", "frame_width"]:
-                    if not self.entries[key][1].get().strip().isdigit():
-                        raise ValueError(f"請輸入有效的數字以 {translations[self.current_language][key]}")
+                # for key in ["num_doors", "right_vpiece_width", "upper_hpiece_width", "lower_hpiece_width", "lock_height", "frame_height", "frame_width"]:
+                #     if not self.entries[key][1].get().strip().isdigit():
+                #         raise ValueError(f"請輸入有效的數字以 {translations[self.current_language][key]}")
                 electric_lock_name = self.entries["electric_lock_name"][1].get().strip()
                 concealed_door_closer_name = self.entries["concealed_door_closer_name"][1].get().strip()
                 if electric_lock_name in electric_locks:
@@ -727,8 +733,8 @@ class DoorFrameCalculator:
                 electric_lock_height = int(self.entries["lock_height"][1].get())
                 lock_direction = self.entries["lock_direction"][1].get().strip().lower()
                 # concealed_door_closer = self.entries["concealed_door_closer"][1].get().strip().lower()
-                frame_height = int(self.entries["frame_height"][1].get())
-                frame_width = int(self.entries["frame_width"][1].get())
+                frame_height = int(self.entries["frame_height"][1].get()) if frame_height is None else frame_height
+                frame_width = int(self.entries["frame_width"][1].get()) if frame_width is None else frame_width
 
                 if edge_sealing_type in ["1mm 鐡封邊 + 1mm 石墨片"]:
                     electric_lock_height += 3
@@ -767,7 +773,8 @@ class DoorFrameCalculator:
                     door_type, num_doors, frame_height, right_vertical_piece_width, left_vertical_piece_width,
                     upper_horizontal_piece_width, lower_horizontal_piece_width, edge_sealing, max_height, min_height,
                     vertical_piece_width, horizontal_piece_width, frame_width, electric_lock_name, box_lock_name, lock_length,
-                    electric_lock_height, box_lock_height, lock_direction, concealed_door_closer_name, concealed_length, lock_offset_bottom, lock_offset_top, gap_width, slats_width)
+                    electric_lock_height, box_lock_height, lock_direction, concealed_door_closer_name, concealed_length,
+                    lock_offset_bottom, lock_offset_top, gap_width, slats_width, mode)
 
             report = self.generate_report(door_type, num_doors, inner_width, slats_length, gap_width, slats_count, total_blocks, plywood_width, plywood_height, total_length_all_doors,
                                           vertical_piece_length, horizontal_pieces_length, right_vertical_piece_width,
@@ -910,36 +917,34 @@ class DoorFrameCalculator:
             self.result_image.window_create("end", window=result_imageframe)
         except Exception as e:
             messagebox.showerror("Error", str(e))
-            
-    def calculate_normal(self):
-        # Logic for Normal calculation
-        print("Calculating Normal...")
-    
-    def calculate_ub(self):
-        # Logic for UB-specific calculation
-        print("Calculating UB...")
 
     def calculate_material_requirements(self, door_type, num_doors, frame_height, right_vertical_piece_width,
                                         left_vertical_piece_width, upper_horizontal_piece_width, lower_horizontal_piece_width,
                                         edge_sealing, max_height, min_height, vertical_piece_width, horizontal_piece_width,
                                         frame_width, electric_lock_name, box_lock_name, lock_length, electric_lock_height, box_lock_height, lock_direction, concealed_door_closer_name, concealed_length, 
-                                        lock_offset_bottom, lock_offset_top, gap_width, slats_width):
+                                        lock_offset_bottom, lock_offset_top, gap_width, slats_width, mode):
         if door_type in [self.electric_lock_label, self.box_lock_label]:
-            inner_width = frame_width - right_vertical_piece_width - (left_vertical_piece_width * 2)
-        else:
-            inner_width = frame_width - right_vertical_piece_width - left_vertical_piece_width
+            if mode == "UB":
+                inner_width = frame_width - right_vertical_piece_width - (left_vertical_piece_width * 2)
+                plywood_height = max_height - (lower_horizontal_piece_width * 2) - upper_horizontal_piece_width
+            else:
+                inner_width = frame_width - right_vertical_piece_width - left_vertical_piece_width
+                plywood_height = frame_height - lower_horizontal_piece_width  - upper_horizontal_piece_width
+        # else:
+        #     inner_width = frame_width - right_vertical_piece_width - left_vertical_piece_width
+        #     plywood_height = frame_height - lower_horizontal_piece_width  - upper_horizontal_piece_width
 
-        if door_type == self.ub_label:
-            plywood_height = max_height - (upper_horizontal_piece_width * 2) - lower_horizontal_piece_width
-        else:
-            plywood_height = frame_height - upper_horizontal_piece_width - lower_horizontal_piece_width
+        # if door_type == self.ub_label:
+        #     plywood_height = max_height - (upper_horizontal_piece_width * 2) - lower_horizontal_piece_width
+        # else:
+        #     plywood_height = frame_height - upper_horizontal_piece_width - lower_horizontal_piece_width
             
         if door_type == self.yipaiyikong_label:
             inner_width = frame_width - right_vertical_piece_width - left_vertical_piece_width
             
-        if door_type == self.ub_label:
-            if max_height - min_height > upper_horizontal_piece_width:
-                raise ValueError(f"the difference height should not exceed wood width\n 高度差異不應超過角材的寬度\n Perbedaan tinggi tidak boleh melebihi lebar kayu sisi")
+        # if door_type == self.ub_label:
+        #     if max_height - min_height > upper_horizontal_piece_width:
+        #         raise ValueError(f"the difference height should not exceed wood width\n 高度差異不應超過角材的寬度\n Perbedaan tinggi tidak boleh melebihi lebar kayu sisi")
             
         slats_length = 0
         total_blocks = 0
@@ -956,8 +961,6 @@ class DoorFrameCalculator:
         total_length_per_door = vertical_piece_length * 2 + horizontal_pieces_length * 2
         total_length_all_doors = total_length_per_door * num_doors
         
-        # if concealed_door_closer_name == self.concealed_label:
-
         outer_wood_bottom = inner_wood_bottom = outer_wood_upper = inner_wood_upper = None
         if door_type == self.electric_lock_label:
             if lock_direction == self.bottom_label:
@@ -1007,11 +1010,15 @@ class DoorFrameCalculator:
             # print("test4", slats_width)
             # print("test4", gap_width)
 
-                
         if (door_type == self.electric_lock_label or door_type == self.box_lock_label) and concealed_door_closer_name == self.concealed_label:
-            inner_width = frame_width - right_vertical_piece_width - (left_vertical_piece_width * 2)
-            plywood_height = frame_height - upper_horizontal_piece_width - lower_horizontal_piece_width - very_upper_horizontal_piece_width
-            plywood_width = inner_width
+            if mode == "UB":
+                inner_width = frame_width - right_vertical_piece_width - (left_vertical_piece_width * 2)
+                plywood_height = max_height - upper_horizontal_piece_width - lower_horizontal_piece_width - very_upper_horizontal_piece_width
+                plywood_width = inner_width
+            else:
+                inner_width = frame_width - right_vertical_piece_width - (left_vertical_piece_width * 2)
+                plywood_height = frame_height - upper_horizontal_piece_width - lower_horizontal_piece_width - very_upper_horizontal_piece_width
+                plywood_width = inner_width
             # print("test4", inner_width)
 
 
