@@ -237,14 +237,14 @@ class DoorFrameCalculator:
             text=translations[self.current_language]["normal_mode"],
             variable=self.mode_selection,
             value="Normal",
-            command=self.update_mode_widgets
+            command=self.update_inputs
         )
         self.ub_mode_button = ttk.Radiobutton(
             frame,
             text=translations[self.current_language]["ub_mode"],
             variable=self.mode_selection,
             value="UB",
-            command=self.update_mode_widgets
+            command=self.update_inputs
         )
         
         self.normal_mode_button.grid(row=current_row, column=1, sticky=tk.W, padx=0)
@@ -280,21 +280,12 @@ class DoorFrameCalculator:
 
         current_row= self.create_label_and_entry(frame, "edge_sealing_thickness", current_row, add_separator=True)
         self.tooltips["edge_sealing_thickness"] = ToolTip(self.entries["edge_sealing_thickness"][1], translations[self.current_language]["tooltips"]["edge_sealing_thickness"], self)
-        current_row= self.create_label_and_entry(frame, "max_height", current_row)
-        self.tooltips["max_height"] = ToolTip(self.entries["max_height"][1], translations[self.current_language]["tooltips"]["max_height"], self)
-        current_row= self.create_label_and_entry(frame, "min_height", current_row, add_separator=True)
-        self.tooltips["min_height"] = ToolTip(self.entries["min_height"][1], translations[self.current_language]["tooltips"]["min_height"], self)
         current_row= self.create_label_and_entry(frame, "electric_lock_name", current_row, "electric_lock_name")
         self.entries["electric_lock_name"][1]['values'] = list(electric_locks.keys())
         self.tooltips["electric_lock_name"] = ToolTip(self.entries["electric_lock_name"][1], translations[self.current_language]["tooltips"]["electric_lock_name"], self)
         current_row= self.create_label_and_entry(frame, "box_lock_name", current_row, "box_lock_name")
         self.entries["box_lock_name"][1]['values'] = list(box_locks.keys())
         self.tooltips["box_lock_name"] = ToolTip(self.entries["box_lock_name"][1], translations[self.current_language]["tooltips"]["box_lock_name"], self)
-        
-        current_row= self.create_label_and_entry(frame, "slats_width", current_row)
-        self.tooltips["slats_width"] = ToolTip(self.entries["slats_width"][1], translations[self.current_language]["tooltips"]["slats_width"], self)
-        current_row= self.create_label_and_entry(frame, "gap_width", current_row)
-        self.tooltips["gap_width"] = ToolTip(self.entries["gap_width"][1], translations[self.current_language]["tooltips"]["gap_width"], self)
 
         current_row= self.create_label_and_entry(frame, "lock_length", current_row)
         self.tooltips["lock_length"] = ToolTip(self.entries["lock_length"][1], translations[self.current_language]["tooltips"]["lock_length"], self)
@@ -306,6 +297,16 @@ class DoorFrameCalculator:
         current_row= self.create_label_and_entry(frame, "concealed_door_closer_name", current_row, "concealed_door_closer_name", add_separator=True)
         self.entries["concealed_door_closer_name"][1]['values'] = list(concealeds.keys())
         self.tooltips["concealed_door_closer_name"] = ToolTip(self.entries["concealed_door_closer_name"][1], translations[self.current_language]["tooltips"]["concealed_door_closer_name"], self)
+
+        current_row= self.create_label_and_entry(frame, "slats_width", current_row)
+        self.tooltips["slats_width"] = ToolTip(self.entries["slats_width"][1], translations[self.current_language]["tooltips"]["slats_width"], self)
+        current_row= self.create_label_and_entry(frame, "gap_width", current_row)
+        self.tooltips["gap_width"] = ToolTip(self.entries["gap_width"][1], translations[self.current_language]["tooltips"]["gap_width"], self)
+        
+        current_row= self.create_label_and_entry(frame, "max_height", current_row)
+        self.tooltips["max_height"] = ToolTip(self.entries["max_height"][1], translations[self.current_language]["tooltips"]["max_height"], self)
+        current_row= self.create_label_and_entry(frame, "min_height", current_row, add_separator=True)
+        self.tooltips["min_height"] = ToolTip(self.entries["min_height"][1], translations[self.current_language]["tooltips"]["min_height"], self)
 
         current_row= self.create_label_and_entry(frame, "lock_offset_bottom", current_row)
         current_row= self.create_label_and_entry(frame, "frame_height", current_row)
@@ -331,17 +332,6 @@ class DoorFrameCalculator:
         trademark_label.grid(row=current_row-1, column=0, columnspan=3, padx=(0, 1000))
         
         self.update_inputs()
-        
-    def update_mode_widgets(self):
-        mode = self.mode_selection.get()
-        if mode == "UB":
-            self.show_entries(["structure_type", "frame_height"], False)
-            self.show_entries(["num_doors", "right_vpiece_width", "left_vpiece_width", "door_type", "max_height", "min_height"], True)
-            # Show UB-specific widgets here (if any)
-        else:  # Normal mode
-            self.show_entries(["structure_type", "door_type"], True)
-            self.show_entries(["num_doors", "right_vpiece_width", "left_vpiece_width", "frame_height"], True)
-            self.show_entries(["max_height", "min_height", "structure_type"], False)
             
     def create_label_and_entry(self, frame, key, row, entry_type="entry", add_separator=False):
         label = ttk.Label(frame, text=translations[self.current_language][key], font=("Helvetica", 13))
@@ -372,6 +362,9 @@ class DoorFrameCalculator:
         self.show_entries(all_fields, False)
         
         category = self.entries["category"][1].get().strip().lower()
+        structure_type = self.entries["structure_type"][1].get().strip().lower()
+        door_type = self.entries["door_type"][1].get().strip().lower()
+        mode = self.mode_selection.get()
         if category == self.fireproof_label:
             self.show_entries(["door_type"], True)
             self.show_entries(["structure_type"], False)
@@ -381,6 +374,38 @@ class DoorFrameCalculator:
                 self.box_lock_label
             )
             self.ub_mode_button.grid()
+            if mode == "UB":
+                self.show_entries(["structure_type", "frame_height"], False)
+                self.show_entries(["num_doors", "right_vpiece_width", "left_vpiece_width", "door_type", "max_height", "min_height"], True)
+                if door_type == self.simple_label:
+                    self.show_entries(["left_vpiece_width"], True)
+                elif door_type == self.electric_lock_label:
+                    self.show_entries(["electric_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], True)
+                # elif door_type == self.ub_label:
+                #     self.show_entries(["max_height", "min_height"], True)
+                elif door_type == self.box_lock_label:
+                    self.show_entries(["box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], True)
+                else:
+                    self.show_entries(["electric_lock_name", "lock_length", "lock_height", "lock_direction", "lock_offset_bottom",
+                                       "box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], False)
+                    
+            if mode != "UB":
+                self.show_entries(["structure_type", "door_type"], True)
+                self.show_entries(["num_doors", "right_vpiece_width", "left_vpiece_width", "frame_height"], True)
+                self.show_entries(["max_height", "min_height", "structure_type"], False)
+                if door_type == self.simple_label:
+                    self.show_entries(["left_vpiece_width"], True)
+                elif door_type == self.electric_lock_label:
+                    self.show_entries(["electric_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], True)
+                # elif door_type == self.ub_label:
+                #     self.show_entries(["max_height", "min_height"], True)
+                elif door_type == self.box_lock_label:
+                    self.show_entries(["box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], True)
+                else:
+                    self.show_entries(["electric_lock_name", "lock_length", "lock_height", "lock_direction", "lock_offset_bottom",
+                                        "max_height", "min_height", "box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], False)
+            
+            
         elif category == self.non_fireproof_label:
             self.show_entries(["door_type", "structure_type"], True)
             self.entries["door_type"][1]['values'] = (
@@ -391,26 +416,49 @@ class DoorFrameCalculator:
             self.normal_mode_button.grid()
             self.ub_mode_button.grid_remove()
             self.mode_selection.set("Normal")
+            if structure_type == self.yipaiyikong_label:
+                self.show_entries(["slats_width", "gap_width"], True)
+                if door_type == self.simple_label:
+                    self.show_entries(["left_vpiece_width"], True)
+                elif door_type == self.electric_lock_label:
+                    self.show_entries(["electric_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], True)
+                # elif door_type == self.ub_label:
+                #     self.show_entries(["max_height", "min_height"], True)
+                elif door_type == self.box_lock_label:
+                    self.show_entries(["box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], True)
+                else:
+                    self.show_entries(["electric_lock_name", "lock_length", "lock_height", "lock_direction", "lock_offset_bottom",
+                                        "max_height", "min_height", "box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], False)
+            elif structure_type == self.honeycomb_board_label:
+                self.show_entries(["lock_height", "gap_width"], True)
+                self.show_entries(["slats_width"], False)
+                if door_type == self.simple_label:
+                    self.show_entries(["left_vpiece_width", "lock_height"], True)
+                elif door_type == self.electric_lock_label:
+                    self.show_entries(["electric_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], True)
+                # elif door_type == self.ub_label:
+                #     self.show_entries(["max_height", "min_height"], True)
+                elif door_type == self.box_lock_label:
+                    self.show_entries(["box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], True)
+                else:
+                    self.show_entries(["electric_lock_name", "lock_length", "lock_height", "lock_direction", "lock_offset_bottom",
+                                        "max_height", "min_height", "box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], False)
+            elif structure_type == self.honeycomb_paper_label:
+                self.show_entries(["lock_height", "gap_width"], True)
+                self.show_entries(["slats_width"], False)
+                if door_type == self.simple_label:
+                    self.show_entries(["left_vpiece_width", "lock_height"], True)
+                elif door_type == self.electric_lock_label:
+                    self.show_entries(["electric_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], True)
+                # elif door_type == self.ub_label:
+                #     self.show_entries(["max_height", "min_height"], True)
+                elif door_type == self.box_lock_label:
+                    self.show_entries(["box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], True)
+                else:
+                    self.show_entries(["electric_lock_name", "lock_length", "lock_height", "lock_direction", "lock_offset_bottom",
+                                        "max_height", "min_height", "box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], False)
         else:
             return
-            
-        structure_type = self.entries["structure_type"][1].get().strip().lower()
-        if structure_type == self.yipaiyikong_label:
-            self.show_entries(["slats_width", "gap_width"], True)
-            
-        door_type = self.entries["door_type"][1].get().strip().lower()
-        if door_type == self.simple_label:
-            self.show_entries(["left_vpiece_width"], True)
-        elif door_type == self.electric_lock_label:
-            self.show_entries(["electric_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], True)
-        # elif door_type == self.ub_label:
-        #     self.show_entries(["max_height", "min_height"], True)
-        elif door_type == self.box_lock_label:
-            self.show_entries(["box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], True)
-        else:
-            self.show_entries(["electric_lock_name", "lock_length", "lock_height", "lock_direction", "lock_offset_bottom",
-                               "max_height", "min_height", "box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], False)
-
 
     def show_entries(self, keys, show):
         for key in keys:
@@ -633,13 +681,21 @@ class DoorFrameCalculator:
             door_type = self.entries["door_type"][1].get().strip().lower()
             category = self.entries["category"][1].get().strip().lower()
             num_doors = int(self.entries["num_doors"][1].get())
+            structure_type = self.entries["structure_type"][1].get().strip().lower()
+            category = self.entries["category"][1].get().strip().lower()
 
             right_vertical_piece_width = int(self.entries["right_vpiece_width"][1].get())
+            if category == self.fireproof_label:
+                if door_type != self.electric_lock_label and door_type != self.box_lock_label:
+                    left_vertical_piece_width = int(self.entries["left_vpiece_width"][1].get())
+                else:
+                    left_vertical_piece_width = 70
+            elif category == self.non_fireproof_label:
+                if door_type == self.electric_lock_label or door_type == self.box_lock_label:
+                    left_vertical_piece_width = int(self.entries["left_vpiece_width"][1].get())
+                else:
+                    left_vertical_piece_width = int(self.entries["left_vpiece_width"][1].get())
 
-            if door_type != self.electric_lock_label and door_type != self.box_lock_label:
-                left_vertical_piece_width = int(self.entries["left_vpiece_width"][1].get())
-            else:
-                left_vertical_piece_width = 70
                 
             upper_horizontal_piece_width = int(self.entries["upper_hpiece_width"][1].get())
             lower_horizontal_piece_width = int(self.entries["lower_hpiece_width"][1].get())
@@ -688,76 +744,217 @@ class DoorFrameCalculator:
             for key in ["num_doors", "right_vpiece_width", "upper_hpiece_width", "lower_hpiece_width", "lock_height", "frame_height", "frame_width"]:
                 if not self.entries[key][1].get().strip().isdigit():
                     raise ValueError(f"請輸入有效的數字以 {translations[self.current_language][key]}")
-            if door_type == self.ub_label:
-                max_height = int(self.entries["max_height"][1].get())
-                min_height = int(self.entries["min_height"][1].get())
-                frame_height = max_height
-                frame_width = int(self.entries["frame_width"][1].get())
-            elif door_type == self.box_lock_label:
-                box_lock_name = self.entries["box_lock_name"][1].get().strip()
-                concealed_door_closer_name = self.entries["concealed_door_closer_name"][1].get().strip()
-                if box_lock_name in box_locks:
-                    lock_length = box_locks[box_lock_name]['length']
-                    lock_offset_bottom = box_locks[box_lock_name]['offset_bottom']
-                    lock_offset_top = box_locks[box_lock_name]['offset_top']
-                elif concealed_door_closer_name in concealeds:
-                    concealed_length = concealeds[concealed_door_closer_name]['length']
-                else:
-                    lock_length = int(self.entries["lock_length"][1].get())
-                    lock_offset_bottom = int(self.entries["lock_offset_bottom"][1].get())
-                    lock_offset_top = lock_length - lock_offset_bottom
-                    # concealed_length = ""
-                box_lock_height = int(self.entries["lock_height"][1].get())
-                lock_direction = self.entries["lock_direction"][1].get().strip().lower()
-                # concealed_door_closer = self.entries["concealed_door_closer"][1].get().strip().lower()
-                frame_height = int(self.entries["frame_height"][1].get()) if frame_height is None else frame_height
-                frame_width = int(self.entries["frame_width"][1].get()) if frame_width is None else frame_width
-            elif door_type == self.electric_lock_label:
-                # for key in ["num_doors", "right_vpiece_width", "upper_hpiece_width", "lower_hpiece_width", "lock_height", "frame_height", "frame_width"]:
-                #     if not self.entries[key][1].get().strip().isdigit():
-                #         raise ValueError(f"請輸入有效的數字以 {translations[self.current_language][key]}")
-                electric_lock_name = self.entries["electric_lock_name"][1].get().strip()
-                concealed_door_closer_name = self.entries["concealed_door_closer_name"][1].get().strip()
-                if electric_lock_name in electric_locks:
-                    lock_length = electric_locks[electric_lock_name]['length']
-                    lock_offset_bottom = electric_locks[electric_lock_name]['offset_bottom']
-                    lock_offset_top = electric_locks[electric_lock_name]['offset_top']
-                elif concealed_door_closer_name in concealeds:
-                    concealed_length = concealeds[concealed_door_closer_name]['length']
-                    # print(f"\nelectriiicccconcealed_door_closer_name: {concealed_door_closer_name}")
-                else:
-                    lock_length = int(self.entries["lock_length"][1].get())
-                    lock_offset_bottom = int(self.entries["lock_offset_bottom"][1].get())
-                    lock_offset_top = lock_length - lock_offset_bottom
-                    # concealed_length = ""
-                electric_lock_height = int(self.entries["lock_height"][1].get())
-                lock_direction = self.entries["lock_direction"][1].get().strip().lower()
-                # concealed_door_closer = self.entries["concealed_door_closer"][1].get().strip().lower()
-                frame_height = int(self.entries["frame_height"][1].get()) if frame_height is None else frame_height
-                frame_width = int(self.entries["frame_width"][1].get()) if frame_width is None else frame_width
+            # if door_type == self.ub_label:
+            #     max_height = int(self.entries["max_height"][1].get())
+            #     min_height = int(self.entries["min_height"][1].get())
+            #     frame_height = max_height
+            #     frame_width = int(self.entries["frame_width"][1].get())
+            if category == self.fireproof_label and mode != "UB":
+                if door_type == self.box_lock_label:
+                    box_lock_name = self.entries["box_lock_name"][1].get().strip()
+                    concealed_door_closer_name = self.entries["concealed_door_closer_name"][1].get().strip()
+                    if box_lock_name in box_locks:
+                        lock_length = box_locks[box_lock_name]['length']
+                        lock_offset_bottom = box_locks[box_lock_name]['offset_bottom']
+                        lock_offset_top = box_locks[box_lock_name]['offset_top']
+                    elif concealed_door_closer_name in concealeds:
+                        concealed_length = concealeds[concealed_door_closer_name]['length']
+                    else:
+                        lock_length = int(self.entries["lock_length"][1].get())
+                        lock_offset_bottom = int(self.entries["lock_offset_bottom"][1].get())
+                        lock_offset_top = lock_length - lock_offset_bottom
+                        # concealed_length = ""
+                    box_lock_height = int(self.entries["lock_height"][1].get())
+                    lock_direction = self.entries["lock_direction"][1].get().strip().lower()
+                    frame_height = int(self.entries["frame_height"][1].get()) if frame_height is None else frame_height
+                    frame_width = int(self.entries["frame_width"][1].get()) if frame_width is None else frame_width
+                elif door_type == self.electric_lock_label:
+                    # for key in ["num_doors", "right_vpiece_width", "upper_hpiece_width", "lower_hpiece_width", "lock_height", "frame_height", "frame_width"]:
+                    #     if not self.entries[key][1].get().strip().isdigit():
+                    #         raise ValueError(f"請輸入有效的數字以 {translations[self.current_language][key]}")
+                    electric_lock_name = self.entries["electric_lock_name"][1].get().strip()
+                    concealed_door_closer_name = self.entries["concealed_door_closer_name"][1].get().strip()
+                    if electric_lock_name in electric_locks:
+                        lock_length = electric_locks[electric_lock_name]['length']
+                        lock_offset_bottom = electric_locks[electric_lock_name]['offset_bottom']
+                        lock_offset_top = electric_locks[electric_lock_name]['offset_top']
+                    elif concealed_door_closer_name in concealeds:
+                        concealed_length = concealeds[concealed_door_closer_name]['length']
+                    else:
+                        lock_length = int(self.entries["lock_length"][1].get())
+                        lock_offset_bottom = int(self.entries["lock_offset_bottom"][1].get())
+                        lock_offset_top = lock_length - lock_offset_bottom
+                    electric_lock_height = int(self.entries["lock_height"][1].get())
+                    lock_direction = self.entries["lock_direction"][1].get().strip().lower()
+                    frame_height = int(self.entries["frame_height"][1].get()) if frame_height is None else frame_height
+                    frame_width = int(self.entries["frame_width"][1].get()) if frame_width is None else frame_width
+    
+                    if edge_sealing_type in ["1mm 鐡封邊 + 1mm 石墨片"]:
+                        electric_lock_height += 3
+                        box_lock_height += 3
+                        
+                    elif edge_sealing_type in ["1mm 鐡封邊", "0.5mm ABS", "0.8mm 美耐板", "1mm 不織布"]:
+                        electric_lock_height += 4
+                        box_lock_height += 4
+                        
+            elif category == self.fireproof_label and mode == "UB":
+                if door_type == self.box_lock_label:
+                    box_lock_name = self.entries["box_lock_name"][1].get().strip()
+                    concealed_door_closer_name = self.entries["concealed_door_closer_name"][1].get().strip()
+                    if box_lock_name in box_locks:
+                        lock_length = box_locks[box_lock_name]['length']
+                        lock_offset_bottom = box_locks[box_lock_name]['offset_bottom']
+                        lock_offset_top = box_locks[box_lock_name]['offset_top']
+                    elif concealed_door_closer_name in concealeds:
+                        concealed_length = concealeds[concealed_door_closer_name]['length']
+                    else:
+                        lock_length = int(self.entries["lock_length"][1].get())
+                        lock_offset_bottom = int(self.entries["lock_offset_bottom"][1].get())
+                        lock_offset_top = lock_length - lock_offset_bottom
+                        # concealed_length = ""
+                    box_lock_height = int(self.entries["lock_height"][1].get())
+                    lock_direction = self.entries["lock_direction"][1].get().strip().lower()
+                    # frame_height = int(self.entries["frame_height"][1].get()) if frame_height is None else frame_height
+                    # frame_width = int(self.entries["frame_width"][1].get()) if frame_width is None else frame_width
+                    max_height = int(self.entries["max_height"][1].get())
+                    min_height = int(self.entries["min_height"][1].get())
+                    frame_width = int(self.entries["frame_width"][1].get())
+                    frame_height = max_height  # Frame height equals max height in UB mode
+                elif door_type == self.electric_lock_label:
+                    # for key in ["num_doors", "right_vpiece_width", "upper_hpiece_width", "lower_hpiece_width", "lock_height", "frame_height", "frame_width"]:
+                    #     if not self.entries[key][1].get().strip().isdigit():
+                    #         raise ValueError(f"請輸入有效的數字以 {translations[self.current_language][key]}")
+                    electric_lock_name = self.entries["electric_lock_name"][1].get().strip()
+                    concealed_door_closer_name = self.entries["concealed_door_closer_name"][1].get().strip()
+                    if electric_lock_name in electric_locks:
+                        lock_length = electric_locks[electric_lock_name]['length']
+                        lock_offset_bottom = electric_locks[electric_lock_name]['offset_bottom']
+                        lock_offset_top = electric_locks[electric_lock_name]['offset_top']
+                    elif concealed_door_closer_name in concealeds:
+                        concealed_length = concealeds[concealed_door_closer_name]['length']
+                    else:
+                        lock_length = int(self.entries["lock_length"][1].get())
+                        lock_offset_bottom = int(self.entries["lock_offset_bottom"][1].get())
+                        lock_offset_top = lock_length - lock_offset_bottom
+                    electric_lock_height = int(self.entries["lock_height"][1].get())
+                    lock_direction = self.entries["lock_direction"][1].get().strip().lower()
+                    # frame_height = int(self.entries["frame_height"][1].get()) if frame_height is None else frame_height
+                    # frame_width = int(self.entries["frame_width"][1].get()) if frame_width is None else frame_width
+                    max_height = int(self.entries["max_height"][1].get())
+                    min_height = int(self.entries["min_height"][1].get())
+                    frame_width = int(self.entries["frame_width"][1].get())
+                    frame_height = max_height  # Frame height equals max height in UB mode
+    
+                    if edge_sealing_type in ["1mm 鐡封邊 + 1mm 石墨片"]:
+                        electric_lock_height += 3
+                        box_lock_height += 3
+                        
+                    elif edge_sealing_type in ["1mm 鐡封邊", "0.5mm ABS", "0.8mm 美耐板", "1mm 不織布"]:
+                        electric_lock_height += 4
+                        box_lock_height += 4
+                        
+            elif category == self.non_fireproof_label:            
+                if structure_type == self.yipaiyikong_label:
+                    if door_type == self.box_lock_label:
+                        box_lock_name = self.entries["box_lock_name"][1].get().strip()
+                        concealed_door_closer_name = self.entries["concealed_door_closer_name"][1].get().strip()
+                        if box_lock_name in box_locks:
+                            lock_length = box_locks[box_lock_name]['length']
+                            lock_offset_bottom = box_locks[box_lock_name]['offset_bottom']
+                            lock_offset_top = box_locks[box_lock_name]['offset_top']
+                        elif concealed_door_closer_name in concealeds:
+                            concealed_length = concealeds[concealed_door_closer_name]['length']
+                        else:
+                            lock_length = int(self.entries["lock_length"][1].get())
+                            lock_offset_bottom = int(self.entries["lock_offset_bottom"][1].get())
+                            lock_offset_top = lock_length - lock_offset_bottom
+                            # concealed_length = ""
+                        box_lock_height = int(self.entries["lock_height"][1].get())
+                        lock_direction = self.entries["lock_direction"][1].get().strip().lower()
+                        frame_height = int(self.entries["frame_height"][1].get()) if frame_height is None else frame_height
+                        frame_width = int(self.entries["frame_width"][1].get()) if frame_width is None else frame_width
+                        gap_width = int(self.entries["gap_width"][1].get())
+                        slats_width = int(self.entries["slats_width"][1].get())
+                    elif door_type == self.electric_lock_label:
+                        # for key in ["num_doors", "right_vpiece_width", "upper_hpiece_width", "lower_hpiece_width", "lock_height", "frame_height", "frame_width"]:
+                        #     if not self.entries[key][1].get().strip().isdigit():
+                        #         raise ValueError(f"請輸入有效的數字以 {translations[self.current_language][key]}")
+                        electric_lock_name = self.entries["electric_lock_name"][1].get().strip()
+                        concealed_door_closer_name = self.entries["concealed_door_closer_name"][1].get().strip()
+                        if electric_lock_name in electric_locks:
+                            lock_length = electric_locks[electric_lock_name]['length']
+                            lock_offset_bottom = electric_locks[electric_lock_name]['offset_bottom']
+                            lock_offset_top = electric_locks[electric_lock_name]['offset_top']
+                        elif concealed_door_closer_name in concealeds:
+                            concealed_length = concealeds[concealed_door_closer_name]['length']
+                        else:
+                            lock_length = int(self.entries["lock_length"][1].get())
+                            lock_offset_bottom = int(self.entries["lock_offset_bottom"][1].get())
+                            lock_offset_top = lock_length - lock_offset_bottom
+                        electric_lock_height = int(self.entries["lock_height"][1].get())
+                        lock_direction = self.entries["lock_direction"][1].get().strip().lower()
+                        frame_height = int(self.entries["frame_height"][1].get()) if frame_height is None else frame_height
+                        frame_width = int(self.entries["frame_width"][1].get()) if frame_width is None else frame_width
+                        gap_width = int(self.entries["gap_width"][1].get())
+                        slats_width = int(self.entries["slats_width"][1].get())
+        
+                        if edge_sealing_type in ["1mm 鐡封邊 + 1mm 石墨片"]:
+                            electric_lock_height += 3
+                            box_lock_height += 3
+                            
+                        elif edge_sealing_type in ["1mm 鐡封邊", "0.5mm ABS", "0.8mm 美耐板", "1mm 不織布"]:
+                            electric_lock_height += 4
+                            box_lock_height += 4
 
-                if edge_sealing_type in ["1mm 鐡封邊 + 1mm 石墨片"]:
-                    electric_lock_height += 3
-                    box_lock_height += 3
+                else:
+                    if door_type == self.box_lock_label:
+                        box_lock_name = self.entries["box_lock_name"][1].get().strip()
+                        concealed_door_closer_name = self.entries["concealed_door_closer_name"][1].get().strip()
+                        if box_lock_name in box_locks:
+                            lock_length = box_locks[box_lock_name]['length']
+                            lock_offset_bottom = box_locks[box_lock_name]['offset_bottom']
+                            lock_offset_top = box_locks[box_lock_name]['offset_top']
+                        elif concealed_door_closer_name in concealeds:
+                            concealed_length = concealeds[concealed_door_closer_name]['length']
+                        else:
+                            lock_length = int(self.entries["lock_length"][1].get())
+                            lock_offset_bottom = int(self.entries["lock_offset_bottom"][1].get())
+                            lock_offset_top = lock_length - lock_offset_bottom
+                            # concealed_length = ""
+                        box_lock_height = int(self.entries["lock_height"][1].get())
+                        lock_direction = self.entries["lock_direction"][1].get().strip().lower()
+                        frame_height = int(self.entries["frame_height"][1].get()) if frame_height is None else frame_height
+                        frame_width = int(self.entries["frame_width"][1].get()) if frame_width is None else frame_width
+                    elif door_type == self.electric_lock_label:
+                        # for key in ["num_doors", "right_vpiece_width", "upper_hpiece_width", "lower_hpiece_width", "lock_height", "frame_height", "frame_width"]:
+                        #     if not self.entries[key][1].get().strip().isdigit():
+                        #         raise ValueError(f"請輸入有效的數字以 {translations[self.current_language][key]}")
+                        electric_lock_name = self.entries["electric_lock_name"][1].get().strip()
+                        concealed_door_closer_name = self.entries["concealed_door_closer_name"][1].get().strip()
+                        if electric_lock_name in electric_locks:
+                            lock_length = electric_locks[electric_lock_name]['length']
+                            lock_offset_bottom = electric_locks[electric_lock_name]['offset_bottom']
+                            lock_offset_top = electric_locks[electric_lock_name]['offset_top']
+                        elif concealed_door_closer_name in concealeds:
+                            concealed_length = concealeds[concealed_door_closer_name]['length']
+                        else:
+                            lock_length = int(self.entries["lock_length"][1].get())
+                            lock_offset_bottom = int(self.entries["lock_offset_bottom"][1].get())
+                            lock_offset_top = lock_length - lock_offset_bottom
+                        electric_lock_height = int(self.entries["lock_height"][1].get())
+                        lock_direction = self.entries["lock_direction"][1].get().strip().lower()
+                        frame_height = int(self.entries["frame_height"][1].get()) if frame_height is None else frame_height
+                        frame_width = int(self.entries["frame_width"][1].get()) if frame_width is None else frame_width
+                        gap_width = int(self.entries["gap_width"][1].get())
+        
+                        if edge_sealing_type in ["1mm 鐡封邊 + 1mm 石墨片"]:
+                            electric_lock_height += 3
+                            box_lock_height += 3
+                            
+                        elif edge_sealing_type in ["1mm 鐡封邊", "0.5mm ABS", "0.8mm 美耐板", "1mm 不織布"]:
+                            electric_lock_height += 4
+                            box_lock_height += 4
                     
-                elif edge_sealing_type in ["1mm 鐡封邊", "0.5mm ABS", "0.8mm 美耐板", "1mm 不織布"]:
-                    electric_lock_height += 4
-                    box_lock_height += 4
-                    
-                # if edge_sealing_type == "1mm 鐡封邊 + 1mm 石墨片" or "1mm 鐡封邊":
-                #     electric_lock_height += 3
-                #     box_lock_height += 3
-                    
-            elif door_type == self.yipaiyikong_label:
-                gap_width = int(self.entries["gap_width"][1].get())
-                slats_width = int(self.entries["slats_width"][1].get())
-                frame_height = int(self.entries["frame_height"][1].get())
-                frame_width = int(self.entries["frame_width"][1].get())
-            else:
-                frame_height = int(self.entries["frame_height"][1].get())
-                frame_width = int(self.entries["frame_width"][1].get())
-                
-
             if edge_sealing_type in ["0.5mm ABS", "0.8mm 美耐板", "1mm 不織布"]:
                 frame_height += 10
                 frame_width += 10
@@ -1084,7 +1281,7 @@ class DoorFrameCalculator:
               - {translations[lang]["total_wood_length"]}: {(outer_wood_upper + inner_wood_upper + outer_wood_bottom + inner_wood_bottom + very_upper_horizontal_piece_length)*num_doors:.2f} mm
               - {translations[lang]["total_wood"]}: {math.ceil(((outer_wood_upper + inner_wood_upper + outer_wood_bottom + inner_wood_bottom + very_upper_horizontal_piece_length)*num_doors)/2400)}
             """
-            report +=f""" 
+            report += f""" 
             """
             unique_horizontal_widths = {
                 upper_horizontal_piece_width: {"length": horizontal_pieces_length, "count": 0},
