@@ -637,8 +637,13 @@ class DoorFrameCalculator:
                 }
             
 # Non Fireproof!!##
-
-        elif category == self.non_fireproof_label and door_type == self.yipaiyikong_label:
+        elif category == self.non_fireproof_label and structure_type == self.honeycomb_board_label and door_type == self.simple_label:
+            annotations = {
+                f"{horizontal_length} mm": ((100, 20), "red"),
+                f"{vertical_length} mm": ((10, 210), "blue"),
+                f"{slats_count}": ((370, 260), "green")
+                }
+        elif category == self.non_fireproof_label and structure_type == self.yipaiyikong_label and door_type == self.simple_label:
             annotations = {
                 f"{horizontal_length} mm": ((100, 20), "red"),   # Position and color for horizontal length
                 f"{vertical_length} mm": ((10, 210), "blue"),
@@ -1079,28 +1084,6 @@ class DoorFrameCalculator:
             else:
                 raise FileNotFoundError(f"Image file not found at {image_path}")
             
-            # if door_type == self.simple_label:
-            #     image_path = os.path.join(application_path, 'simple.png')
-            # elif door_type == self.ub_label:
-            #     image_path = os.path.join(application_path, 'UB.png')
-            # elif door_type == self.electric_lock_label and concealed_length > 0:
-            #     image_path = os.path.join(application_path, 'kunci menkongqi.png')
-            # elif door_type == self.box_lock_label and concealed_length > 0:
-            #     image_path = os.path.join(application_path, 'kunci menkongqi.png')
-            # elif door_type == self.electric_lock_label and concealed_length == 0:
-            #     image_path = os.path.join(application_path, 'kunci.png')
-            # elif door_type == self.box_lock_label and concealed_length == 0:
-            #     image_path = os.path.join(application_path, 'kunci.png')
-            # elif door_type == self.yipaiyikong_label:
-            #     image_path = os.path.join(application_path, 'yipaiyikong.png')
-            # else:
-            #     image_path = None
-
-            # if image_path and os.path.exists(image_path):
-            #     image = Image.open(image_path)
-            # else:
-            #     raise FileNotFoundError(f"Image file not found at {image_path}")
-            
             # Annotate the image
             annotated_image_path = self.add_annotations(image_path, vertical_piece_length, horizontal_pieces_length, door_type, outer_wood_upper, inner_wood_upper,
                                                         outer_wood_bottom, inner_wood_bottom,concealed_length, very_upper_horizontal_piece_length, concealed_door_closer_name, slats_count,
@@ -1207,6 +1190,8 @@ class DoorFrameCalculator:
         gap_length_bottom = 0
         gap_length_upper = 0
         middle_length = 0
+        # inner_width = 0
+        # plywood_height = 0
         
         if category == self.fireproof_label:
             if mode == "UB":
