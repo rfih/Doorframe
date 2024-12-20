@@ -361,7 +361,7 @@ class DoorFrameCalculator:
             "door_type", "structure_type", "slats_width", "gap_width", "left_vpiece_width",
             "electric_lock_name", "lock_length", "lock_height", "lock_direction",
             "lock_offset_bottom", "max_height", "min_height", "box_lock_name",
-            "concealed_door_closer_name", "gap_wood_lock"
+            "concealed_door_closer_name", "gap_wood_lock", "reinforce_wood"
         ]
         self.show_entries(all_fields, False)
         
@@ -391,7 +391,7 @@ class DoorFrameCalculator:
                     self.show_entries(["box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], True)
                 else:
                     self.show_entries(["electric_lock_name", "lock_length", "lock_height", "lock_direction", "lock_offset_bottom",
-                                       "box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], False)
+                                       "box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name", "reinforce_wood"], False)
                     
             else:
                 self.show_entries(["structure_type", "door_type"], True)
@@ -407,7 +407,7 @@ class DoorFrameCalculator:
                     self.show_entries(["box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], True)
                 else:
                     self.show_entries(["electric_lock_name", "lock_length", "lock_height", "lock_direction", "lock_offset_bottom",
-                                        "max_height", "min_height", "box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], False)
+                                        "max_height", "min_height", "box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name", "reinforce_wood"], False)
             
             
         elif category == self.non_fireproof_label:
@@ -738,6 +738,7 @@ class DoorFrameCalculator:
             slats_width = 0
             gap_wood_lock = 0
             reinforce_wood = 0
+            lock_height = 0
 
             # for key in ["num_doors", "right_vpiece_width", "upper_hpiece_width", "lower_hpiece_width", "lock_height", "frame_height", "frame_width"]:
             #     if not self.entries[key][1].get().strip().isdigit():
@@ -985,7 +986,7 @@ class DoorFrameCalculator:
             inner_width, slats_length, plywood_width, plywood_height, total_length_all_doors, vertical_piece_length, \
                 horizontal_pieces_length, frame_width, outer_wood_bottom, inner_wood_bottom, \
                 outer_wood_upper, inner_wood_upper,very_upper_horizontal_piece_width,very_upper_horizontal_piece_length, gap_width, slats_width,\
-                    slats_count, total_blocks = self.calculate_material_requirements(
+                    slats_count, total_blocks, gap_wood_lock, lock_height, reinforce_wood = self.calculate_material_requirements(
                     door_type, num_doors, frame_height, right_vertical_piece_width, left_vertical_piece_width,
                     upper_horizontal_piece_width, lower_horizontal_piece_width, edge_sealing, max_height, min_height,
                     vertical_piece_width, horizontal_piece_width, frame_width, electric_lock_name, box_lock_name, lock_length,
@@ -1010,34 +1011,95 @@ class DoorFrameCalculator:
                 concealed_length = concealeds[concealed_door_closer_name]['length']
             else:
                 # Set default values if no concealed door closer is selected
-                concealed_length = 0            
-
-            if door_type == self.simple_label:
-                image_path = os.path.join(application_path, 'simple.png')
-            elif door_type == self.ub_label:
-                image_path = os.path.join(application_path, 'UB.png')
-            elif door_type == self.electric_lock_label and concealed_length > 0:
-                image_path = os.path.join(application_path, 'kunci menkongqi.png')
-            elif door_type == self.box_lock_label and concealed_length > 0:
-                image_path = os.path.join(application_path, 'kunci menkongqi.png')
-            elif door_type == self.electric_lock_label and concealed_length == 0:
-                image_path = os.path.join(application_path, 'kunci.png')
-            elif door_type == self.box_lock_label and concealed_length == 0:
-                image_path = os.path.join(application_path, 'kunci.png')
-            elif door_type == self.yipaiyikong_label:
-                image_path = os.path.join(application_path, 'yipaiyikong.png')
+                concealed_length = 0           
+            
+            if category == self.fireproof_label:
+                if mode == "UB":
+                    if door_type == self.simple_label:
+                        image_path = os.path.join(application_path, 'UB.png')
+                    elif door_type == self.electric_lock_label and concealed_length > 0:
+                        image_path = os.path.join(application_path, 'kunci_menkongqi_UB.png')
+                    elif door_type == self.box_lock_label and concealed_length > 0:
+                        image_path = os.path.join(application_path, 'kunci_menkongqi_UB.png')
+                    elif door_type == self.electric_lock_label and concealed_length == 0:
+                        image_path = os.path.join(application_path, 'kunci_UB.png')
+                    elif door_type == self.box_lock_label and concealed_length == 0:
+                        image_path = os.path.join(application_path, 'kunci_UB.png')
+                else:
+                    if door_type == self.simple_label:
+                        image_path = os.path.join(application_path, 'simple.png')
+                    elif door_type == self.electric_lock_label and concealed_length > 0:
+                        image_path = os.path.join(application_path, 'kunci menkongqi.png')
+                    elif door_type == self.box_lock_label and concealed_length > 0:
+                        image_path = os.path.join(application_path, 'kunci menkongqi.png')
+                    elif door_type == self.electric_lock_label and concealed_length == 0:
+                        image_path = os.path.join(application_path, 'kunci.png')
+                    elif door_type == self.box_lock_label and concealed_length == 0:
+                        image_path = os.path.join(application_path, 'kunci.png')
+            
+            elif category == self.non_fireproof_label:
+                if structure_type == self.honeycomb_board_label:
+                    if door_type == self.simple_label:
+                        image_path = os.path.join(application_path, 'honeycomb_board_simple.png')
+                    elif door_type == self.electric_lock_label and concealed_length == 0:
+                        image_path = os.path.join(application_path, 'honeycomb_board_kunci_elektrik.png')
+                    elif door_type == self.box_lock_label and concealed_length == 0:
+                        image_path = os.path.join(application_path, 'honeycomb_board_kunci_elektrik.png')
+                    elif door_type == self.electric_lock_label and concealed_length > 0:
+                        image_path = os.path.join(application_path, 'honeycomb_board_kunci_elektrik_menkongqi.png')
+                    elif door_type == self.box_lock_label and concealed_length > 0:
+                        image_path = os.path.join(application_path, 'honeycomb_board_kunci_elektrik_menkongqi.png')
+                elif structure_type == self.honeycomb_paper_label:
+                    if door_type == self.simple_label:
+                        image_path = os.path.join(application_path, 'honeycomb_paper_simple.png')
+                    elif door_type == self.electric_lock_label and concealed_length == 0:
+                        image_path = os.path.join(application_path, 'honeycomb_paper_kunci_elektrik.png')
+                    elif door_type == self.box_lock_label and concealed_length == 0:
+                        image_path = os.path.join(application_path, 'honeycomb_paper_kunci_elektrik.png')
+                    elif door_type == self.electric_lock_label and concealed_length > 0:
+                        image_path = os.path.join(application_path, 'honeycomb_paper_kunci_elektrik_menkongqi.png')
+                    elif door_type == self.box_lock_label and concealed_length > 0:
+                        image_path = os.path.join(application_path, 'honeycomb_paper_kunci_elektrik_menkongqi.png')
+                elif structure_type == self.yipaiyikong_label:
+                    if door_type == self.simple_label:
+                        image_path = os.path.join(application_path, 'yipaiyikong.png')
+                    elif door_type == self.electric_lock_label and concealed_length == 0:
+                        image_path = os.path.join(application_path, 'yipaiyikong_kunci_elektrik.png')
+                    elif door_type == self.box_lock_label and concealed_length == 0:
+                        image_path = os.path.join(application_path, 'yipaiyikong_kunci_elektrik.png')
+                    elif door_type == self.electric_lock_label and concealed_length > 0:
+                        image_path = os.path.join(application_path, 'yipaiyikong_kunci_elektrik_menkongqi.png')
+                    elif door_type == self.box_lock_label and concealed_length > 0:
+                        image_path = os.path.join(application_path, 'yipaiyikong_kunci_elektrik_menkongqi.png')
+                        
             else:
-                # print("No match found, defaulting to None")
                 image_path = None
-                
-            # print(f"door_type: '{door_type}', concealed_door_closer: '{concealed_door_closer}'")
-                
-            # print(f"Image path: {image_path}")
-
             if image_path and os.path.exists(image_path):
                 image = Image.open(image_path)
             else:
                 raise FileNotFoundError(f"Image file not found at {image_path}")
+            
+            # if door_type == self.simple_label:
+            #     image_path = os.path.join(application_path, 'simple.png')
+            # elif door_type == self.ub_label:
+            #     image_path = os.path.join(application_path, 'UB.png')
+            # elif door_type == self.electric_lock_label and concealed_length > 0:
+            #     image_path = os.path.join(application_path, 'kunci menkongqi.png')
+            # elif door_type == self.box_lock_label and concealed_length > 0:
+            #     image_path = os.path.join(application_path, 'kunci menkongqi.png')
+            # elif door_type == self.electric_lock_label and concealed_length == 0:
+            #     image_path = os.path.join(application_path, 'kunci.png')
+            # elif door_type == self.box_lock_label and concealed_length == 0:
+            #     image_path = os.path.join(application_path, 'kunci.png')
+            # elif door_type == self.yipaiyikong_label:
+            #     image_path = os.path.join(application_path, 'yipaiyikong.png')
+            # else:
+            #     image_path = None
+
+            # if image_path and os.path.exists(image_path):
+            #     image = Image.open(image_path)
+            # else:
+            #     raise FileNotFoundError(f"Image file not found at {image_path}")
             
             # Annotate the image
             annotated_image_path = self.add_annotations(image_path, vertical_piece_length, horizontal_pieces_length, door_type, outer_wood_upper, inner_wood_upper,
@@ -1221,7 +1283,7 @@ class DoorFrameCalculator:
                 inner_wood_bottom = outer_wood_bottom - 30
                 outer_wood_upper = frame_height - (outer_wood_bottom + lock_length)
                 inner_wood_upper = outer_wood_upper - 75
-            if lock_direction == self.top_label:
+            elif lock_direction == self.top_label:
                 outer_wood_upper = electric_lock_height - lock_offset_top
                 inner_wood_upper = outer_wood_upper - 75
                 outer_wood_bottom = frame_height - (outer_wood_upper + lock_length)
@@ -1239,19 +1301,20 @@ class DoorFrameCalculator:
             #     very_upper_horizontal_piece_width = 0
             #     very_upper_horizontal_piece_length = 0
                 
-        if door_type == self.box_lock_label:
+        elif door_type == self.box_lock_label:
             if lock_direction == self.bottom_label:
                 outer_wood_bottom = box_lock_height - lock_offset_bottom
                 inner_wood_bottom = outer_wood_bottom - 30
                 outer_wood_upper = frame_height - (outer_wood_bottom + lock_length)
                 inner_wood_upper = outer_wood_upper - 30
-            if lock_direction == self.top_label:
+            elif lock_direction == self.top_label:
                 outer_wood_upper = box_lock_height - lock_offset_top
                 inner_wood_upper = outer_wood_upper - 30
                 outer_wood_bottom = frame_height - (outer_wood_upper + lock_length)
                 inner_wood_bottom = outer_wood_bottom - 30
                 
             if concealed_door_closer_name in concealeds:
+                concealed_length = concealeds[concealed_door_closer_name]['length']
                 very_upper_horizontal_piece_width = 100
                 very_upper_horizontal_piece_length -= concealed_length
                 very_upper_horizontal_piece_length = horizontal_pieces_length - concealed_length
@@ -1277,7 +1340,7 @@ class DoorFrameCalculator:
 
         return inner_width, slats_length, plywood_width, plywood_height, total_length_all_doors, vertical_piece_length, \
                horizontal_pieces_length, frame_width, outer_wood_bottom, inner_wood_bottom, outer_wood_upper, inner_wood_upper, very_upper_horizontal_piece_width,\
-               very_upper_horizontal_piece_length, gap_width, slats_width, slats_count, total_blocks
+               very_upper_horizontal_piece_length, gap_width, slats_width, slats_count, total_blocks, gap_wood_lock, lock_height, reinforce_wood
 
     def generate_report(self, door_type, num_doors, inner_width, slats_length, gap_width, slats_count, total_blocks, plywood_width, plywood_height, total_length_all_doors,
                         vertical_piece_length, horizontal_pieces_length, right_vertical_piece_width,
