@@ -640,7 +640,7 @@ class DoorFrameCalculator:
         elif category == self.non_fireproof_label and structure_type == self.honeycomb_board_label and door_type == self.simple_label:
             annotations = {
                 f"*mm (milimeter)": ((10, 10), "black"),
-                f"{horizontal_length}": ((150, 40), "red"),
+                f"{horizontal_length}": ((170, 40), "red"),
                 f"{vertical_length}": ((40, 200), "blue"),
                 f"{reinforce_wood}": ((370, 190), "green"),
                 f"{gap_length_upper}": ((230,125), "brown"),
@@ -686,11 +686,13 @@ class DoorFrameCalculator:
         elif category == self.non_fireproof_label and structure_type == self.honeycomb_paper_label and door_type == self.simple_label:
             annotations = {
                 f"*mm (milimeter)": ((10, 10), "black"),
-                f"{horizontal_length}": ((150, 40), "red"),
+                f"{horizontal_length}": ((180, 40), "red"),
                 f"{vertical_length}": ((40, 200), "blue"),
                 f"{reinforce_wood}": ((370, 190), "green"),
-                f"{gap_length_upper}": ((230,125), "brown"),
-                f"{gap_length_bottom}": ((230,325), "brown")
+                f"一{gap_length_upper}": ((190,100), "brown"),
+                f"二{gap_length_upper}": ((190,155), "brown"),
+                f"三{gap_length_bottom}": ((190,300), "brown"),
+                f"四{gap_length_bottom}": ((190,360), "brown")
                 }
         elif category == self.non_fireproof_label and structure_type == self.honeycomb_paper_label and door_type == self.electric_lock_label and concealed_length == 0:
             annotations = {
