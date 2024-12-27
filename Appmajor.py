@@ -1105,14 +1105,6 @@ class DoorFrameCalculator:
                         elif edge_sealing_type in ["1mm 鐡封邊", "0.5mm ABS", "0.8mm 美耐板", "1mm 不織布"]:
                             electric_lock_height += 4
                             box_lock_height += 4
-                        print("electric_lock_name", electric_lock_name)
-                        print("lock_length", lock_length)
-                        print("lock_offset_bottom", lock_offset_bottom)
-                        print("lock_offset_top", lock_offset_top)
-                        print("electric_lock_height", electric_lock_height)
-                        print("lock_direction", lock_direction)
-                        print("frame_height", frame_height)
-                        print("frame_width", frame_width)
                     else:
                         frame_height = int(self.entries["frame_height"][1].get())
                         frame_width = int(self.entries["frame_width"][1].get())
@@ -1144,7 +1136,8 @@ class DoorFrameCalculator:
                                           edge_sealing, max_height, min_height, vertical_piece_width, horizontal_piece_width,
                                           electric_lock_name, box_lock_name, lock_length, electric_lock_height, box_lock_height, lock_direction, concealed_door_closer_name, concealed_length,
                                           outer_wood_bottom, inner_wood_bottom, outer_wood_upper, inner_wood_upper,very_upper_horizontal_piece_width,very_upper_horizontal_piece_length,
-                                          frame_width, mode, category, structure_type, reinforce_wood, gap_length_bottom, gap_length_upper)
+                                          frame_width, mode, category, structure_type, reinforce_wood, gap_length_bottom, gap_length_upper, gap_length, gap_wood_lock,
+                                          gap_wood_lock_length)
             
             # Determine the image to display based on door type
             door_type = self.entries["door_type"][1].get().strip().lower()
@@ -1335,7 +1328,8 @@ class DoorFrameCalculator:
         plywood_height = 0
         gap_wood_lock_length = 200
         gap_wood_lock = 70
-        gap_length = 0        
+        gap_length = 0  
+        slats_width = 0
         
         if category == self.fireproof_label:
             if mode == "UB":
@@ -1390,13 +1384,6 @@ class DoorFrameCalculator:
                     gap_length_upper = frame_height - gap_length_bottom - middle_length - upper_horizontal_piece_width - lower_horizontal_piece_width
                     slats_count = 2
                     # total_blocks = slats_count
-                print("inner_width", inner_width)
-                print("plywood_height", plywood_height)
-                print("slats_length", slats_length)
-                print("slats_width", slats_width)
-                print("gap_width", gap_width)
-                print("slats_count", slats_count)
-                print("gap_length", gap_length)
             elif structure_type == self.honeycomb_paper_label:
                 # gap_width = 0
                 if door_type in [self.electric_lock_label, self.box_lock_label]:
@@ -1506,7 +1493,7 @@ class DoorFrameCalculator:
                         edge_sealing, max_height, min_height, vertical_piece_width, horizontal_piece_width,
                         electric_lock_name, box_lock_name, lock_length, electric_lock_height, box_lock_height, lock_direction, concealed_door_closer_name, concealed_length, outer_wood_bottom,
                         inner_wood_bottom, outer_wood_upper, inner_wood_upper,very_upper_horizontal_piece_width,very_upper_horizontal_piece_length, frame_width,
-                        mode, category, structure_type, reinforce_wood, gap_length_bottom, gap_length_upper):
+                        mode, category, structure_type, reinforce_wood, gap_length_bottom, gap_length_upper, gap_length, gap_wood_lock, gap_wood_lock_length):
         lang = self.current_language
         total_right_vertical_pieces = num_doors if right_vertical_piece_width else 0
         total_left_vertical_pieces = num_doors if left_vertical_piece_width else 0
@@ -1525,7 +1512,6 @@ class DoorFrameCalculator:
             if mode == "UB":
                 total_horizontal_pieces += num_doors
         
-
         report = f"""
         {translations[lang]["app_title"]}
 
@@ -1562,8 +1548,8 @@ class DoorFrameCalculator:
                       - {translations[lang]["inner_wood_bottom_part"]}: {inner_wood_bottom} mm
                       - {translations[lang]["num_pieces_per_door"]}: {len([outer_wood_upper, inner_wood_upper, outer_wood_bottom, inner_wood_bottom])}
                       - {translations[lang]["total_num_pieces"]}: {total_left_vertical_pieces}
-                      - {translations[lang]["total_wood_length"]}: {(outer_wood_upper + inner_wood_upper + outer_wood_bottom + inner_wood_bottom + very_upper_horizontal_piece_length)*num_doors:.2f} mm
-                      - {translations[lang]["total_wood"]}: {math.ceil(((outer_wood_upper + inner_wood_upper + outer_wood_bottom + inner_wood_bottom + very_upper_horizontal_piece_length)*num_doors)/2400)}
+                      - {translations[lang]["total_wood_length"]}: {(outer_wood_upper + inner_wood_upper + outer_wood_bottom + inner_wood_bottom)*num_doors:.2f} mm
+                      - {translations[lang]["total_wood"]}: {math.ceil(((outer_wood_upper + inner_wood_upper + outer_wood_bottom + inner_wood_bottom)*num_doors)/2400)}
                     """
                     report += f""" 
                     """
@@ -1576,31 +1562,36 @@ class DoorFrameCalculator:
                     # Calculate counts for horizontal pieces
                     for width, data in unique_horizontal_widths.items():
                         data["count"] += num_doors*2  # One horizontal piece per door
-                    report += f"""{translations[lang]["horizontal_pieces"]}"""
-                    for width, data in unique_horizontal_widths.items():
-                        report += f"""
-                        Width {width} mm:"""
+                    report += f"""{translations[lang]["horizontal_pieces"]} ({horizontal_piece_width}mm):"""
                     if concealed_door_closer_name in concealeds:
                         report += f"""
-                    - {translations[lang]["concealed_door_closer"]}: {concealed_door_closer_name} {very_upper_horizontal_piece_length} mm"""
-                    report += f"""
+                    - {translations[lang]["concealed_door_closer"]}: {concealed_door_closer_name} 
+                    - {translations[lang]["very_upper_horizontal_piece_length"]}: {very_upper_horizontal_piece_length} mm
                     - {translations[lang]["length_each_pieceh"]}: {inner_width} mm
                     - {translations[lang]["num_pieces_per_door"]}: {len([inner_width, inner_width, very_upper_horizontal_piece_length])}
                     - {translations[lang]["total_num_pieces"]}: {(len([inner_width, inner_width, very_upper_horizontal_piece_length]))*num_doors}
                     - {translations[lang]["total_wood_length"]}: {(very_upper_horizontal_piece_length + inner_width + inner_width)*num_doors:.2f} mm
                     - {translations[lang]["total_wood"]}: {math.ceil(((very_upper_horizontal_piece_length + inner_width + inner_width)*num_doors)/2400)}
                     """
+                    else:
+                        report += f"""
+                    - {translations[lang]["length_each_pieceh"]}: {inner_width} mm
+                    - {translations[lang]["num_pieces_per_door"]}: {len([inner_width, inner_width])}
+                    - {translations[lang]["total_num_pieces"]}: {(len([inner_width, inner_width]))*num_doors}
+                    - {translations[lang]["total_wood_length"]}: {(inner_width + inner_width)*num_doors:.2f} mm
+                    - {translations[lang]["total_wood"]}: {math.ceil(((inner_width + inner_width)*num_doors)/2400)}
+                        """
                 elif door_type == self.box_lock_label:
                     report += f"""
-                    {translations[lang]["box_lock"]}: {box_lock_name}
-                    {translations[lang]["box_lock_height"]}: {box_lock_height} mm
+                    {translations[lang]["electric_lock"]}: {electric_lock_name}
+                    {translations[lang]["electric_lock_height"]}: {electric_lock_height} mm
                     {translations[lang]["direction"]}: {lock_direction.capitalize()}
         
                     {translations[lang]["total_wood_length"]}: {outer_wood_bottom + inner_wood_bottom + outer_wood_upper + inner_wood_upper + vertical_piece_length + very_upper_horizontal_piece_length +(horizontal_pieces_length * 2)*num_doors:.2f} mm
                     {translations[lang]["total_wood"]}: {math.ceil((outer_wood_bottom + inner_wood_bottom + outer_wood_upper + inner_wood_upper + vertical_piece_length + very_upper_horizontal_piece_length +(horizontal_pieces_length * 2)*num_doors)/2400)}
                     """
                     report += f"""
-                    {translations[lang]["right_vertical_pieces"]} ({right_vertical_piece_width}mm):
+                    {translations[lang]["right_vertical_pieces"]} ({right_vertical_piece_width} mm):
                       - {translations[lang]["length_each_piecev"]}: {vertical_piece_length} mm
                       - {translations[lang]["num_pieces_per_door"]}: {num_doors}
                       - {translations[lang]["total_num_pieces"]}: {total_right_vertical_pieces}
@@ -1614,10 +1605,10 @@ class DoorFrameCalculator:
                       - {translations[lang]["inner_wood_bottom_part"]}: {inner_wood_bottom} mm
                       - {translations[lang]["num_pieces_per_door"]}: {len([outer_wood_upper, inner_wood_upper, outer_wood_bottom, inner_wood_bottom])}
                       - {translations[lang]["total_num_pieces"]}: {total_left_vertical_pieces}
-                      - {translations[lang]["total_wood_length"]}: {(outer_wood_upper + inner_wood_upper + outer_wood_bottom + inner_wood_bottom + very_upper_horizontal_piece_length)*num_doors:.2f} mm
-                      - {translations[lang]["total_wood"]}: {math.ceil(((outer_wood_upper + inner_wood_upper + outer_wood_bottom + inner_wood_bottom + very_upper_horizontal_piece_length)*num_doors)/2400)}
+                      - {translations[lang]["total_wood_length"]}: {(outer_wood_upper + inner_wood_upper + outer_wood_bottom + inner_wood_bottom)*num_doors:.2f} mm
+                      - {translations[lang]["total_wood"]}: {math.ceil(((outer_wood_upper + inner_wood_upper + outer_wood_bottom + inner_wood_bottom)*num_doors)/2400)}
                     """
-                    report +=f""" 
+                    report += f""" 
                     """
                     unique_horizontal_widths = {
                         upper_horizontal_piece_width: {"length": horizontal_pieces_length, "count": 0},
@@ -1628,21 +1619,25 @@ class DoorFrameCalculator:
                     # Calculate counts for horizontal pieces
                     for width, data in unique_horizontal_widths.items():
                         data["count"] += num_doors*2  # One horizontal piece per door
-                    report += f"""{translations[lang]["horizontal_pieces"]}"""
-                    for width, data in unique_horizontal_widths.items():
-                        report += f"""
-                        Width {width} mm:"""
+                    report += f"""{translations[lang]["horizontal_pieces"]} ({horizontal_piece_width}mm):"""
                     if concealed_door_closer_name in concealeds:
                         report += f"""
-                    - {translations[lang]["concealed_door_closer"]}: {concealed_door_closer_name} {very_upper_horizontal_piece_length} mm
-                        """
-                    report += f"""
+                    - {translations[lang]["concealed_door_closer"]}: {concealed_door_closer_name} 
+                    - {translations[lang]["very_upper_horizontal_piece_length"]}: {very_upper_horizontal_piece_length} mm
                     - {translations[lang]["length_each_pieceh"]}: {inner_width} mm
                     - {translations[lang]["num_pieces_per_door"]}: {len([inner_width, inner_width, very_upper_horizontal_piece_length])}
                     - {translations[lang]["total_num_pieces"]}: {(len([inner_width, inner_width, very_upper_horizontal_piece_length]))*num_doors}
                     - {translations[lang]["total_wood_length"]}: {(very_upper_horizontal_piece_length + inner_width + inner_width)*num_doors:.2f} mm
                     - {translations[lang]["total_wood"]}: {math.ceil(((very_upper_horizontal_piece_length + inner_width + inner_width)*num_doors)/2400)}
                     """
+                    else:
+                        report += f"""
+                    - {translations[lang]["length_each_pieceh"]}: {inner_width} mm
+                    - {translations[lang]["num_pieces_per_door"]}: {len([inner_width, inner_width])}
+                    - {translations[lang]["total_num_pieces"]}: {(len([inner_width, inner_width]))*num_doors}
+                    - {translations[lang]["total_wood_length"]}: {(inner_width + inner_width)*num_doors:.2f} mm
+                    - {translations[lang]["total_wood"]}: {math.ceil(((inner_width + inner_width)*num_doors)/2400)}
+                        """
                     
                 else:
                     report += f"""
@@ -1707,8 +1702,81 @@ class DoorFrameCalculator:
 #################################### NON-FIREPROOF!! #########################################                
         elif category == self.non_fireproof_label:
             if structure_type == self.honeycomb_board_label:
-                if door_type == self.electric_lock_label:
-                    ""
+                if door_type == self.electric_lock_label:                    
+                    report += f"""
+                    {translations[lang]["structure_type"]}: {structure_type}
+
+                    {translations[lang]["door_type"]}: {door_type.upper()}
+                    {translations[lang]["num_doors"]}: {num_doors}
+                    {translations[lang]["edge_sealing"]}: {edge_sealing} mm
+                    {translations[lang]["gap_length"]}: {gap_length} mm
+                    
+                    {translations[lang]["electric_lock"]}: {electric_lock_name}
+                    {translations[lang]["electric_lock_height"]}: {electric_lock_height} mm
+                    {translations[lang]["direction"]}: {lock_direction.capitalize()}
+                    
+                    {translations[lang]["gap_length"]}: {gap_length} mm
+                    {translations[lang]["gap_wood_lock"]}: {gap_wood_lock} mm
+                    {translations[lang]["gap_wood_lock_length"]}: {gap_wood_lock_length} mm
+                    """
+                    if concealed_door_closer_name in concealeds:
+                        report += f"""
+                    {translations[lang]["total_wood_length"]}: {outer_wood_bottom + outer_wood_upper + vertical_piece_length + very_upper_horizontal_piece_length +(horizontal_pieces_length * 2) +(slats_length *2) *num_doors:.2f} mm 
+                    {translations[lang]["total_wood"]}: {math.ceil((outer_wood_bottom + outer_wood_upper + vertical_piece_length + very_upper_horizontal_piece_length +(horizontal_pieces_length * 2) +(slats_length *2) *num_doors)/2400)}
+                    """
+                    else:
+                        report += f"""
+                    {translations[lang]["total_wood_length"]}: {outer_wood_bottom + outer_wood_upper + vertical_piece_length +(horizontal_pieces_length * 2) +(slats_length *2) *num_doors:.2f} mm 
+                    {translations[lang]["total_wood"]}: {math.ceil((outer_wood_bottom + outer_wood_upper + vertical_piece_length +(horizontal_pieces_length * 2) +(slats_length *2) *num_doors)/2400)}
+                    """
+                    
+                    report += f"""
+                    {translations[lang]["right_vertical_pieces"]} ({right_vertical_piece_width} mm):
+                    - {translations[lang]["length_each_piecev"]}: {vertical_piece_length} mm
+                    - {translations[lang]["num_pieces_per_door"]}: {num_doors}
+                    - {translations[lang]["total_num_pieces"]}: {total_right_vertical_pieces}
+                    - {translations[lang]["total_wood_length"]}: {vertical_piece_length*num_doors:.2f} mm
+                    - {translations[lang]["total_wood"]}: {math.ceil((vertical_piece_length*num_doors)/2400)}
+        
+                    {translations[lang]["left_vertical_pieces"]} ({left_vertical_piece_width} mm):
+                    - {translations[lang]["outer_wood_upper_part"]}: {outer_wood_upper} mm
+                    - {translations[lang]["outer_wood_bottom_part"]}: {outer_wood_bottom} mm
+                    - {translations[lang]["num_pieces_per_door"]}: {len([outer_wood_upper, outer_wood_bottom ])}
+                    - {translations[lang]["total_num_pieces"]}: {total_left_vertical_pieces}
+                    - {translations[lang]["total_wood_length"]}: {(outer_wood_upper + outer_wood_bottom)*num_doors:.2f} mm
+                    - {translations[lang]["total_wood"]}: {math.ceil(((outer_wood_upper + outer_wood_bottom)*num_doors)/2400)}
+                    """
+                    report += f""" 
+                    """
+                    unique_horizontal_widths = {
+                        upper_horizontal_piece_width: {"length": horizontal_pieces_length, "count": 0},
+                        lower_horizontal_piece_width: {"length": horizontal_pieces_length, "count": 0},
+                        }
+                    unique_horizontal_widths = {width: data for width, data in unique_horizontal_widths.items() if width}
+                    
+                    # Calculate counts for horizontal pieces
+                    for width, data in unique_horizontal_widths.items():
+                        data["count"] += num_doors*2  # One horizontal piece per door
+                    report += f"""{translations[lang]["horizontal_pieces"]} ({horizontal_piece_width}mm):"""
+                    if concealed_door_closer_name in concealeds:
+                        report += f"""
+                    - {translations[lang]["concealed_door_closer"]}: {concealed_door_closer_name} 
+                    - {translations[lang]["very_upper_horizontal_piece_length"]}: {very_upper_horizontal_piece_length} mm
+                    - {translations[lang]["length_each_pieceh"]}: {inner_width} mm
+                    - {translations[lang]["num_pieces_per_door"]}: {len([inner_width, inner_width, very_upper_horizontal_piece_length])}
+                    - {translations[lang]["total_num_pieces"]}: {(len([inner_width, inner_width, very_upper_horizontal_piece_length]))*num_doors}
+                    - {translations[lang]["total_wood_length"]}: {(very_upper_horizontal_piece_length + inner_width + inner_width)*num_doors:.2f} mm
+                    - {translations[lang]["total_wood"]}: {math.ceil(((very_upper_horizontal_piece_length + inner_width + inner_width)*num_doors)/2400)}
+                    """
+                    else:
+                        report += f"""
+                    - {translations[lang]["length_each_pieceh"]}: {inner_width} mm
+                    - {translations[lang]["num_pieces_per_door"]}: {len([inner_width, inner_width, slats_length, slats_length])}
+                    - {translations[lang]["total_num_pieces"]}: {(len([inner_width, inner_width, slats_length, slats_length]))*num_doors}
+                    - {translations[lang]["total_wood_length"]}: {(inner_width + inner_width + slats_length + slats_length)*num_doors:.2f} mm
+                    - {translations[lang]["total_wood"]}: {math.ceil(((inner_width + inner_width + slats_length + slats_length)*num_doors)/2400)}
+                        """
+
                 elif door_type == self.box_lock_label:
                     ""
                 else:
