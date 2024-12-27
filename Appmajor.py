@@ -425,9 +425,9 @@ class DoorFrameCalculator:
                 if door_type == self.simple_label:
                     self.show_entries(["left_vpiece_width", "reinforce_wood"], True)
                 elif door_type == self.electric_lock_label:
-                    self.show_entries(["electric_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], True)
+                    self.show_entries(["electric_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name", "left_vpiece_width"], True)
                 elif door_type == self.box_lock_label:
-                    self.show_entries(["box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], True)
+                    self.show_entries(["box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name", "left_vpiece_width"], True)
                 else:
                     self.show_entries(["electric_lock_name", "lock_length", "lock_height", "lock_direction", "lock_offset_bottom",
                                         "max_height", "min_height", "box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], False)
@@ -437,9 +437,9 @@ class DoorFrameCalculator:
                 if door_type == self.simple_label:
                     self.show_entries(["left_vpiece_width", "lock_height", "reinforce_wood"], True)
                 elif door_type == self.electric_lock_label:
-                    self.show_entries(["electric_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], True)
+                    self.show_entries(["electric_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name", "left_vpiece_width"], True)
                 elif door_type == self.box_lock_label:
-                    self.show_entries(["box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], True)
+                    self.show_entries(["box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name", "left_vpiece_width"], True)
                 else:
                     self.show_entries(["electric_lock_name", "lock_length", "lock_height", "lock_direction", "lock_offset_bottom",
                                         "max_height", "min_height", "box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], False)
@@ -449,9 +449,9 @@ class DoorFrameCalculator:
                 if door_type == self.simple_label:
                     self.show_entries(["left_vpiece_width", "lock_height", "reinforce_wood"], True)
                 elif door_type == self.electric_lock_label:
-                    self.show_entries(["electric_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], True)
+                    self.show_entries(["electric_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name", "left_vpiece_width"], True)
                 elif door_type == self.box_lock_label:
-                    self.show_entries(["box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], True)
+                    self.show_entries(["box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name", "left_vpiece_width"], True)
                 else:
                     self.show_entries(["electric_lock_name", "lock_length", "lock_height", "lock_direction", "lock_offset_bottom",
                                         "max_height", "min_height", "box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], False)
@@ -568,7 +568,7 @@ class DoorFrameCalculator:
         
     def add_annotations(self, image_path, vertical_length, horizontal_length, door_type, outer_wood_upper, inner_wood_upper, outer_wood_bottom, 
                         inner_wood_bottom, concealed_length, very_upper_horizontal_piece_length, concealed_door_closer_name, slats_count,
-                        category, gap_wood_lock_length, reinforce_wood, gap_length_bottom, gap_length_upper):
+                        category, gap_wood_lock_length, reinforce_wood, gap_length_bottom, gap_length_upper, gap_wood_lock, gap_length):
         # Open the image file
         image = Image.open(image_path)
         draw = ImageDraw.Draw(image)
@@ -639,7 +639,7 @@ class DoorFrameCalculator:
 ########################################## Non Fireproof!!##############################################
         elif category == self.non_fireproof_label and structure_type == self.honeycomb_board_label and door_type == self.simple_label:
             annotations = {
-                f"*mm (milimeter)": ((10, 10), "black"),
+                f"*mm (milimeter)": ((5, 5), "black"),
                 f"{horizontal_length}": ((170, 40), "red"),
                 f"{vertical_length}": ((40, 200), "blue"),
                 f"{reinforce_wood}": ((370, 190), "green"),
@@ -648,11 +648,15 @@ class DoorFrameCalculator:
                 }
         elif category == self.non_fireproof_label and structure_type == self.honeycomb_board_label and door_type == self.electric_lock_label and concealed_length == 0:
             annotations = {
-                f"{horizontal_length} mm": ((130, 20), "red"),
-                f"{outer_wood_upper} mm": ((10, 190), "green"),
-                f"{outer_wood_bottom} mm": ((10, 280), "orange"),
-                f"{gap_wood_lock_length} mm": ((10, 380), "brown"),
-                f"{vertical_length} mm": ((390, 260), "blue")
+                f"*mm (milimeter)": ((5, 5), "black"),
+                f"{horizontal_length}": ((200, 33), "red"),
+                f"{outer_wood_upper}": ((10, 135), "green"),
+                f"{outer_wood_bottom}": ((10, 320), "orange"),
+                f"{gap_wood_lock_length}": ((50, 430), "magenta"),
+                f"{vertical_length}": ((390, 200), "blue"),
+                f"一{gap_length}": ((230,125), "brown"),
+                f"二{gap_length}": ((230,220), "brown"),
+                f"三{gap_length}": ((230,325), "brown")
             }
         elif category == self.non_fireproof_label and structure_type == self.honeycomb_board_label and door_type == self.electric_lock_label and concealed_length > 0:
             annotations = {
@@ -685,7 +689,7 @@ class DoorFrameCalculator:
 ######################################################################################
         elif category == self.non_fireproof_label and structure_type == self.honeycomb_paper_label and door_type == self.simple_label:
             annotations = {
-                f"*mm (milimeter)": ((10, 10), "black"),
+                f"*mm (milimeter)": ((5, 5), "black"),
                 f"{horizontal_length}": ((180, 40), "red"),
                 f"{vertical_length}": ((40, 200), "blue"),
                 f"{reinforce_wood}": ((370, 190), "green"),
@@ -868,6 +872,7 @@ class DoorFrameCalculator:
             # gap_wood_lock = 0
             reinforce_wood = 0
             lock_height = 0
+            lock_length = 0
 
             # for key in ["num_doors", "right_vpiece_width", "upper_hpiece_width", "lower_hpiece_width", "lock_height", "frame_height", "frame_width"]:
             #     if not self.entries[key][1].get().strip().isdigit():
@@ -1011,7 +1016,7 @@ class DoorFrameCalculator:
                         lock_direction = self.entries["lock_direction"][1].get().strip().lower()
                         frame_height = int(self.entries["frame_height"][1].get()) if frame_height is None else frame_height
                         frame_width = int(self.entries["frame_width"][1].get()) if frame_width is None else frame_width
-                        # gap_width = int(self.entries["gap_width"][1].get())
+                        gap_width = int(self.entries["gap_width"][1].get())
                         slats_width = int(self.entries["slats_width"][1].get())
                         # gap_wood_lock = int(self.entries["gap_wood_lock"][1].get())
                     elif door_type == self.electric_lock_label:
@@ -1068,6 +1073,7 @@ class DoorFrameCalculator:
                         lock_direction = self.entries["lock_direction"][1].get().strip().lower()
                         frame_height = int(self.entries["frame_height"][1].get()) if frame_height is None else frame_height
                         frame_width = int(self.entries["frame_width"][1].get()) if frame_width is None else frame_width
+                        # lock_height = int(self.entries["lock_height"][1].get()) if lock_height is None else lock_height
                     elif door_type == self.electric_lock_label:
                         # for key in ["num_doors", "right_vpiece_width", "upper_hpiece_width", "lower_hpiece_width", "lock_height", "frame_height", "frame_width"]:
                         #     if not self.entries[key][1].get().strip().isdigit():
@@ -1088,6 +1094,7 @@ class DoorFrameCalculator:
                         lock_direction = self.entries["lock_direction"][1].get().strip().lower()
                         frame_height = int(self.entries["frame_height"][1].get()) if frame_height is None else frame_height
                         frame_width = int(self.entries["frame_width"][1].get()) if frame_width is None else frame_width
+                        # lock_height = int(self.entries["lock_height"][1].get()) if lock_height is None else lock_height
                         # gap_width = int(self.entries["gap_width"][1].get())
                         # gap_wood_lock = int(self.entries["gap_wood_lock"][1].get())
         
@@ -1098,6 +1105,14 @@ class DoorFrameCalculator:
                         elif edge_sealing_type in ["1mm 鐡封邊", "0.5mm ABS", "0.8mm 美耐板", "1mm 不織布"]:
                             electric_lock_height += 4
                             box_lock_height += 4
+                        print("electric_lock_name", electric_lock_name)
+                        print("lock_length", lock_length)
+                        print("lock_offset_bottom", lock_offset_bottom)
+                        print("lock_offset_top", lock_offset_top)
+                        print("electric_lock_height", electric_lock_height)
+                        print("lock_direction", lock_direction)
+                        print("frame_height", frame_height)
+                        print("frame_width", frame_width)
                     else:
                         frame_height = int(self.entries["frame_height"][1].get())
                         frame_width = int(self.entries["frame_width"][1].get())
@@ -1116,7 +1131,7 @@ class DoorFrameCalculator:
                 horizontal_pieces_length, frame_width, outer_wood_bottom, inner_wood_bottom, \
                 outer_wood_upper, inner_wood_upper,very_upper_horizontal_piece_width,very_upper_horizontal_piece_length, gap_width, slats_width,\
                     slats_count, total_blocks, gap_wood_lock, lock_height, reinforce_wood, gap_wood_lock_length,\
-                    gap_length_bottom, gap_length_upper = self.calculate_material_requirements(
+                    gap_length_bottom, gap_length_upper, gap_length = self.calculate_material_requirements(
                     door_type, num_doors, frame_height, right_vertical_piece_width, left_vertical_piece_width,
                     upper_horizontal_piece_width, lower_horizontal_piece_width, edge_sealing, max_height, min_height,
                     vertical_piece_width, horizontal_piece_width, frame_width, electric_lock_name, box_lock_name, lock_length,
@@ -1213,7 +1228,7 @@ class DoorFrameCalculator:
             # Annotate the image
             annotated_image_path = self.add_annotations(image_path, vertical_piece_length, horizontal_pieces_length, door_type, outer_wood_upper, inner_wood_upper,
                                                         outer_wood_bottom, inner_wood_bottom,concealed_length, very_upper_horizontal_piece_length, concealed_door_closer_name, slats_count,
-                                                        category, gap_wood_lock_length, reinforce_wood, gap_length_bottom, gap_length_upper)
+                                                        category, gap_wood_lock_length, reinforce_wood, gap_length_bottom, gap_length_upper, gap_wood_lock, gap_length)
             
             # Configure text tags for styling
             self.result_text.tag_configure("title", foreground="black", font=("Helvetica", 13, "bold"))
@@ -1319,8 +1334,8 @@ class DoorFrameCalculator:
         inner_width = 0
         plywood_height = 0
         gap_wood_lock_length = 200
-        gap_wood_lock = 100
-        
+        gap_wood_lock = 70
+        gap_length = 0        
         
         if category == self.fireproof_label:
             if mode == "UB":
@@ -1342,7 +1357,7 @@ class DoorFrameCalculator:
             if structure_type == self.yipaiyikong_label:
                 if door_type in [self.electric_lock_label, self.box_lock_label]:
                     inner_width = frame_width - right_vertical_piece_width - (left_vertical_piece_width * 2) - gap_wood_lock
-                    plywood_height = max_height - lower_horizontal_piece_width - upper_horizontal_piece_width
+                    plywood_height = frame_height - lower_horizontal_piece_width - upper_horizontal_piece_width
                     slats_length = inner_width
                     slats_count = frame_height // (slats_width + gap_width)
                     total_blocks = slats_count + 4
@@ -1352,13 +1367,18 @@ class DoorFrameCalculator:
                     slats_count = frame_height // (slats_width + gap_width)
                     total_blocks = slats_count + 4
             elif structure_type == self.honeycomb_board_label:
+                # gap_width = 0
                 if door_type in [self.electric_lock_label, self.box_lock_label]:
                     inner_width = frame_width - right_vertical_piece_width - (left_vertical_piece_width * 2) - gap_wood_lock
-                    plywood_height = max_height - lower_horizontal_piece_width - upper_horizontal_piece_width
+                    plywood_height = frame_height - lower_horizontal_piece_width - upper_horizontal_piece_width
                     slats_length = inner_width
                     slats_width = lower_horizontal_piece_width or upper_horizontal_piece_width
                     gap_width = (frame_height - (slats_width * 4)) / 3
                     slats_count = 2
+                    if concealed_length == 0:
+                        gap_length = math.ceil((frame_height - upper_horizontal_piece_width - lower_horizontal_piece_width - (slats_count*slats_width))/3)
+                    else:
+                        gap_length = math.ceil(frame_height - (slats_count*slats_width) - upper_horizontal_piece_width - lower_horizontal_piece_width)
                     # slats_count = frame_height // (slats_width + gap_width)
                     # total_blocks = slats_count
                 else:
@@ -1370,14 +1390,26 @@ class DoorFrameCalculator:
                     gap_length_upper = frame_height - gap_length_bottom - middle_length - upper_horizontal_piece_width - lower_horizontal_piece_width
                     slats_count = 2
                     # total_blocks = slats_count
+                print("inner_width", inner_width)
+                print("plywood_height", plywood_height)
+                print("slats_length", slats_length)
+                print("slats_width", slats_width)
+                print("gap_width", gap_width)
+                print("slats_count", slats_count)
+                print("gap_length", gap_length)
             elif structure_type == self.honeycomb_paper_label:
+                # gap_width = 0
                 if door_type in [self.electric_lock_label, self.box_lock_label]:
                     inner_width = frame_width - right_vertical_piece_width - (left_vertical_piece_width * 2) - gap_wood_lock
-                    plywood_height = max_height - lower_horizontal_piece_width - upper_horizontal_piece_width
+                    plywood_height = frame_height - lower_horizontal_piece_width - upper_horizontal_piece_width
                     slats_length = inner_width
                     slats_width = lower_horizontal_piece_width or upper_horizontal_piece_width
                     gap_width = (frame_height - (slats_width * 6)) / 5
                     slats_count = 4
+                    if concealed_length == 0:
+                        gap_length = (frame_height - upper_horizontal_piece_width - lower_horizontal_piece_width - (slats_count*slats_width))/5
+                    else:
+                        gap_length = frame_height - (slats_count*slats_width) - upper_horizontal_piece_width - lower_horizontal_piece_width
                 else:
                     slats_length = inner_width
                     slats_width = lower_horizontal_piece_width or upper_horizontal_piece_width
@@ -1400,7 +1432,7 @@ class DoorFrameCalculator:
         total_length_all_doors = total_length_per_door * num_doors
         
         outer_wood_bottom = inner_wood_bottom = outer_wood_upper = inner_wood_upper = None
-        if category == self.fireproof_label:
+        if category == self.fireproof_label or self.non_fireproof_label:
             if mode != "UB":
                 if door_type == self.electric_lock_label:
                     if lock_direction == self.bottom_label:
@@ -1466,7 +1498,7 @@ class DoorFrameCalculator:
         return inner_width, slats_length, plywood_width, plywood_height, total_length_all_doors, vertical_piece_length, \
                horizontal_pieces_length, frame_width, outer_wood_bottom, inner_wood_bottom, outer_wood_upper, inner_wood_upper, very_upper_horizontal_piece_width,\
                very_upper_horizontal_piece_length, gap_width, slats_width, slats_count, total_blocks, gap_wood_lock, lock_height, reinforce_wood, gap_wood_lock_length,\
-               gap_length_bottom, gap_length_upper
+               gap_length_bottom, gap_length_upper, gap_length
 
     def generate_report(self, door_type, num_doors, inner_width, slats_length, gap_width, slats_count, total_blocks, plywood_width, plywood_height, total_length_all_doors,
                         vertical_piece_length, horizontal_pieces_length, right_vertical_piece_width,
