@@ -1342,6 +1342,8 @@ class DoorFrameCalculator:
         gap_wood_lock = 70
         gap_length = 0  
         slats_width = 0
+        very_upper_horizontal_piece_width = 100
+
         
         if category == self.fireproof_label:
             if mode == "UB":
@@ -1375,21 +1377,27 @@ class DoorFrameCalculator:
             elif structure_type == self.honeycomb_board_label:
                 # gap_width = 0
                 if door_type in [self.electric_lock_label, self.box_lock_label]:
-                    inner_width = frame_width - right_vertical_piece_width - (left_vertical_piece_width * 2) - gap_wood_lock
-                    plywood_height = frame_height - lower_horizontal_piece_width - upper_horizontal_piece_width
-                    slats_length = inner_width
-                    slats_width = lower_horizontal_piece_width or upper_horizontal_piece_width
-                    gap_width = (frame_height - (slats_width * 4)) / 3
-                    slats_count = 2
                     if concealed_length == 0:
+                        inner_width = frame_width - right_vertical_piece_width - (left_vertical_piece_width * 2) - gap_wood_lock
+                        # plywood_height = frame_height - lower_horizontal_piece_width - upper_horizontal_piece_width
+                        slats_length = inner_width
+                        slats_width = lower_horizontal_piece_width
+                        gap_width = (frame_height - (slats_width * 4)) / 3
+                        slats_count = 2
                         gap_length = math.ceil((frame_height - upper_horizontal_piece_width - lower_horizontal_piece_width - (slats_count*slats_width))/3)
                     else:
-                        gap_length = math.ceil(frame_height - (slats_count*slats_width) - upper_horizontal_piece_width - lower_horizontal_piece_width)
+                        inner_width = frame_width - right_vertical_piece_width - (left_vertical_piece_width * 2) - gap_wood_lock
+                        # plywood_height = frame_height - lower_horizontal_piece_width - upper_horizontal_piece_width
+                        slats_length = inner_width
+                        slats_width = lower_horizontal_piece_width
+                        gap_width = (frame_height - (slats_width * 3) - upper_horizontal_piece_width) / 3
+                        slats_count = 2
+                        gap_length = math.ceil(frame_height - (slats_count*slats_width) - upper_horizontal_piece_width - lower_horizontal_piece_width / 3)
                     # slats_count = frame_height // (slats_width + gap_width)
                     # total_blocks = slats_count
                 else:
                     slats_length = inner_width
-                    slats_width = lower_horizontal_piece_width or upper_horizontal_piece_width
+                    slats_width = lower_horizontal_piece_width
                     inner_width = frame_width - right_vertical_piece_width - left_vertical_piece_width
                     middle_length = reinforce_wood + (slats_width * 2)
                     gap_length_bottom = lock_height - (middle_length / 2) - lower_horizontal_piece_width
@@ -1399,19 +1407,25 @@ class DoorFrameCalculator:
             elif structure_type == self.honeycomb_paper_label:
                 # gap_width = 0
                 if door_type in [self.electric_lock_label, self.box_lock_label]:
-                    inner_width = frame_width - right_vertical_piece_width - (left_vertical_piece_width * 2) - gap_wood_lock
-                    plywood_height = frame_height - lower_horizontal_piece_width - upper_horizontal_piece_width
-                    slats_length = inner_width
-                    slats_width = lower_horizontal_piece_width or upper_horizontal_piece_width
-                    gap_width = (frame_height - (slats_width * 6)) / 5
-                    slats_count = 4
                     if concealed_length == 0:
+                        inner_width = frame_width - right_vertical_piece_width - (left_vertical_piece_width * 2) - gap_wood_lock
+                        # plywood_height = frame_height - lower_horizontal_piece_width - upper_horizontal_piece_width
+                        slats_length = inner_width
+                        slats_width = lower_horizontal_piece_width
+                        gap_width = (frame_height - (slats_width * 6)) / 5
+                        slats_count = 4
                         gap_length = (frame_height - upper_horizontal_piece_width - lower_horizontal_piece_width - (slats_count*slats_width))/5
                     else:
+                        inner_width = frame_width - right_vertical_piece_width - (left_vertical_piece_width * 2) - gap_wood_lock
+                        # plywood_height = frame_height - lower_horizontal_piece_width - upper_horizontal_piece_width
+                        slats_length = inner_width
+                        slats_width = lower_horizontal_piece_width
+                        gap_width = (frame_height - (slats_width * 6) - very_upper_horizontal_piece_width) / 5
+                        slats_count = 4
                         gap_length = frame_height - (slats_count*slats_width) - upper_horizontal_piece_width - lower_horizontal_piece_width
                 else:
                     slats_length = inner_width
-                    slats_width = lower_horizontal_piece_width or upper_horizontal_piece_width
+                    slats_width = lower_horizontal_piece_width
                     inner_width = frame_width - right_vertical_piece_width - left_vertical_piece_width
                     middle_length = reinforce_wood + (slats_width * 2)
                     gap_length_bottom = (lock_height - (middle_length / 2) - lower_horizontal_piece_width - slats_width) / 2
@@ -1424,7 +1438,6 @@ class DoorFrameCalculator:
         vertical_piece_length = frame_height
         horizontal_pieces_length = inner_width
         # print("test3", horizontal_pieces_length)
-        very_upper_horizontal_piece_width = 100
         very_upper_horizontal_piece_length = horizontal_pieces_length
 
         total_length_per_door = vertical_piece_length * 2 + horizontal_pieces_length * 2    ############# kayaknya masih salah #################
@@ -1566,7 +1579,7 @@ class DoorFrameCalculator:
                     report += f""" 
                     """
                     unique_horizontal_widths = {
-                        upper_horizontal_piece_width: {"length": horizontal_pieces_length, "count": 0},
+                        very_upper_horizontal_piece_width: {"length": horizontal_pieces_length, "count": 0},
                         lower_horizontal_piece_width: {"length": horizontal_pieces_length, "count": 0},
                         }
                     unique_horizontal_widths = {width: data for width, data in unique_horizontal_widths.items() if width}
@@ -1574,7 +1587,10 @@ class DoorFrameCalculator:
                     # Calculate counts for horizontal pieces
                     for width, data in unique_horizontal_widths.items():
                         data["count"] += num_doors*2  # One horizontal piece per door
-                    report += f"""{translations[lang]["horizontal_pieces"]} ({horizontal_piece_width}mm):"""
+                    report += f"""{translations[lang]["horizontal_pieces"]}"""
+                    for width, data in unique_horizontal_widths.items():
+                        report += f"""
+                        {width}mm:"""
                     if concealed_door_closer_name in concealeds:
                         report += f"""
                     - {translations[lang]["concealed_door_closer"]}: {concealed_door_closer_name} 
@@ -1623,7 +1639,7 @@ class DoorFrameCalculator:
                     report += f""" 
                     """
                     unique_horizontal_widths = {
-                        upper_horizontal_piece_width: {"length": horizontal_pieces_length, "count": 0},
+                        very_upper_horizontal_piece_width: {"length": horizontal_pieces_length, "count": 0},
                         lower_horizontal_piece_width: {"length": horizontal_pieces_length, "count": 0},
                         }
                     unique_horizontal_widths = {width: data for width, data in unique_horizontal_widths.items() if width}
@@ -1631,7 +1647,10 @@ class DoorFrameCalculator:
                     # Calculate counts for horizontal pieces
                     for width, data in unique_horizontal_widths.items():
                         data["count"] += num_doors*2  # One horizontal piece per door
-                    report += f"""{translations[lang]["horizontal_pieces"]} ({horizontal_piece_width}mm):"""
+                    report += f"""{translations[lang]["horizontal_pieces"]}"""
+                    for width, data in unique_horizontal_widths.items():
+                        report += f"""
+                        {width}mm:"""
                     if concealed_door_closer_name in concealeds:
                         report += f"""
                     - {translations[lang]["concealed_door_closer"]}: {concealed_door_closer_name} 
@@ -1763,7 +1782,7 @@ class DoorFrameCalculator:
                     report += f""" 
                     """
                     unique_horizontal_widths = {
-                        upper_horizontal_piece_width: {"length": horizontal_pieces_length, "count": 0},
+                        very_upper_horizontal_piece_width: {"length": horizontal_pieces_length, "count": 0},
                         lower_horizontal_piece_width: {"length": horizontal_pieces_length, "count": 0},
                         }
                     unique_horizontal_widths = {width: data for width, data in unique_horizontal_widths.items() if width}
@@ -1771,7 +1790,10 @@ class DoorFrameCalculator:
                     # Calculate counts for horizontal pieces
                     for width, data in unique_horizontal_widths.items():
                         data["count"] += num_doors*2  # One horizontal piece per door
-                    report += f"""{translations[lang]["horizontal_pieces"]} ({horizontal_piece_width}mm):"""
+                    report += f"""{translations[lang]["horizontal_pieces"]}"""
+                    for width, data in unique_horizontal_widths.items():
+                        report += f"""
+                        {width}mm:"""
                     if concealed_door_closer_name in concealeds:
                         report += f"""
                     - {translations[lang]["concealed_door_closer"]}: {concealed_door_closer_name} 
@@ -1840,7 +1862,7 @@ class DoorFrameCalculator:
                     report += f""" 
                     """
                     unique_horizontal_widths = {
-                        upper_horizontal_piece_width: {"length": horizontal_pieces_length, "count": 0},
+                        very_upper_horizontal_piece_width: {"length": horizontal_pieces_length, "count": 0},
                         lower_horizontal_piece_width: {"length": horizontal_pieces_length, "count": 0},
                         }
                     unique_horizontal_widths = {width: data for width, data in unique_horizontal_widths.items() if width}
@@ -1848,7 +1870,10 @@ class DoorFrameCalculator:
                     # Calculate counts for horizontal pieces
                     for width, data in unique_horizontal_widths.items():
                         data["count"] += num_doors*2  # One horizontal piece per door
-                    report += f"""{translations[lang]["horizontal_pieces"]} ({horizontal_piece_width}mm):"""
+                    report += f"""{translations[lang]["horizontal_pieces"]}"""
+                    for width, data in unique_horizontal_widths.items():
+                        report += f"""
+                        {width}mm:"""
                     if concealed_door_closer_name in concealeds:
                         report += f"""
                     - {translations[lang]["concealed_door_closer"]}: {concealed_door_closer_name} 
