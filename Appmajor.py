@@ -1070,6 +1070,7 @@ class DoorFrameCalculator:
                         frame_width = int(self.entries["frame_width"][1].get()) if frame_width is None else frame_width
                         gap_width = int(self.entries["gap_width"][1].get())
                         slats_width = int(self.entries["slats_width"][1].get())
+                        # print("test4", gap_width)
                         # gap_wood_lock = int(self.entries["gap_wood_lock"][1].get())
                     elif door_type == self.electric_lock_label:
                         # for key in ["num_doors", "right_vpiece_width", "upper_hpiece_width", "lower_hpiece_width", "lock_height", "frame_height", "frame_width"]:
@@ -1091,8 +1092,8 @@ class DoorFrameCalculator:
                         lock_direction = self.entries["lock_direction"][1].get().strip().lower()
                         frame_height = int(self.entries["frame_height"][1].get()) if frame_height is None else frame_height
                         frame_width = int(self.entries["frame_width"][1].get()) if frame_width is None else frame_width
-                        # gap_width = int(self.entries["gap_width"][1].get())
                         slats_width = int(self.entries["slats_width"][1].get())
+                        gap_width = int(self.entries["gap_width"][1].get())
                         # gap_wood_lock = int(self.entries["gap_wood_lock"][1].get())
 
                         if edge_sealing_type in ["1mm 鐡封邊 + 1mm 石墨片"]:
@@ -1105,6 +1106,7 @@ class DoorFrameCalculator:
                     else:
                         frame_height = int(self.entries["frame_height"][1].get())
                         frame_width = int(self.entries["frame_width"][1].get())
+                        gap_width = int(self.entries["gap_width"][1].get())
 
                 else:
                     if door_type == self.box_lock_label:
@@ -1147,7 +1149,6 @@ class DoorFrameCalculator:
                         frame_height = int(self.entries["frame_height"][1].get()) if frame_height is None else frame_height
                         frame_width = int(self.entries["frame_width"][1].get()) if frame_width is None else frame_width
                         # lock_height = int(self.entries["lock_height"][1].get()) if lock_height is None else lock_height
-                        # gap_width = int(self.entries["gap_width"][1].get())
                         # gap_wood_lock = int(self.entries["gap_wood_lock"][1].get())
         
                         if edge_sealing_type in ["1mm 鐡封邊 + 1mm 石墨片"]:
@@ -1170,6 +1171,8 @@ class DoorFrameCalculator:
                 frame_height += 5
                 frame_width += 5
                 
+            print("test4", gap_width)
+
 
             inner_width, slats_length, plywood_width, plywood_height, total_length_all_doors, vertical_piece_length, \
                 horizontal_pieces_length, frame_width, outer_wood_bottom, inner_wood_bottom, \
@@ -1383,6 +1386,8 @@ class DoorFrameCalculator:
         gap_length = 0  
         slats_width = 0
         very_upper_horizontal_piece_width = 100
+        # print("test4", gap_width)
+
 
         
         if category == self.fireproof_label:
@@ -1540,7 +1545,7 @@ class DoorFrameCalculator:
                         very_upper_horizontal_piece_length = horizontal_pieces_length - concealed_length
                         
                     # print("test4", slats_width)
-                    # print("test4", gap_width)
+        # print("test4", gap_width)
 
         # if (door_type == self.electric_lock_label or door_type == self.box_lock_label) and concealed_door_closer_name == self.concealed_label:
         #     if mode == "UB":
@@ -2180,10 +2185,9 @@ class DoorFrameCalculator:
                     {translations[lang]["door_type"]}: {door_type.upper()}
                     {translations[lang]["num_doors"]}: {num_doors}
                     {translations[lang]["edge_sealing"]}: {edge_sealing} mm
-                    {translations[lang]["gap_length"]}: {gap_length} mm
                     
-                    {translations[lang]["box_lock"]}: {box_lock_name}
-                    {translations[lang]["box_lock_height"]}: {box_lock_height} mm
+                    {translations[lang]["electric_lock"]}: {electric_lock_name}
+                    {translations[lang]["electric_lock_height"]}: {electric_lock_height} mm
                     {translations[lang]["direction"]}: {lock_direction.capitalize()}
                     
                     {translations[lang]["gap_width"]}: {gap_width} mm
@@ -2262,7 +2266,6 @@ class DoorFrameCalculator:
                     {translations[lang]["door_type"]}: {door_type.upper()}
                     {translations[lang]["num_doors"]}: {num_doors}
                     {translations[lang]["edge_sealing"]}: {edge_sealing} mm
-                    {translations[lang]["gap_length"]}: {gap_length} mm
                     
                     {translations[lang]["box_lock"]}: {box_lock_name}
                     {translations[lang]["box_lock_height"]}: {box_lock_height} mm
@@ -2343,6 +2346,7 @@ class DoorFrameCalculator:
         
                     {translations[lang]["door_type"]}: {door_type.upper()}
                     {translations[lang]["num_doors"]}: {num_doors}
+                    {translations[lang]["gap_width"]}: {gap_width}
                     {translations[lang]["slats_length"]}: {slats_length} mm 
                     {translations[lang]["edge_sealing"]}: {edge_sealing} mm
                     {translations[lang]["slats_count"]}: {slats_count} 
