@@ -670,7 +670,8 @@ class DoorFrameCalculator:
                 f"二{gap_length}": ((230,220), "brown"),
                 f"三{gap_length}": ((230,325), "brown"),
                 f"{concealed_length}": ((280, 25), "black"),
-                f"{very_upper_horizontal_piece_length}": ((150, 30), "magenta")
+                f"{very_upper_horizontal_piece_length}": ((150, 30), "magenta"),
+                f"70": ((390, 65), "black")
             }
         elif category == self.non_fireproof_label and structure_type == self.honeycomb_board_label and door_type == self.box_lock_label and concealed_length == 0:
             annotations = {
@@ -696,7 +697,8 @@ class DoorFrameCalculator:
                 f"二{gap_length}": ((230,220), "brown"),
                 f"三{gap_length}": ((230,325), "brown"),
                 f"{concealed_length}": ((280, 25), "black"),
-                f"{very_upper_horizontal_piece_length}": ((150, 30), "magenta")
+                f"{very_upper_horizontal_piece_length}": ((150, 30), "magenta"),
+                f"70": ((390,65), "black")
             }
 ######################################################################################
         elif category == self.non_fireproof_label and structure_type == self.honeycomb_paper_label and door_type == self.simple_label:
@@ -712,39 +714,67 @@ class DoorFrameCalculator:
                 }
         elif category == self.non_fireproof_label and structure_type == self.honeycomb_paper_label and door_type == self.electric_lock_label and concealed_length == 0:
             annotations = {
-                f"{horizontal_length} mm": ((130, 20), "red"),
-                f"{outer_wood_upper} mm": ((10, 190), "green"),
-                f"{outer_wood_bottom} mm": ((10, 280), "orange"),
-                f"{gap_wood_lock_length} mm": ((10, 380), "brown"),
-                f"{vertical_length} mm": ((390, 260), "blue")
+                f"*mm (milimeter)": ((5, 5), "black"),
+                f"{horizontal_length}": ((200, 33), "red"),
+                f"{outer_wood_upper}": ((10, 130), "green"),
+                f"{outer_wood_bottom}": ((10, 320), "orange"),
+                f"{gap_wood_lock_length}": ((50, 430), "magenta"),
+                f"{vertical_length}": ((390, 200), "blue"),
+                f"一{gap_length}": ((190,100), "brown"),
+                f"二{gap_length}": ((190,155), "brown"),
+                f"三{gap_length}": ((190,280), "brown"),
+                f"四{gap_length}": ((190,360), "brown"),
+                f"五{gap_length}": ((190,220), "brown")
             }
         elif category == self.non_fireproof_label and structure_type == self.honeycomb_paper_label and door_type == self.electric_lock_label and concealed_length > 0:
             annotations = {
-                f"{very_upper_horizontal_piece_length} mm": ((130, 20), "magenta"),
-                f"{outer_wood_upper} mm": ((10, 190), "green"),
-                f"{outer_wood_bottom} mm": ((10, 280), "orange"),
-                f"{gap_wood_lock_length} mm": ((10, 380), "brown"),
-                f"{vertical_length} mm": ((390, 250), "blue"),
-                f"{horizontal_length} mm": ((200, 430), "red"),
-                f"{concealed_length} mm": ((280, 20), "black")
+                f"*mm (milimeter)": ((5, 5), "black"),
+                f"{horizontal_length}": ((300, 430), "red"),
+                f"{outer_wood_upper}": ((10, 130), "green"),
+                f"{outer_wood_bottom}": ((10, 320), "orange"),
+                f"{gap_wood_lock_length}": ((50, 430), "magenta"),
+                f"{vertical_length}": ((390, 200), "blue"),
+                f"{vertical_length}": ((390, 200), "blue"),
+                f"一{gap_length}": ((190,125), "brown"),
+                f"二{gap_length}": ((190,175), "brown"),
+                f"三{gap_length}": ((190,300), "brown"),
+                f"四{gap_length}": ((190,360), "brown"),
+                f"五{gap_length}": ((190,230), "brown"),
+                f"{concealed_length}": ((280, 25), "black"),
+                f"{very_upper_horizontal_piece_length}": ((150, 30), "magenta"),
+                f"70": ((390,65), "black")
             }
         elif category == self.non_fireproof_label and structure_type == self.honeycomb_paper_label and door_type == self.box_lock_label and concealed_length == 0:
             annotations = {
-                f"{horizontal_length} mm": ((130, 20), "red"),
-                f"{outer_wood_upper} mm": ((10, 190), "green"),
-                f"{outer_wood_bottom} mm": ((10, 280), "orange"),
-                f"{gap_wood_lock_length} mm": ((10, 380), "brown"),
-                f"{vertical_length} mm": ((390, 260), "blue")
+                f"*mm (milimeter)": ((5, 5), "black"),
+                f"{horizontal_length}": ((200, 33), "red"),
+                f"{outer_wood_upper}": ((10, 130), "green"),
+                f"{outer_wood_bottom}": ((10, 320), "orange"),
+                f"{gap_wood_lock_length}": ((50, 430), "magenta"),
+                f"{vertical_length}": ((390, 200), "blue"),
+                f"一{gap_length}": ((190,100), "brown"),
+                f"二{gap_length}": ((190,155), "brown"),
+                f"三{gap_length}": ((190,280), "brown"),
+                f"四{gap_length}": ((190,360), "brown"),
+                f"五{gap_length}": ((190,220), "brown")
             }
         elif category == self.non_fireproof_label and structure_type == self.honeycomb_paper_label and door_type == self.box_lock_label and concealed_length > 0:
             annotations = {
-                f"{very_upper_horizontal_piece_length} mm": ((130, 20), "magenta"),
-                f"{outer_wood_upper} mm": ((10, 190), "green"),
-                f"{outer_wood_bottom} mm": ((10, 280), "orange"),
-                f"{gap_wood_lock_length} mm": ((10, 380), "brown"),
-                f"{vertical_length} mm": ((390, 250), "blue"),
-                f"{horizontal_length} mm": ((200, 430), "red"),
-                f"{concealed_length} mm": ((280, 20), "black")
+                f"*mm (milimeter)": ((5, 5), "black"),
+                f"{horizontal_length}": ((300, 430), "red"),
+                f"{outer_wood_upper}": ((10, 130), "green"),
+                f"{outer_wood_bottom}": ((10, 320), "orange"),
+                f"{gap_wood_lock_length}": ((50, 430), "magenta"),
+                f"{vertical_length}": ((390, 200), "blue"),
+                f"{vertical_length}": ((390, 200), "blue"),
+                f"一{gap_length}": ((190,125), "brown"),
+                f"二{gap_length}": ((190,175), "brown"),
+                f"三{gap_length}": ((190,300), "brown"),
+                f"四{gap_length}": ((190,360), "brown"),
+                f"五{gap_length}": ((190,230), "brown"),
+                f"{concealed_length}": ((280, 25), "black"),
+                f"{very_upper_horizontal_piece_length}": ((150, 30), "magenta"),
+                f"70": ((390,65), "black")
             }
 #####################################################################################
         elif category == self.non_fireproof_label and structure_type == self.yipaiyikong_label and door_type == self.simple_label:
