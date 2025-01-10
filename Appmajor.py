@@ -1233,66 +1233,54 @@ class DoorFrameCalculator:
                     if door_type == self.simple_label:
                         image_path = os.path.join(application_path, 'UB.png')
                         
-                    elif door_type == self.electric_lock_label and concealed_length > 0 and lock_direction == self.top_label:
-                        image_path = os.path.join(application_path, 'UB_kunci_elektrik_menkongqi.png')  
-                    elif door_type == self.box_lock_label and concealed_length > 0 and lock_direction == self.top_label:
-                        image_path = os.path.join(application_path, 'UB_kunci_elektrik_menkongqi.png')
+                    elif door_type in [self.electric_lock_label, self.box_lock_label]:
+                        if lock_direction == self.top_label:
+                            if concealed_length > 0:
+                                image_path = os.path.join(application_path, 'UB_kunci_elektrik_menkongqi.png')
+                            else:
+                                image_path = os.path.join(application_path, 'UB_kunci_elektrik.png')
+                        elif lock_direction == self.bottom_label:
+                            image_path = os.path.join(application_path, 'UB_kunci_elektrik_bawah.png')
                         
-                    elif door_type == self.electric_lock_label and concealed_length == 0 and lock_direction == self.top_label:
-                        image_path = os.path.join(application_path, 'UB_kunci_elektrik.png')
-                    elif door_type == self.electric_lock_label and concealed_length == 0 and lock_direction == self.bottom_label:
-                        image_path = os.path.join(application_path, 'UB_kunci_elektrik_bawah.png')
-                        
-                    elif door_type == self.box_lock_label and concealed_length == 0 and lock_direction == self.top_label:
-                        image_path = os.path.join(application_path, 'UB_kunci_elektrik.png')
-                    elif door_type == self.box_lock_label and concealed_length == 0 and lock_direction == self.bottom_label:
-                        image_path = os.path.join(application_path, 'UB_kunci_elektrik_bawah.png')
+                
                 else:
                     if door_type == self.simple_label:
                         image_path = os.path.join(application_path, 'simple.png')
-                    elif door_type == self.electric_lock_label and concealed_length > 0:
-                        image_path = os.path.join(application_path, 'kunci menkongqi.png')
-                    elif door_type == self.box_lock_label and concealed_length > 0:
-                        image_path = os.path.join(application_path, 'kunci menkongqi.png')
-                    elif door_type == self.electric_lock_label and concealed_length == 0:
-                        image_path = os.path.join(application_path, 'kunci.png')
-                    elif door_type == self.box_lock_label and concealed_length == 0:
-                        image_path = os.path.join(application_path, 'kunci.png')
+                    
+                    elif door_type in [self.electric_lock_label, self.box_lock_label]:
+                        if concealed_length > 0:
+                            image_path = os.path.join(application_path, 'kunci menkongqi.png')
+                        else:
+                            image_path = os.path.join(application_path, 'kunci.png')
             
             elif category == self.non_fireproof_label:
                 if structure_type == self.honeycomb_board_label:
                     if door_type == self.simple_label:
                         image_path = os.path.join(application_path, 'honeycomb_board_simple.png')
-                    elif door_type == self.electric_lock_label and concealed_length == 0:
-                        image_path = os.path.join(application_path, 'honeycomb_board_kunci_elektrik.png')
-                    elif door_type == self.box_lock_label and concealed_length == 0:
-                        image_path = os.path.join(application_path, 'honeycomb_board_kunci_elektrik.png')
-                    elif door_type == self.electric_lock_label and concealed_length > 0:
-                        image_path = os.path.join(application_path, 'honeycomb_board_kunci_elektrik_menkongqi.png')
-                    elif door_type == self.box_lock_label and concealed_length > 0:
-                        image_path = os.path.join(application_path, 'honeycomb_board_kunci_elektrik_menkongqi.png')
+                    elif door_type in [self.electric_lock_label, self.box_lock_label]:
+                        if concealed_length > 0:
+                            image_path = os.path.join(application_path, 'honeycomb_board_kunci_elektrik_menkongqi.png')
+                        else:
+                            image_path = os.path.join(application_path, 'honeycomb_board_kunci_elektrik.png')
+            
                 elif structure_type == self.honeycomb_paper_label:
                     if door_type == self.simple_label:
                         image_path = os.path.join(application_path, 'honeycomb_paper_simple.png')
-                    elif door_type == self.electric_lock_label and concealed_length == 0:
-                        image_path = os.path.join(application_path, 'honeycomb_paper_kunci_elektrik.png')
-                    elif door_type == self.box_lock_label and concealed_length == 0:
-                        image_path = os.path.join(application_path, 'honeycomb_paper_kunci_elektrik.png')
-                    elif door_type == self.electric_lock_label and concealed_length > 0:
-                        image_path = os.path.join(application_path, 'honeycomb_paper_kunci_elektrik_menkongqi.png')
-                    elif door_type == self.box_lock_label and concealed_length > 0:
-                        image_path = os.path.join(application_path, 'honeycomb_paper_kunci_elektrik_menkongqi.png')
+                    elif door_type in [self.electric_lock_label, self.box_lock_label]:
+                        if concealed_length > 0:
+                            image_path = os.path.join(application_path, 'honeycomb_paper_kunci_elektrik_menkongqi.png')
+                        else:
+                            image_path = os.path.join(application_path, 'honeycomb_paper_kunci_elektrik.png')
+            
                 elif structure_type == self.yipaiyikong_label:
                     if door_type == self.simple_label:
-                        image_path = os.path.join(application_path, 'yipaiyikong.png')
-                    elif door_type == self.electric_lock_label and concealed_length == 0:
-                        image_path = os.path.join(application_path, 'yipaiyikong_kunci_elektrik.png')
-                    elif door_type == self.box_lock_label and concealed_length == 0:
-                        image_path = os.path.join(application_path, 'yipaiyikong_kunci_elektrik.png')
-                    elif door_type == self.electric_lock_label and concealed_length > 0:
-                        image_path = os.path.join(application_path, 'yipaiyikong_kunci_elektrik_menkongqi.png')
-                    elif door_type == self.box_lock_label and concealed_length > 0:
-                        image_path = os.path.join(application_path, 'yipaiyikong_kunci_elektrik_menkongqi.png')
+                        image_path = os.path.join(application_path, 'yipaiyikong_simple.png')
+                    elif door_type in [self.electric_lock_label, self.box_lock_label]:
+                        if concealed_length > 0:
+                            image_path = os.path.join(application_path, 'yipaiyikong_kunci_elektrik_menkongqi.png')
+                        else:
+                            image_path = os.path.join(application_path, 'yipaiyikong_kunci_elektrik.png')
+
                         
             else:
                 image_path = None
