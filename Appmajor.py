@@ -871,28 +871,18 @@ class DoorFrameCalculator:
             mode = self.mode_selection.get()
             # Initialize shared variables
             frame_height = frame_width = max_height = min_height = None
-    
-            # if mode == "UB":
-            #     # UB-specific fields
-            #     max_height = int(self.entries["max_height"][1].get())
-            #     max_height = int(max_height)
-            #     min_height = int(self.entries["min_height"][1].get())
-            #     frame_width = int(self.entries["frame_width"][1].get())
-            #     frame_height = int(self.entries["frame_height"][1].get())
-
-    
-                # Validate UB-specific constraints
-                
-
+            
+            self.validate_inputs()
+            # Proceed with calculation if validation passes
+            # self.perform_calculation()
         
-            # for key in ["num_doors", "right_vpiece_width", "left_vpiece_width", "upper_hpiece_width", "lower_hpiece_width", "lock_height", "frame_height", "frame_width"]:
-            #     if not self.entries[key][1].get().strip().isdigit():
-            #         raise ValueError(f"請輸入有效的數字以 {translations[self.current_language][key]}")
+     
             door_type = self.entries["door_type"][1].get().strip().lower()
             category = self.entries["category"][1].get().strip().lower()
             num_doors = int(self.entries["num_doors"][1].get())
             structure_type = self.entries["structure_type"][1].get().strip().lower()
             category = self.entries["category"][1].get().strip().lower()
+            
 
             right_vertical_piece_width = int(self.entries["right_vpiece_width"][1].get())
             if category == self.fireproof_label:
@@ -1394,8 +1384,11 @@ class DoorFrameCalculator:
             
             self.result_text.window_create("end", window=result_frame)
             self.result_image.window_create("end", window=result_imageframe)
-        except Exception as e:
-            messagebox.showerror("Error", str(e))
+            
+
+
+        except ValueError as e:
+            messagebox.showerror("Input Error", str(e))
 
     def calculate_material_requirements(self, door_type, num_doors, frame_height, right_vertical_piece_width,
                                         left_vertical_piece_width, upper_horizontal_piece_width, lower_horizontal_piece_width,
@@ -2982,6 +2975,41 @@ class DoorFrameCalculator:
         # Update drag data
         self.drag_data["x"] = event.x
         self.drag_data["y"] = event.y
+        
+    def validate_inputs(self):
+        # Define the required fields for each context
+        required_fields = {
+            "UB_simple": ["num_doors", "right_vpiece_width", "frame_height", "frame_width"],
+            "UB_electric": ["num_doors", "right_vpiece_width", "lock_height", "frame_height", "frame_width"],
+            "non_UB_simple": ["num_doors", "left_vpiece_width", "frame_height", "frame_width"],
+            "non_UB_electric": ["num_doors", "left_vpiece_width", "lock_height", "frame_height", "frame_width"],
+        }
+    
+        # Determine the current mode and door type
+        mode = self.mode_selection.get()
+        door_type = self.entries["door_type"][1].get().strip().lower()
+    
+        # Map context to required fields
+        if mode == "UB" and door_type == self.simple_label:
+            context = "UB_simple"
+        elif mode == "UB" and door_type == self.electric_lock_label:
+            context = "UB_electric"
+        elif mode != "UB" and door_type == self.simple_label:
+            context = "non_UB_simple"
+        elif mode != "UB" and door_type == self.electric_lock_label:
+            context = "non_UB_electric"
+        else:
+            context = None
+    
+        if not context:
+            raise ValueError("Invalid mode or door type.")
+    
+        # Validate the required fields
+        for field in required_fields[context]:
+            value = self.entries[field][1].get().strip()
+            if not value.isdigit():
+                raise ValueError(f"請輸入有效的數字以 {translations[self.current_language][field]}")
+
         
    
 if __name__ == "__main__":
