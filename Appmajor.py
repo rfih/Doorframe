@@ -581,7 +581,7 @@ class DoorFrameCalculator:
         
     def add_annotations(self, image_path, vertical_length, horizontal_length, door_type, outer_wood_upper, inner_wood_upper, outer_wood_bottom, 
                         inner_wood_bottom, concealed_length, very_upper_horizontal_piece_length, concealed_door_closer_name, slats_count,
-                        category, gap_wood_lock_length, reinforce_wood, gap_length_bottom, gap_length_upper, gap_wood_lock, gap_length):
+                        category, gap_wood_lock_length, reinforce_wood, gap_length_bottom, gap_length_upper, gap_wood_lock, gap_length, mode):
         # Open the image file
         image = Image.open(image_path)
         draw = ImageDraw.Draw(image)
@@ -597,7 +597,8 @@ class DoorFrameCalculator:
             concealed_length = 0
 
         # Annotation positions can be adjusted based on door_type
-# Fireproof!!!#
+        '''################################################################### Fireproof!!!#########################################################'''
+        
         if category == self.fireproof_label and door_type == self.simple_label:
             annotations = {
             f"{horizontal_length} mm": ((100, 20), "red"),   # Position and color for horizontal length
@@ -643,7 +644,7 @@ class DoorFrameCalculator:
                 f"{inner_wood_bottom} mm": ((10, 380), "brown"),
                 f"{vertical_length} mm": ((390, 260), "blue")
             }
-        elif category == self.fireproof_label and door_type == self.ub_label:
+        elif category == self.fireproof_label and mode == "UB" and door_type == self.simple_label:
             annotations = {
                 f"{horizontal_length} mm": ((100, 20), "red"),   # Position and color for horizontal length
                 f"{vertical_length} mm": ((10, 210), "blue")
@@ -861,11 +862,13 @@ class DoorFrameCalculator:
             # if mode == "UB":
             #     # UB-specific fields
             #     max_height = int(self.entries["max_height"][1].get())
+            #     max_height = int(max_height)
             #     min_height = int(self.entries["min_height"][1].get())
             #     frame_width = int(self.entries["frame_width"][1].get())
-            #     frame_height = max_height  # Frame height equals max height in UB mode
+            #     frame_height = int(self.entries["frame_height"][1].get())
+
     
-            #     # Validate UB-specific constraints
+                # Validate UB-specific constraints
                 
 
         
@@ -1058,9 +1061,14 @@ class DoorFrameCalculator:
                         electric_lock_height += 4
                         box_lock_height += 4
                 else:
-                    frame_height = int(self.entries["frame_height"][1].get())
+                    max_height = int(self.entries["max_height"][1].get())
+                    min_height = int(self.entries["min_height"][1].get())
+                    frame_height = max_height
                     frame_width = int(self.entries["frame_width"][1].get())
-                        
+                    if max_height - min_height > int(self.entries["upper_hpiece_width"][1].get()):
+                        raise ValueError("the difference height should not exceed wood width\n 高度差異不應超過上面角材的寬度\n Perbedaan tinggi tidak boleh melebihi lebar kayu sisi bagian atas")
+
+
             elif category == self.non_fireproof_label:            
                 if structure_type == self.yipaiyikong_label:
                     if door_type == self.box_lock_label:
@@ -1184,7 +1192,7 @@ class DoorFrameCalculator:
                 frame_height += 5
                 frame_width += 5
                 
-            print("test4", gap_width)
+            # print("test4", gap_width)
 
 
             inner_width, slats_length, plywood_width, plywood_height, total_length_all_doors, vertical_piece_length, \
@@ -1224,14 +1232,21 @@ class DoorFrameCalculator:
                 if mode == "UB":
                     if door_type == self.simple_label:
                         image_path = os.path.join(application_path, 'UB.png')
-                    elif door_type == self.electric_lock_label and concealed_length > 0:
-                        image_path = os.path.join(application_path, 'kunci_menkongqi_UB.png')
-                    elif door_type == self.box_lock_label and concealed_length > 0:
-                        image_path = os.path.join(application_path, 'kunci_menkongqi_UB.png')
-                    elif door_type == self.electric_lock_label and concealed_length == 0:
-                        image_path = os.path.join(application_path, 'kunci_UB.png')
-                    elif door_type == self.box_lock_label and concealed_length == 0:
-                        image_path = os.path.join(application_path, 'kunci_UB.png')
+                        
+                    elif door_type == self.electric_lock_label and concealed_length > 0 and lock_direction == self.top_label:
+                        image_path = os.path.join(application_path, 'UB_kunci_elektrik_menkongqi.png')  
+                    elif door_type == self.box_lock_label and concealed_length > 0 and lock_direction == self.top_label:
+                        image_path = os.path.join(application_path, 'UB_kunci_elektrik_menkongqi.png')
+                        
+                    elif door_type == self.electric_lock_label and concealed_length == 0 and lock_direction == self.top_label:
+                        image_path = os.path.join(application_path, 'UB_kunci_elektrik.png')
+                    elif door_type == self.electric_lock_label and concealed_length == 0 and lock_direction == self.bottom_label:
+                        image_path = os.path.join(application_path, 'UB_kunci_elektrik_bawah.png')
+                        
+                    elif door_type == self.box_lock_label and concealed_length == 0 and lock_direction == self.top_label:
+                        image_path = os.path.join(application_path, 'UB_kunci_elektrik.png')
+                    elif door_type == self.box_lock_label and concealed_length == 0 and lock_direction == self.bottom_label:
+                        image_path = os.path.join(application_path, 'UB_kunci_elektrik_bawah.png')
                 else:
                     if door_type == self.simple_label:
                         image_path = os.path.join(application_path, 'simple.png')
@@ -1289,7 +1304,7 @@ class DoorFrameCalculator:
             # Annotate the image
             annotated_image_path = self.add_annotations(image_path, vertical_piece_length, horizontal_pieces_length, door_type, outer_wood_upper, inner_wood_upper,
                                                         outer_wood_bottom, inner_wood_bottom,concealed_length, very_upper_horizontal_piece_length, concealed_door_closer_name, slats_count,
-                                                        category, gap_wood_lock_length, reinforce_wood, gap_length_bottom, gap_length_upper, gap_wood_lock, gap_length)
+                                                        category, gap_wood_lock_length, reinforce_wood, gap_length_bottom, gap_length_upper, gap_wood_lock, gap_length, mode)
             
             # Configure text tags for styling
             self.result_text.tag_configure("title", foreground="black", font=("Helvetica", 13, "bold"))
