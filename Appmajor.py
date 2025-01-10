@@ -291,9 +291,11 @@ class DoorFrameCalculator:
         self.tooltips["lock_length"] = ToolTip(self.entries["lock_length"][1], translations[self.current_language]["tooltips"]["lock_length"], self)
         current_row= self.create_label_and_entry(frame, "lock_height", current_row)
         self.tooltips["lock_height"] = ToolTip(self.entries["lock_height"][1], translations[self.current_language]["tooltips"]["lock_height"], self)
-        current_row= self.create_label_and_entry(frame, "lock_direction", current_row, "lock_direction")
+        current_row= self.create_label_and_entry(frame, "lock_direction", current_row, "lock_direction", add_separator= True)
         self.entries["lock_direction"][1]['values'] = ("top", "bottom")
         self.tooltips["lock_direction"] = ToolTip(self.entries["lock_direction"][1], translations[self.current_language]["tooltips"]["lock_direction"], self)
+        self.entries["lock_direction"][1].bind("<<ComboboxSelected>>", self.update_inputs)
+
         current_row= self.create_label_and_entry(frame, "concealed_door_closer_name", current_row, "concealed_door_closer_name", add_separator=True)
         self.entries["concealed_door_closer_name"][1]['values'] = list(concealeds.keys())
         self.tooltips["concealed_door_closer_name"] = ToolTip(self.entries["concealed_door_closer_name"][1], translations[self.current_language]["tooltips"]["concealed_door_closer_name"], self)
@@ -350,7 +352,7 @@ class DoorFrameCalculator:
         separator = None
         if add_separator:
             separator = ttk.Separator(frame, orient="horizontal")
-            separator.grid(row=row + 1, column=0, columnspan=2, sticky="ew", pady=10)
+            separator.grid(row=row + 1, column=0, columnspan=2, sticky="ew", pady=7)
             self.entries[f"{key}_separator"] = separator  # Store separator in entries dictionary
     
         return row + (2 if add_separator else 1)  # Increment rows correctly
@@ -368,6 +370,7 @@ class DoorFrameCalculator:
         category = self.entries["category"][1].get().strip().lower()
         structure_type = self.entries["structure_type"][1].get().strip().lower()
         door_type = self.entries["door_type"][1].get().strip().lower()
+        lock_direction = self.entries["lock_direction"][1].get().strip().lower()
         mode = self.mode_selection.get()
         if category == self.fireproof_label:
             self.show_entries(["door_type"], True)
@@ -378,6 +381,10 @@ class DoorFrameCalculator:
                 self.box_lock_label
             )
             self.ub_mode_button.grid()
+            # self.entries["lock_direction"][1]['values'] = (
+            #     self.top_label,
+            #     self.bottom_label
+            # )
             if mode == "UB":
                 self.show_entries(["structure_type", "frame_height"], False)
                 self.show_entries(["num_doors", "right_vpiece_width", "left_vpiece_width", "door_type", "max_height", "min_height"], True)
@@ -385,10 +392,16 @@ class DoorFrameCalculator:
                     self.show_entries(["left_vpiece_width"], True)
                 elif door_type == self.electric_lock_label:
                     self.show_entries(["electric_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], True)
-                # elif door_type == self.ub_label:
-                #     self.show_entries(["max_height", "min_height"], True)
+                    if lock_direction == self.bottom_label:
+                        self.show_entries(["concealed_door_closer_name"], False)
+                    elif lock_direction == self.top_label:
+                        self.show_entries(["concealed_door_closer_name"], True)
                 elif door_type == self.box_lock_label:
                     self.show_entries(["box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name"], True)
+                    if lock_direction == self.bottom_label:
+                        self.show_entries(["concealed_door_closer_name"], False)
+                    elif lock_direction == self.top_label:
+                        self.show_entries(["concealed_door_closer_name"], True)
                 else:
                     self.show_entries(["electric_lock_name", "lock_length", "lock_height", "lock_direction", "lock_offset_bottom",
                                        "box_lock_name", "lock_height", "lock_direction", "concealed_door_closer_name", "reinforce_wood"], False)
