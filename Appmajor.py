@@ -2978,11 +2978,13 @@ class DoorFrameCalculator:
         
     def validate_inputs(self):
         # Define the required fields for each context
-        required_fields = {
-            "UB_simple": ["num_doors", "right_vpiece_width", "frame_height", "frame_width"],
+        required_text_fields = {
+            "UB_simple": ["num_doors", "right_vpiece_width", "frame_height", "frame_width",
+                          "left_vpiece_width", "upper_hpiece_width", "lower_hpiece_width"],
             "UB_electric": ["num_doors", "right_vpiece_width", "lock_height", "frame_height", "frame_width"],
-            "non_UB_simple": ["num_doors", "left_vpiece_width", "frame_height", "frame_width"],
-            "non_UB_electric": ["num_doors", "left_vpiece_width", "lock_height", "frame_height", "frame_width"],
+            "non_UB_simple": ["num_doors", "left_vpiece_width", "frame_height", "frame_width", "upper_hpiece_width", "lower_hpiece_width", "right_vpiece_width"],
+            "non_UB_electric": ["num_doors", "lock_height", "frame_height", "frame_width", "upper_hpiece_width", "lower_hpiece_width", "right_vpiece_width"],
+            "non_fireproof": [""]
         }
     
         # Determine the current mode and door type
@@ -2992,11 +2994,11 @@ class DoorFrameCalculator:
         # Map context to required fields
         if mode == "UB" and door_type == self.simple_label:
             context = "UB_simple"
-        elif mode == "UB" and door_type == self.electric_lock_label:
+        elif mode == "UB" and door_type in [self.electric_lock_label, self.box_lock_label]:
             context = "UB_electric"
         elif mode != "UB" and door_type == self.simple_label:
             context = "non_UB_simple"
-        elif mode != "UB" and door_type == self.electric_lock_label:
+        elif mode != "UB" and door_type in [self.electric_lock_label, self.box_lock_label]:
             context = "non_UB_electric"
         else:
             context = None
@@ -3005,10 +3007,10 @@ class DoorFrameCalculator:
             raise ValueError("Invalid mode or door type.")
     
         # Validate the required fields
-        for field in required_fields[context]:
+        for field in required_text_fields[context]:
             value = self.entries[field][1].get().strip()
             if not value.isdigit():
-                raise ValueError(f"請輸入有效的數字以 {translations[self.current_language][field]}")
+                raise ValueError(f"請輸入有效的數字以 {translations[self.current_language][field]}\n Silakan masukkan nomor yang valid untuk {translations[self.current_language][field]}")
 
         
    
