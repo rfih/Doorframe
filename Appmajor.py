@@ -1164,7 +1164,7 @@ class DoorFrameCalculator:
             if edge_sealing_type in ["0.5mm ABS", "0.8mm 美耐板", "1mm 不織布"]:
                 frame_height += 10
                 frame_width += 10
-            elif edge_sealing_type in ["1mm 鐡封邊 + 1mm 石墨片", "1mm 鐡封邊", "4mm 白木"]:
+            elif edge_sealing_type in ["1mm 鐡封邊 + 1mm 石墨片", "1mm 鐡封邊"]:
                 frame_height += 5
                 frame_width += 5
             elif edge_sealing_type in ["1mm 鋁封邊"]:
