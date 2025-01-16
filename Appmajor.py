@@ -904,6 +904,12 @@ class DoorFrameCalculator:
             upper_horizontal_piece_width = int(self.entries["upper_hpiece_width"][1].get())
             lower_horizontal_piece_width = int(self.entries["lower_hpiece_width"][1].get())
             ub_wood_piece_width = int(self.entries["ub_wood_width"][1].get())
+            print("test4", right_vertical_piece_width)
+            print("test4", left_vertical_piece_width)
+            print("test4", frame_width)
+            print("test4", frame_height)
+            print("test4", upper_horizontal_piece_width)
+            print("test4", lower_horizontal_piece_width)
             
             edge_sealing_options = {
                 "6mm 實木": 6,
@@ -950,14 +956,6 @@ class DoorFrameCalculator:
             lock_height = 0
             lock_length = 0
 
-            # for key in ["num_doors", "right_vpiece_width", "upper_hpiece_width", "lower_hpiece_width", "lock_height", "frame_height", "frame_width"]:
-            #     if not self.entries[key][1].get().strip().isdigit():
-            #         raise ValueError(f"請輸入有效的數字以 {translations[self.current_language][key]}")
-            # if door_type == self.ub_label:
-            #     max_height = int(self.entries["max_height"][1].get())
-            #     min_height = int(self.entries["min_height"][1].get())
-            #     frame_height = max_height
-            #     frame_width = int(self.entries["frame_width"][1].get())
             if category == self.fireproof_label and mode != "UB":
                 if door_type == self.box_lock_label:
                     box_lock_name = self.entries["box_lock_name"][1].get().strip()
@@ -1003,8 +1001,8 @@ class DoorFrameCalculator:
                         electric_lock_height += 4
                         box_lock_height += 4
                 else:
-                    frame_height = int(self.entries["frame_height"][1].get())
-                    frame_width = int(self.entries["frame_width"][1].get())
+                    frame_height = int(self.entries["frame_height"][1].get()) if frame_height is None else frame_height
+                    frame_width = int(self.entries["frame_width"][1].get()) if frame_width is None else frame_width
                         
             elif category == self.fireproof_label and mode == "UB":
                 if door_type == self.box_lock_label:
@@ -1189,6 +1187,12 @@ class DoorFrameCalculator:
                 frame_width += 5
                 
             # print("test4", gap_width)
+            print("test4", right_vertical_piece_width)
+            print("test4", left_vertical_piece_width)
+            print("test4", frame_width)
+            print("test4", frame_height)
+            print("test4", upper_horizontal_piece_width)
+            print("test4", lower_horizontal_piece_width)
 
 
             inner_width, slats_length, plywood_width, plywood_height, total_length_all_doors, vertical_piece_length, \
@@ -1318,8 +1322,6 @@ class DoorFrameCalculator:
             inner_wood_bottom_label = translations[lang]["inner_wood_bottom_part"]
             horizontal_length_label = translations[lang]["length_each_pieceh"]
             very_upper_horizontal_piece_length_label = translations[lang]["very_upper_horizontal_piece_length"]
-            # gap_width_label = translations[lang]["gap_width"]
-            # slats_length_label = translations[lang]["slats_length"]
             slats_count = translations[lang]["slats_count"]
             total_blocks = translations[lang]["total_blocks"]
         
@@ -1401,7 +1403,12 @@ class DoorFrameCalculator:
         gap_length = 0  
         slats_width = 0
         very_upper_horizontal_piece_width = 100
-        # print("test4", gap_width)
+        print("test4", right_vertical_piece_width)
+        print("test4", left_vertical_piece_width)
+        print("test4", frame_width)
+        print("test4", frame_height)
+        print("test4", upper_horizontal_piece_width)
+        print("test4", lower_horizontal_piece_width)
 
 
         
@@ -2974,38 +2981,84 @@ class DoorFrameCalculator:
         required_text_fields = {
             "UB_simple": ["num_doors", "right_vpiece_width", "max_height", "min_height", "frame_width",
                           "left_vpiece_width", "upper_hpiece_width", "lower_hpiece_width", "ub_wood_width"],
-            "UB_electric": ["num_doors", "right_vpiece_width", "lock_height", "frame_height", "frame_width"],
-            "non_UB_simple": ["num_doors", "left_vpiece_width", "frame_height", "frame_width", "upper_hpiece_width", "lower_hpiece_width", "right_vpiece_width"],
-            "non_UB_electric": ["num_doors", "lock_height", "frame_height", "frame_width", "upper_hpiece_width", "lower_hpiece_width", "right_vpiece_width"],
-            "non_fireproof": [""]
+            "UB_electric": ["num_doors", "right_vpiece_width", "lock_height", "max_height", "min_height", 
+                            "upper_hpiece_width", "lower_hpiece_width", "ub_wood_width",
+                            "lock_height"],
+            "UB_box": ["num_doors", "right_vpiece_width", "lock_height", "max_height", "min_height", 
+                            "upper_hpiece_width", "lower_hpiece_width", "ub_wood_width",
+                              "lock_height"],
+            "non_UB_simple": ["num_doors", "left_vpiece_width", "frame_height", "frame_width", "upper_hpiece_width",
+                              "lower_hpiece_width", "right_vpiece_width"],
+            "non_UB_electric": ["num_doors", "lock_height", "frame_height", "frame_width", "upper_hpiece_width",
+                                "lower_hpiece_width", "right_vpiece_width", "lock_height"],
+            "non_UB_box": ["num_doors", "lock_height", "frame_height", "frame_width", "upper_hpiece_width",
+                                "lower_hpiece_width", "right_vpiece_width", "lock_height"],
+            "non_fireproof_simple": ["num_doors", "right_vpiece_width", "frame_height", "frame_width", "frame_width", 
+                                      "left_vpiece_width", "upper_hpiece_width", "lower_hpiece_width", "ub_wood_width",
+                                      "lock_height", "reinforce_wood"],
+            "non_fireproof_simple_yipaiyikong": ["num_doors", "right_vpiece_width", "frame_height", "frame_width", "frame_width", 
+                                                  "left_vpiece_width", "upper_hpiece_width", "lower_hpiece_width", "ub_wood_width", "slats_width", "gap_width"],
+            "non_fireproof_electric": ["num_doors", "lock_height", "frame_height", "frame_width", "upper_hpiece_width",
+                                        "lower_hpiece_width", "right_vpiece_width", "lock_height"],
+            "non_fireproof_electric_yipaiyikong": ["num_doors", "lock_height", "frame_height", "frame_width", "upper_hpiece_width",
+                                                    "lower_hpiece_width", "right_vpiece_width", "lock_height", "slats_width", "gap_width"],
+            "non_fireproof_box": ["num_doors", "lock_height", "frame_height", "frame_width", "upper_hpiece_width",
+                                  "lower_hpiece_width", "right_vpiece_width", "lock_height"],
+            "non_fireproof_box_yipaiyikong": ["num_doors", "lock_height", "frame_height", "frame_width", "upper_hpiece_width",
+                                              "lower_hpiece_width", "right_vpiece_width", "lock_height", "slats_width", "gap_width"]
         }
     
         # Determine the current mode and door type
         mode = self.mode_selection.get()
         door_type = self.entries["door_type"][1].get().strip().lower()
+        category = self.entries["category"][1].get().strip().lower()
+        structure_type = self.entries["structure_type"][1].get().strip().lower()
     
         # Map context to required fields
         if mode == "UB" and door_type == self.simple_label:
             context = "UB_simple"
-        elif mode == "UB" and door_type in [self.electric_lock_label, self.box_lock_label]:
+        elif mode == "UB" and door_type == self.electric_lock_label:
             context = "UB_electric"
+        elif mode == "UB" and door_type == self.box_lock_label:
+            context = "UB_box"
         elif mode != "UB" and door_type == self.simple_label:
             context = "non_UB_simple"
-        elif mode != "UB" and door_type in [self.electric_lock_label, self.box_lock_label]:
+        elif mode != "UB" and door_type == self.electric_lock_label:
             context = "non_UB_electric"
+        elif mode != "UB"and door_type == self.box_lock_label:
+            context = "non_UB_box"
+        elif category == self.fireproof_label and structure_type in [self.honeycomb_board_label, self.honeycomb_paper_label]:
+            if door_type == self.simple_label:
+                context = "non_fireproof_simple"
+            elif door_type == self.electric_lock_label:
+                context = "non_fireproof_electric"
+            else:
+                context = "non_fireproof_box"
+        elif category == self.non_fireproof_label and structure_type == self.yipaiyikong_label:
+            if door_type == self.simple_label:
+                context = "non_fireproof_simple_yipaiyikong"
+            elif door_type == self.electric_lock_label:
+                context = "non_fireproof_electric_yipaiyikong"
+            else:
+                context = "non_fireproof_box_yipaiyikong"
         else:
             context = None
+
     
         if not context:
-            raise ValueError("Invalid mode or door type.")
+            raise ValueError("無效的模式或門類型。\n Mode atau jenis pintu tidak valid.")
     
         # Validate the required fields
-        for field in required_text_fields[context]:
-            value = self.entries[field][1].get().strip()
-            if not value.isdigit():
-                raise ValueError(f"請輸入有效的數字以 {translations[self.current_language][field]}\n Silakan masukkan nomor yang valid untuk {translations[self.current_language][field]}")
+        if context in required_text_fields:
+            for field in required_text_fields[context]:
+                if field in self.entries and self.entries[field][0].winfo_ismapped():
+                    value = self.entries[field][1].get().strip()
+                    if not value.isdigit():
+                        raise ValueError(f"請輸入有效的數字以 {translations[self.current_language][field]}\n Silakan masukkan nomor yang valid untuk {translations[self.current_language][field]}")
 
-        
+    
+
+
    
 if __name__ == "__main__":
     root = tk.Tk()
