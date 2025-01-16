@@ -6,7 +6,6 @@ import sys
 from PIL import Image, ImageTk, ImageDraw, ImageFont
 import math
 
-
 # Determine the path to the JSON files
 if getattr(sys, 'frozen', False):
     application_path = sys._MEIPASS

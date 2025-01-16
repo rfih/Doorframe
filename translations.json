@@ -113,7 +113,7 @@
         "gap_wood_lock_length": "gap wood length",
         "ub_wood_width": "UB wood width",
         "tooltips": {
-            "door_type": "Select the type of door frame you are using. Options include:\n- Simple: Standard door frame without complex lock mechanisms.\n- UB: Designed for UB-type locks, typically requires specific height adjustments.\n- Electric Lock: Suitable for frames with electric locks, requires measurements for lock and hinge positions.\n- Box Lock: For frames with box locks, additional specifications include height and lock offset.",
+            "door_type": "Select the type of door frame you are using. Options include:\n- Simple: Standard door frame without complex lock mechanisms.\n- Electric Lock: Suitable for frames with electric locks, requires measurements for lock and hinge positions.\n- Box Lock: For frames with box locks, additional specifications include height and lock offset.",
             "num_doors": "Enter the total number of doors for calculation.",
             "right_vpiece_width": "Enter the width for the hinge side wood piece.",
             "left_vpiece_width": "Enter the width for the key side wood piece.",
@@ -252,7 +252,7 @@
         "gap_wood_lock_length": "鎖側-中的長度",
         "ub_wood_width": "UB角材的寬度",
         "tooltips": {
-            "door_type": "選擇您正在使用的框架類型。選項包括：\n- 簡單：標準的框架，沒有複雜的鎖機制。\n- UB：專為UB型鎖設計的門框，通常需要特定的高度調整。\n- 電子鎖：適用於帶有電子鎖的門的框架，需要測量鎖和鉸鏈的位置。\n- 匣式鎖：適用於帶有匣式鎖的門的框架，附加的規格包括高度和鎖偏移量。",
+            "door_type": "選擇您正在使用的框架類型。選項包括：\n- 簡單：標準的框架，沒有複雜的鎖機制。\n- 電子鎖：適用於帶有電子鎖的門的框架，需要測量鎖和鉸鏈的位置。\n- 匣式鎖：適用於帶有匣式鎖的門的框架，附加的規格包括高度和鎖偏移量。",
             "num_doors": "輸入要計算的門的總數。",
             "right_vpiece_width": "輸入較鏈側角材的寬度。",
             "left_vpiece_width": "輸入把手側角材的寬度。",
@@ -390,7 +390,7 @@
         "gap_wood_lock_length": "Panjang kayu gap",
         "ub_wood_width": "Ukuran lebar kayu UB",
         "tooltips": {
-            "door_type": "Pilih jenis bingkai pintu yang Anda gunakan. Pilihan meliputi:\n- Simple: Bingkai pintu standar tanpa mekanisme kunci yang rumit.\n- UB: Dirancang untuk tipe pintu UB, biasanya memerlukan penyesuaian tinggi khusus.\n- Electric Lock: Cocok untuk bingkai dengan kunci elektrik, membutuhkan pengukuran untuk posisi kunci dan engsel.\n- Box Lock: Untuk bingkai dengan kunci kotak, spesifikasi tambahan termasuk tinggi dan posisi kunci.",
+            "door_type": "Pilih jenis bingkai pintu yang Anda gunakan. Pilihan meliputi:\n- Simple: Bingkai pintu standar tanpa mekanisme kunci yang rumit.\n- Electric Lock: Cocok untuk bingkai dengan kunci elektrik, membutuhkan pengukuran untuk posisi kunci dan engsel.\n- Box Lock: Untuk bingkai dengan kunci kotak, spesifikasi tambahan termasuk tinggi dan posisi kunci.",
             "num_doors": "Masukkan jumlah pintu yang dibuat.",
             "right_vpiece_width": "Masukkan lebar kayu bagian engsel",
             "left_vpiece_width": "Masukkan lebar kayu bagian kunci",

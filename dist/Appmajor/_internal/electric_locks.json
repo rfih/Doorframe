@@ -1,0 +1,117 @@
+{
+    "CISA 52710": {
+        "length": 180,
+        "offset_bottom": 123,
+        "offset_top": 57
+    },
+    "MIWA U9LA51-1": {
+        "length": 134,
+        "offset_bottom": 25,
+        "offset_top": 109
+    },
+    "WDEL-9800": {
+        "length": 176,
+        "offset_bottom": 68,
+        "offset_top": 108
+    },
+    "VOC-SOLO-GSF EYES PRO": {
+        "length": 188,
+        "offset_bottom": 138,
+        "offset_top": 50
+    },
+    "飛利浦 EASY KEY ALPHA-VP": {
+        "length": 188,
+        "offset_bottom": 138,
+        "offset_top": 50
+    },
+    "BE TECH VISION 2": {
+        "length": 162,
+        "offset_bottom": 126,
+        "offset_top": 36
+    },
+    "WEL 3900": {
+        "length": 165,
+        "offset_bottom": 43,
+        "offset_top": 122
+    },
+    "WEL 3800": {
+        "length": 165,
+        "offset_bottom": 43,
+        "offset_top": 122
+    },
+    "WEL 3810": {
+        "length": 165,
+        "offset_bottom": 43,
+        "offset_top": 122
+    },
+    "WEL 3000": {
+        "length": 165,
+        "offset_bottom": 43,
+        "offset_top": 122
+    },
+    "WEL 3910": {
+        "length": 165,
+        "offset_bottom": 43,
+        "offset_top": 122
+    },
+    "N5L6601": {
+        "length": 185,
+        "offset_bottom": 127,
+        "offset_top": 58
+    },
+    "WEL 3600": {
+        "length": 165,
+        "offset_bottom": 122,
+        "offset_top": 43
+    },
+    "WEL 3700": {
+        "length": 165,
+        "offset_bottom": 122,
+        "offset_top": 43
+    },
+    "WEL L396": {
+        "length": 165,
+        "offset_bottom": 122,
+        "offset_top": 43
+    },
+    "WEL 3610": {
+        "length": 165,
+        "offset_bottom": 122,
+        "offset_top": 43
+    },
+    "WEL 3720": {
+        "length": 165,
+        "offset_bottom": 122,
+        "offset_top": 43
+    },
+    "MIWA (LA52)": {
+        "length": 137,
+        "offset_bottom": 28,
+        "offset_top": 109
+    },
+    "加安 TM-704-PC": {
+        "length": 188,
+        "offset_bottom": 134,
+        "offset_top": 54
+    },
+    "PHILIPS-7000": {
+        "length": 190,
+        "offset_bottom": 138,
+        "offset_top": 52
+    },
+    "SMARTLOCK-A8": {
+        "length": 190,
+        "offset_bottom": 138,
+        "offset_top": 52
+    },
+    "日堡 RFID-SR3": {
+        "length": 97,
+        "offset_bottom": 27,
+        "offset_top": 70
+    },
+    "KWIKSET-PMX": {
+        "length": 162,
+        "offset_bottom": 36,
+        "offset_top": 126
+    }
+}
