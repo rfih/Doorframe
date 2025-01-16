@@ -105,10 +105,13 @@
         "mode_selection": "Mode Selection",
         "normal_mode": "Normal",
         "ub_mode": "UB",
-        "gap_wood_lock": "gap wood at lock",
+        "gap_wood_lock": "gap wood at lock width",
         "reinforce_wood": "reinforce wood for handle",
         "gap_length_bottom": "gap length bottom",
         "gap_length_upper": "gap length upper",
+        "gap_length": "gap length",
+        "gap_wood_lock_length": "gap wood length",
+        "ub_wood_width": "UB wood width",
         "tooltips": {
             "door_type": "Select the type of door frame you are using. Options include:\n- Simple: Standard door frame without complex lock mechanisms.\n- UB: Designed for UB-type locks, typically requires specific height adjustments.\n- Electric Lock: Suitable for frames with electric locks, requires measurements for lock and hinge positions.\n- Box Lock: For frames with box locks, additional specifications include height and lock offset.",
             "num_doors": "Enter the total number of doors for calculation.",
@@ -131,7 +134,8 @@
             "slats_width": "Slats width",
             "gap_width": "Gap Width",
             "gap_wood_lock": "the width of the wood in the middle of the key",
-            "reinforce_wood": "reinforce wood for handle "
+            "reinforce_wood": "reinforce wood for handle ",
+            "ub_wood_width": "UB wood width"
         }
     },
     "zh": {
@@ -244,6 +248,9 @@
         "reinforce_wood": "把手位置加强 ",
         "gap_length_bottom": "下邊的空間",
         "gap_length_upper": "上邊的空間",
+        "gap_length": "空間",
+        "gap_wood_lock_length": "鎖側-中的長度",
+        "ub_wood_width": "UB角材的寬度",
         "tooltips": {
             "door_type": "選擇您正在使用的框架類型。選項包括：\n- 簡單：標準的框架，沒有複雜的鎖機制。\n- UB：專為UB型鎖設計的門框，通常需要特定的高度調整。\n- 電子鎖：適用於帶有電子鎖的門的框架，需要測量鎖和鉸鏈的位置。\n- 匣式鎖：適用於帶有匣式鎖的門的框架，附加的規格包括高度和鎖偏移量。",
             "num_doors": "輸入要計算的門的總數。",
@@ -266,7 +273,8 @@
             "slats_width": "内角材的寬度",
             "gap_width": "空間的寬度",
             "gap_wood_lock": "鎖側-中的寬度",
-            "reinforce_wood": "把手位置加强 "
+            "reinforce_wood": "把手位置加强 ",
+            "ub_wood_width": "UB角材的寬度"
         }
     },
     "id": {
@@ -374,10 +382,13 @@
         "mode_selection": "Pilihan Mode",
         "normal_mode": "Normal",
         "ub_mode": "UB",
-        "gap_wood_lock": "kayu pemisah di kunci",
-        "reinforce_wood": "kayu penguat handle",
-        "gap_length_bottom": "panjang bagian bawah",
-        "gap_length_upper": "panjang bagian atas",
+        "gap_wood_lock": "Lebar kayu pemisah di kunci",
+        "reinforce_wood": "Kayu penguat handle",
+        "gap_length_bottom": "Panjang gap bagian bawah",
+        "gap_length_upper": "Panjang gap bagian atas",
+        "gap_length": "Panjang gap",
+        "gap_wood_lock_length": "Panjang kayu gap",
+        "ub_wood_width": "Ukuran lebar kayu UB",
         "tooltips": {
             "door_type": "Pilih jenis bingkai pintu yang Anda gunakan. Pilihan meliputi:\n- Simple: Bingkai pintu standar tanpa mekanisme kunci yang rumit.\n- UB: Dirancang untuk tipe pintu UB, biasanya memerlukan penyesuaian tinggi khusus.\n- Electric Lock: Cocok untuk bingkai dengan kunci elektrik, membutuhkan pengukuran untuk posisi kunci dan engsel.\n- Box Lock: Untuk bingkai dengan kunci kotak, spesifikasi tambahan termasuk tinggi dan posisi kunci.",
             "num_doors": "Masukkan jumlah pintu yang dibuat.",
@@ -400,7 +411,8 @@
             "slats_width": "Ukuran lebar kayu ditengah",
             "gap_width": "Ukuran spasi antara kayu ditengah",
             "gap_wood_lock": "Ukuran lebar kayu ditengah untuk pintu yang ada kuncinya",
-            "reinforce_wood": "kayu penguat"
+            "reinforce_wood": "kayu penguat",
+            "ub_wood_width": "Ukuran lebar kayu UB"
         }
     }
 }
