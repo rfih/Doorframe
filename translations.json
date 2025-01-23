@@ -112,6 +112,8 @@
         "gap_length": "gap length",
         "gap_wood_lock_length": "gap wood length",
         "ub_wood_width": "UB wood width",
+        "how_many": "Total cut",
+        "concealed_wood_width": "Concealed Wood Width",
         "tooltips": {
             "door_type": "Select the type of door frame you are using. Options include:\n- Simple: Standard door frame without complex lock mechanisms.\n- Electric Lock: Suitable for frames with electric locks, requires measurements for lock and hinge positions.\n- Box Lock: For frames with box locks, additional specifications include height and lock offset.",
             "num_doors": "Enter the total number of doors for calculation.",
@@ -135,7 +137,8 @@
             "gap_width": "Gap Width",
             "gap_wood_lock": "the width of the wood in the middle of the key",
             "reinforce_wood": "reinforce wood for handle ",
-            "ub_wood_width": "UB wood width"
+            "ub_wood_width": "UB wood width",
+            "concealed_wood_width": "Concealed Wood Width"
         }
     },
     "zh": {
@@ -251,6 +254,8 @@
         "gap_length": "空間",
         "gap_wood_lock_length": "鎖側-中的長度",
         "ub_wood_width": "UB角材的寬度",
+        "how_many": "準備數量",
+        "concealed_wood_width": "隱藏弓器角材的寬度",
         "tooltips": {
             "door_type": "選擇您正在使用的框架類型。選項包括：\n- 簡單：標準的框架，沒有複雜的鎖機制。\n- 電子鎖：適用於帶有電子鎖的門的框架，需要測量鎖和鉸鏈的位置。\n- 匣式鎖：適用於帶有匣式鎖的門的框架，附加的規格包括高度和鎖偏移量。",
             "num_doors": "輸入要計算的門的總數。",
@@ -274,7 +279,9 @@
             "gap_width": "空間的寬度",
             "gap_wood_lock": "鎖側-中的寬度",
             "reinforce_wood": "把手位置加强 ",
-            "ub_wood_width": "UB角材的寬度"
+            "ub_wood_width": "UB角材的寬度",
+            "concealed_wood_width": "隱藏弓器角材的寬度"
+
         }
     },
     "id": {
@@ -389,6 +396,8 @@
         "gap_length": "Panjang gap",
         "gap_wood_lock_length": "Panjang kayu gap",
         "ub_wood_width": "Ukuran lebar kayu UB",
+        "how_many": "Total yang dipotong",
+        "concealed_wood_width": "Lebar kayu penutup pintu",
         "tooltips": {
             "door_type": "Pilih jenis bingkai pintu yang Anda gunakan. Pilihan meliputi:\n- Simple: Bingkai pintu standar tanpa mekanisme kunci yang rumit.\n- Electric Lock: Cocok untuk bingkai dengan kunci elektrik, membutuhkan pengukuran untuk posisi kunci dan engsel.\n- Box Lock: Untuk bingkai dengan kunci kotak, spesifikasi tambahan termasuk tinggi dan posisi kunci.",
             "num_doors": "Masukkan jumlah pintu yang dibuat.",
@@ -412,7 +421,9 @@
             "gap_width": "Ukuran spasi antara kayu ditengah",
             "gap_wood_lock": "Ukuran lebar kayu ditengah untuk pintu yang ada kuncinya",
             "reinforce_wood": "kayu penguat",
-            "ub_wood_width": "Ukuran lebar kayu UB"
+            "ub_wood_width": "Ukuran lebar kayu UB",
+            "concealed_wood_width": "Lebar kayu untuk penutup pintu otomatis"
+
         }
     }
 }
