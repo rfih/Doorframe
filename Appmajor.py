@@ -1835,9 +1835,6 @@ class DoorFrameCalculator:
           • {translations[lang]["num_pieces_per_door"]}\t: {len([inner_width, inner_width])}
           • {translations[lang]["total_wood_length"]}\t: {(inner_width + inner_width)*num_doors:.2f} mm
           • {translations[lang]["total_wood"]}\t: {math.ceil(((inner_width + inner_width)*num_doors)/2400)}
-        
-        ‣ {translations[lang]["total_wood_length"]}\t: {total_length_all_doors:.2f} mm
-        ‣ {translations[lang]["total_wood"]}\t: {math.ceil((total_length_all_doors)/2400)}
                             """
                         else:
                             report += f"""
@@ -1854,11 +1851,9 @@ class DoorFrameCalculator:
           • {translations[lang]["num_pieces_per_door"]}\t: {len([inner_width])}
           • {translations[lang]["total_wood_length"]}\t: {(inner_width)*num_doors:.2f} mm
           • {translations[lang]["total_wood"]}\t: {math.ceil(((inner_width)*num_doors)/2400)}
-          
-        ‣ {translations[lang]["total_wood_length"]}\t: {total_length_all_doors:.2f} mm
-        ‣ {translations[lang]["total_wood"]}\t: {math.ceil((total_length_all_doors)/2400)}
-                                
-          
+                    """
+                              
+                    report += f"""
         ‣ {translations[lang]["total_wood_length"]}\t: {(outer_wood_bottom + inner_wood_bottom + outer_wood_upper + inner_wood_upper + vertical_piece_length + (horizontal_pieces_length * 2)) * num_doors:.2f} mm
         ‣ {translations[lang]["total_wood"]}\t: {math.ceil(((outer_wood_bottom + inner_wood_bottom + outer_wood_upper + inner_wood_upper + vertical_piece_length + (horizontal_pieces_length * 2)) * num_doors) / 2400)}
                 """
@@ -1950,9 +1945,6 @@ class DoorFrameCalculator:
           • {translations[lang]["num_pieces_per_door"]}\t: {len([inner_width, inner_width])}
           • {translations[lang]["total_wood_length"]}\t: {(inner_width + inner_width)*num_doors:.2f} mm
           • {translations[lang]["total_wood"]}\t: {math.ceil(((inner_width + inner_width)*num_doors)/2400)}
-        
-        ‣ {translations[lang]["total_wood_length"]}\t: {total_length_all_doors:.2f} mm
-        ‣ {translations[lang]["total_wood"]}\t: {math.ceil((total_length_all_doors)/2400)}
                             """
                         else:
                             report += f"""
@@ -1969,11 +1961,8 @@ class DoorFrameCalculator:
           • {translations[lang]["num_pieces_per_door"]}\t: {len([inner_width])}
           • {translations[lang]["total_wood_length"]}\t: {(inner_width)*num_doors:.2f} mm
           • {translations[lang]["total_wood"]}\t: {math.ceil(((inner_width)*num_doors)/2400)}
-          
-        ‣ {translations[lang]["total_wood_length"]}\t: {total_length_all_doors:.2f} mm
-        ‣ {translations[lang]["total_wood"]}\t: {math.ceil((total_length_all_doors)/2400)}
-                                
-          
+                    """
+                    report += f"""
         ‣ {translations[lang]["total_wood_length"]}\t: {(outer_wood_bottom + inner_wood_bottom + outer_wood_upper + inner_wood_upper + vertical_piece_length + (horizontal_pieces_length * 2)) * num_doors:.2f} mm
         ‣ {translations[lang]["total_wood"]}\t: {math.ceil(((outer_wood_bottom + inner_wood_bottom + outer_wood_upper + inner_wood_upper + vertical_piece_length + (horizontal_pieces_length * 2)) * num_doors) / 2400)}
                 """
@@ -2132,9 +2121,7 @@ class DoorFrameCalculator:
           • {translations[lang]["num_pieces_per_door"]}\t: {len([inner_width, inner_width])}
           • {translations[lang]["total_wood_length"]}\t: {(inner_width + inner_width)*num_doors:.2f} mm
           • {translations[lang]["total_wood"]}\t: {math.ceil(((inner_width + inner_width)*num_doors)/2400)}
-        
-        ‣ {translations[lang]["total_wood_length"]}\t: {total_length_all_doors:.2f} mm
-        ‣ {translations[lang]["total_wood"]}\t: {math.ceil((total_length_all_doors)/2400)}
+
                             """
                         else:
                             report += f"""
@@ -2152,10 +2139,9 @@ class DoorFrameCalculator:
           • {translations[lang]["total_wood_length"]}\t: {(inner_width)*num_doors:.2f} mm
           • {translations[lang]["total_wood"]}\t: {math.ceil(((inner_width)*num_doors)/2400)}
           
-        ‣ {translations[lang]["total_wood_length"]}\t: {total_length_all_doors:.2f} mm
-        ‣ {translations[lang]["total_wood"]}\t: {math.ceil((total_length_all_doors)/2400)}
-                                
-          
+                    """
+                              
+                    report += f"""
         ‣ {translations[lang]["total_wood_length"]}\t: {(outer_wood_bottom + inner_wood_bottom + outer_wood_upper + inner_wood_upper + vertical_piece_length + (horizontal_pieces_length * 2)) * num_doors:.2f} mm
         ‣ {translations[lang]["total_wood"]}\t: {math.ceil(((outer_wood_bottom + inner_wood_bottom + outer_wood_upper + inner_wood_upper + vertical_piece_length + (horizontal_pieces_length * 2)) * num_doors) / 2400)}
                 """
@@ -2248,8 +2234,6 @@ class DoorFrameCalculator:
           • {translations[lang]["total_wood_length"]}\t: {(inner_width + inner_width)*num_doors:.2f} mm
           • {translations[lang]["total_wood"]}\t: {math.ceil(((inner_width + inner_width)*num_doors)/2400)}
         
-        ‣ {translations[lang]["total_wood_length"]}\t: {total_length_all_doors:.2f} mm
-        ‣ {translations[lang]["total_wood"]}\t: {math.ceil((total_length_all_doors)/2400)}
                             """
                         else:
                             report += f"""
@@ -2266,11 +2250,9 @@ class DoorFrameCalculator:
           • {translations[lang]["num_pieces_per_door"]}\t: {len([inner_width])}
           • {translations[lang]["total_wood_length"]}\t: {(inner_width)*num_doors:.2f} mm
           • {translations[lang]["total_wood"]}\t: {math.ceil(((inner_width)*num_doors)/2400)}
-          
-        ‣ {translations[lang]["total_wood_length"]}\t: {total_length_all_doors:.2f} mm
-        ‣ {translations[lang]["total_wood"]}\t: {math.ceil((total_length_all_doors)/2400)}
-                                
-          
+                              """
+                              
+                    report += f"""
         ‣ {translations[lang]["total_wood_length"]}\t: {(outer_wood_bottom + inner_wood_bottom + outer_wood_upper + inner_wood_upper + vertical_piece_length + (horizontal_pieces_length * 2)) * num_doors:.2f} mm
         ‣ {translations[lang]["total_wood"]}\t: {math.ceil(((outer_wood_bottom + inner_wood_bottom + outer_wood_upper + inner_wood_upper + vertical_piece_length + (horizontal_pieces_length * 2)) * num_doors) / 2400)}
                 """
