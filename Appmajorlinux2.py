@@ -639,7 +639,7 @@ class DoorFrameCalculator:
         structure_type = self.entries["structure_type"][1].get().strip().lower()
         
         # Define font and size
-        font = ImageFont.truetype("arial.ttf", 24)  # Ensure the font file is available
+        font = ImageFont.truetype("DejaVuSans.ttf", 24)  # Ensure the font file is available
         
         if concealed_door_closer_name in concealeds:
             concealed_length = concealeds[concealed_door_closer_name]['length']
