@@ -5,11 +5,15 @@ import os
 import sys
 from PIL import Image, ImageTk, ImageDraw, ImageFont
 import math
-from tkVideoPlayer import TkinterVideo 
+# from tkVideoPlayer import TkinterVideo 
 
+try:
+    import PIL._tkinter_finder
+except ImportError:
+    pass
 # Determine the path to the JSON files
-if getattr(sys, 'frozen', False):
-    application_path = sys._MEIPASS
+if getattr(os, 'frozen', False):
+    application_path = os.path.expanduser(sys.executable)
 else:
     application_path = os.path.dirname(__file__)
 
@@ -108,18 +112,20 @@ class ToolTip:
 class DoorFrameCalculator:
     def __init__(self, root):
         self.root = root
-        self.root.geometry("1600x820")
+        self.root.geometry("1400x820")
         self.current_language = "zh"
         self.entries = {}
 
         # Create a canvas and a scrollbar for the entire application
-        self.canvas = tk.Canvas(root, width=1600, height=820)
-        self.scrollbar = ttk.Scrollbar(root, orient="vertical", command=self.canvas.yview)
-        self.scrollbar.pack(side="right", fill="y")
+        self.canvas = tk.Canvas(root, width=1400, height=820)
+        self.scrollbar_x = ttk.Scrollbar(root, orient="horizontal", command=self.canvas.xview)
+        self.scrollbar_y = ttk.Scrollbar(root, orient="vertical", command=self.canvas.yview)
+        self.scrollbar_y.pack(side="right", fill="y")
+        self.scrollbar_x.pack(side="bottom", fill="x")
         self.scrollable_frame = ttk.Frame(self.canvas)
         self.tooltips_enabled = tk.BooleanVar(value=False)
         self.canvas.create_window((10, 0), window=self.scrollable_frame, anchor="nw")
-        self.canvas.configure(yscrollcommand=self.scrollbar.set)
+        self.canvas.configure(yscrollcommand=self.scrollbar_y.set, xscrollcommand=self.scrollbar_x.set)
 
         
         self.canvas.pack(side="right", fill="both", expand=True)
@@ -198,7 +204,7 @@ class DoorFrameCalculator:
         
         # Create Results Frame (right side)
         self.results_frame = ttk.Frame(frame, width=10)  # Store it as an instance variable
-        self.results_frame.grid(row=0, column=0, sticky="ew", padx=(700, 10))
+        self.results_frame.grid(row=0, column=0, sticky="ew", padx=(550, 10))
         
         menu_font = font.Font(family="Microsoft YaHei", size=11)
         self.menu_bar = tk.Menu(self.root)
@@ -344,7 +350,7 @@ class DoorFrameCalculator:
         self.tooltips["frame_width"] = ToolTip(self.entries["frame_width"][1], translations[self.current_language]["tooltips"]["frame_width"], self)
 
         self.calculate_button = ttk.Button(self.entries_frame, text=translations[self.current_language]["calculate"], command=self.calculate_material)
-        self.calculate_button.grid(row=current_row, column=0, columnspan=2, padx=(0, 400))
+        self.calculate_button.grid(row=current_row, column=0, columnspan=2, padx=(0, 500))
         current_row +=1
         
         scrollbar = ttk.Scrollbar(frame)
@@ -375,7 +381,7 @@ class DoorFrameCalculator:
     def create_label_and_entry(self, entries_frame, key, row, entry_type="entry", add_separator=False):
         style = ttk.Style()
         style.configure("CustomLabel.TLabel", foreground="gray30")
-        label = ttk.Label(entries_frame, text=translations[self.current_language][key], font=("Microsoft YaHei", 12), width=50, anchor="w", style="CustomLabel.TLabel")
+        label = ttk.Label(entries_frame, text=translations[self.current_language][key], font=("Microsoft YaHei", 12), width=35, anchor="w", style="CustomLabel.TLabel")
         label.grid(row=row, column=0, sticky="w", padx=(0, 0))
         if entry_type == "entry":
             entry = ttk.Entry(entries_frame, font=("Microsoft YaHei", 12))
@@ -388,7 +394,7 @@ class DoorFrameCalculator:
         separator = None
         if add_separator:
             separator = ttk.Separator(entries_frame, orient="horizontal")
-            separator.grid(row=row + 1, column=0, columnspan=2, sticky="nsew", padx=(0, 400), pady=5)
+            separator.grid(row=row + 1, column=0, columnspan=2, sticky="nsew", padx=(0, 530), pady=5)
             self.entries[f"{key}_separator"] = separator  # Store separator in entries dictionary
     
         return row + (2 if add_separator else 1)  # Increment rows correctly
@@ -3662,59 +3668,59 @@ class DoorFrameCalculator:
         # Add a title label
         tk.Label(guidance_window, text="Maaf belum diinput, ditunggu sebentar (還沒準備好，稍等一下哦)", font=("Microsoft YaHei", 16, "bold")).pack(pady=10)
         
-        # Frame for the video
-        video_frame = tk.Frame(guidance_window)
-        video_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+        # # Frame for the video
+        # video_frame = tk.Frame(guidance_window)
+        # video_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
         
-        # Get the directory where the script is located (for portability)
-        base_path = os.path.dirname(os.path.abspath(__file__))  # Gets the current script's directory
+        # # Get the directory where the script is located (for portability)
+        # base_path = os.path.dirname(os.path.abspath(__file__))  # Gets the current script's directory
         
-        # Define relative video paths
-        video_files = {
-            "en": os.path.join(base_path, "guide.mp4"),
-            "zh": os.path.join(base_path, "guide.mp4"),
-            "id": os.path.join(base_path, "guide.mp4"),
-        }
+        # # Define relative video paths
+        # video_files = {
+        #     "en": os.path.join(base_path, "guide.mp4"),
+        #     "zh": os.path.join(base_path, "guide.mp4"),
+        #     "id": os.path.join(base_path, "guide.mp4"),
+        # }
         
-        # Use the selected language's video or default to English
-        video_path = video_files.get(self.current_language, video_files["en"])
+        # # Use the selected language's video or default to English
+        # video_path = video_files.get(self.current_language, video_files["en"])
         
-        # Create the TkinterVideo widget
-        video_player = TkinterVideo(master=video_frame, scaled=True)
-        video_player.load(video_path)
-        video_player.pack(fill=tk.BOTH, expand=True)
+        # # Create the TkinterVideo widget
+        # video_player = TkinterVideo(master=video_frame, scaled=True)
+        # video_player.load(video_path)
+        # video_player.pack(fill=tk.BOTH, expand=True)
         
-        # Seek Bar (Slider)
-        seek_bar = tk.Scale(guidance_window, from_=0, to=100, orient="horizontal", length=400, command=lambda pos: seek_video(pos))
-        seek_bar.pack(pady=5, fill="x")
+        # # Seek Bar (Slider)
+        # seek_bar = tk.Scale(guidance_window, from_=0, to=100, orient="horizontal", length=400, command=lambda pos: seek_video(pos))
+        # seek_bar.pack(pady=5, fill="x")
     
-        # Play/Pause Buttons
-        button_frame = tk.Frame(guidance_window)
-        button_frame.pack(pady=5)
+        # # Play/Pause Buttons
+        # button_frame = tk.Frame(guidance_window)
+        # button_frame.pack(pady=5)
     
-        play_button = tk.Button(button_frame, text="Play", command=video_player.play)
-        play_button.pack(side="left", padx=5)
+        # play_button = tk.Button(button_frame, text="Play", command=video_player.play)
+        # play_button.pack(side="left", padx=5)
     
-        pause_button = tk.Button(button_frame, text="Pause", command=video_player.pause)
-        pause_button.pack(side="left", padx=5)
+        # pause_button = tk.Button(button_frame, text="Pause", command=video_player.pause)
+        # pause_button.pack(side="left", padx=5)
     
-        # Function to Update Slider in Real-time
-        def update_slider():
-            if video_player.is_playing():
-                current_pos = video_player.current_duration() / video_player.video_info()["duration"] * 100
-                seek_bar.set(current_pos)
-            guidance_window.after(1000, update_slider)  # Update every second
+        # # Function to Update Slider in Real-time
+        # def update_slider():
+        #     if video_player.is_playing():
+        #         current_pos = video_player.current_duration() / video_player.video_info()["duration"] * 100
+        #         seek_bar.set(current_pos)
+        #     guidance_window.after(1000, update_slider)  # Update every second
     
-        # Function to Seek (Drag to Change Video Position)
-        def seek_video(pos):
-            duration = video_player.video_info()["duration"]
-            new_time = (int(pos) / 100) * duration
-            video_player.seek(int(new_time))  # Jump to the selected time
+        # # Function to Seek (Drag to Change Video Position)
+        # def seek_video(pos):
+        #     duration = video_player.video_info()["duration"]
+        #     new_time = (int(pos) / 100) * duration
+        #     video_player.seek(int(new_time))  # Jump to the selected time
     
-        # Start Updating the Seek Bar
-        update_slider()
+        # # Start Updating the Seek Bar
+        # update_slider()
         
-        guidance_window.mainloop()
+        # guidance_window.mainloop()
         
     def toggle_tooltips(self):
         """Enable or disable tooltips based on user preference."""
