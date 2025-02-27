@@ -2431,8 +2431,8 @@ class DoorFrameCalculator:
           • {translations[lang]["total_wood"]}\t: {math.ceil(((inner_width + inner_width)*num_doors)/2400)}
                       """
                         report += f"""
-         ‣ {translations[lang]["total_wood_length"]}\t: {outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) + very_upper_horizontal_piece_length + (gap_wood_lock_length*4) +(horizontal_pieces_length * 2) +(slats_length *slats_count) + reinforce_concealed_wood_length *num_doors:.2f} mm 
-         ‣ {translations[lang]["total_wood"]}\t: {math.ceil((outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) + very_upper_horizontal_piece_length + (gap_wood_lock_length*4) +(horizontal_pieces_length * 2) +(slats_length *slats_count) + reinforce_concealed_wood_length *num_doors)/2400)}
+         ‣ {translations[lang]["total_wood_length"]}\t: {(outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) + very_upper_horizontal_piece_length + (gap_wood_lock_length*4) +(horizontal_pieces_length * 2) +(slats_length *slats_count) + reinforce_concealed_wood_length) *num_doors:.2f} mm 
+         ‣ {translations[lang]["total_wood"]}\t: {math.ceil(((outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) + very_upper_horizontal_piece_length + (gap_wood_lock_length*4) +(horizontal_pieces_length * 2) +(slats_length *slats_count) + reinforce_concealed_wood_length) *num_doors)/2400)}
                   """
                     else:
                         if horizontal_piece_width:
@@ -2461,8 +2461,8 @@ class DoorFrameCalculator:
           • {translations[lang]["total_wood"]}\t: {math.ceil(((inner_width)*num_doors)/2400)}
           """
                         report += f"""
-        ‣ {translations[lang]["total_wood_length"]}\t: {outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) +(horizontal_pieces_length * 2) + (gap_wood_lock_length*4) +(slats_length *slats_count) *num_doors:.2f} mm 
-        ‣ {translations[lang]["total_wood"]}\t: {math.ceil((outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) +(horizontal_pieces_length * 2) + (gap_wood_lock_length*4) +(slats_length *slats_count) *num_doors)/2400)}
+        ‣ {translations[lang]["total_wood_length"]}\t: {(outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) +(horizontal_pieces_length * 2) + (gap_wood_lock_length*4) +(slats_length *slats_count)) *num_doors:.2f} mm 
+        ‣ {translations[lang]["total_wood"]}\t: {math.ceil(((outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) +(horizontal_pieces_length * 2) + (gap_wood_lock_length*4) +(slats_length *slats_count)) *num_doors)/2400)}
                     """
                 elif door_type == self.box_lock_label:
                     report += f"""
@@ -2565,8 +2565,8 @@ class DoorFrameCalculator:
           • {translations[lang]["total_wood"]}\t: {math.ceil(((inner_width + inner_width)*num_doors)/2400)}
                       """
                         report += f"""
-         ‣ {translations[lang]["total_wood_length"]}\t: {outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) + very_upper_horizontal_piece_length + (gap_wood_lock_length*4) +(horizontal_pieces_length * 2) +(slats_length *slats_count) + reinforce_concealed_wood_length *num_doors:.2f} mm 
-         ‣ {translations[lang]["total_wood"]}\t: {math.ceil((outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) + very_upper_horizontal_piece_length + (gap_wood_lock_length*4) +(horizontal_pieces_length * 2) +(slats_length *slats_count) + reinforce_concealed_wood_length *num_doors)/2400)}
+         ‣ {translations[lang]["total_wood_length"]}\t: {(outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) + very_upper_horizontal_piece_length + (gap_wood_lock_length*4) +(horizontal_pieces_length * 2) +(slats_length *slats_count) + reinforce_concealed_wood_length) *num_doors:.2f} mm 
+         ‣ {translations[lang]["total_wood"]}\t: {math.ceil(((outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) + very_upper_horizontal_piece_length + (gap_wood_lock_length*4) +(horizontal_pieces_length * 2) +(slats_length *slats_count) + reinforce_concealed_wood_length) *num_doors)/2400)}
                   """
                     else:
                         if horizontal_piece_width:
@@ -2595,8 +2595,8 @@ class DoorFrameCalculator:
           • {translations[lang]["total_wood"]}\t: {math.ceil(((inner_width)*num_doors)/2400)}
                     """
                         report += f"""
-        ‣ {translations[lang]["total_wood_length"]}\t: {outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) +(horizontal_pieces_length * 2) + (gap_wood_lock_length*4) +(slats_length *slats_count) *num_doors:.2f} mm 
-        ‣ {translations[lang]["total_wood"]}\t: {math.ceil((outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) +(horizontal_pieces_length * 2) + (gap_wood_lock_length*4) +(slats_length *slats_count) *num_doors)/2400)}
+        ‣ {translations[lang]["total_wood_length"]}\t: {(outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) +(horizontal_pieces_length * 2) + (gap_wood_lock_length*4) +(slats_length *slats_count)) *num_doors:.2f} mm 
+        ‣ {translations[lang]["total_wood"]}\t: {math.ceil(((outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) +(horizontal_pieces_length * 2) + (gap_wood_lock_length*4) +(slats_length *slats_count)) *num_doors)/2400)}
                     """
                 else:
                     report += f"""
@@ -2774,8 +2774,8 @@ class DoorFrameCalculator:
           • {translations[lang]["total_wood"]}\t: {math.ceil(((inner_width + inner_width)*num_doors)/2400)}
                       """
                         report += f"""
-         ‣ {translations[lang]["total_wood_length"]}\t: {outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) + very_upper_horizontal_piece_length + (gap_wood_lock_length*4) +(horizontal_pieces_length * 2) +(slats_length *slats_count) + reinforce_concealed_wood_length *num_doors:.2f} mm 
-         ‣ {translations[lang]["total_wood"]}\t: {math.ceil((outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) + very_upper_horizontal_piece_length + (gap_wood_lock_length*4) +(horizontal_pieces_length * 2) +(slats_length *slats_count) + reinforce_concealed_wood_length *num_doors)/2400)}
+         ‣ {translations[lang]["total_wood_length"]}\t: {(outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) + very_upper_horizontal_piece_length + (gap_wood_lock_length*4) +(horizontal_pieces_length * 2) +(slats_length *slats_count) + reinforce_concealed_wood_length) *num_doors:.2f} mm 
+         ‣ {translations[lang]["total_wood"]}\t: {math.ceil(((outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) + very_upper_horizontal_piece_length + (gap_wood_lock_length*4) +(horizontal_pieces_length * 2) +(slats_length *slats_count) + reinforce_concealed_wood_length) *num_doors)/2400)}
                   """
                     else:
                         if horizontal_piece_width:
@@ -2804,8 +2804,8 @@ class DoorFrameCalculator:
           • {translations[lang]["total_wood"]}\t: {math.ceil(((inner_width)*num_doors)/2400)}
                         """
                         report += f"""
-        ‣ {translations[lang]["total_wood_length"]}\t: {outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) +(horizontal_pieces_length * 2) + (gap_wood_lock_length*4) +(slats_length *slats_count) *num_doors:.2f} mm 
-        ‣ {translations[lang]["total_wood"]}\t: {math.ceil((outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) +(horizontal_pieces_length * 2) + (gap_wood_lock_length*4) +(slats_length *slats_count) *num_doors)/2400)}
+        ‣ {translations[lang]["total_wood_length"]}\t: {(outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) +(horizontal_pieces_length * 2) + (gap_wood_lock_length*4) +(slats_length *slats_count)) *num_doors:.2f} mm 
+        ‣ {translations[lang]["total_wood"]}\t: {math.ceil(((outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) +(horizontal_pieces_length * 2) + (gap_wood_lock_length*4) +(slats_length *slats_count)) *num_doors)/2400)}
                     """
                 elif door_type == self.box_lock_label:
                     report += f"""
@@ -2909,8 +2909,8 @@ class DoorFrameCalculator:
         
                       """
                         report += f"""
-         ‣ {translations[lang]["total_wood_length"]}\t: {outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) + very_upper_horizontal_piece_length + (gap_wood_lock_length*4) +(horizontal_pieces_length * 2) +(slats_length *slats_count) + reinforce_concealed_wood_length *num_doors:.2f} mm 
-         ‣ {translations[lang]["total_wood"]}\t: {math.ceil((outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) + very_upper_horizontal_piece_length + (gap_wood_lock_length*4) +(horizontal_pieces_length * 2) +(slats_length *slats_count) + reinforce_concealed_wood_length *num_doors)/2400)}
+         ‣ {translations[lang]["total_wood_length"]}\t: {(outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) + very_upper_horizontal_piece_length + (gap_wood_lock_length*4) +(horizontal_pieces_length * 2) +(slats_length *slats_count) + reinforce_concealed_wood_length) *num_doors:.2f} mm 
+         ‣ {translations[lang]["total_wood"]}\t: {math.ceil(((outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) + very_upper_horizontal_piece_length + (gap_wood_lock_length*4) +(horizontal_pieces_length * 2) +(slats_length *slats_count) + reinforce_concealed_wood_length) *num_doors)/2400)}
                    """
                     else:
                         if horizontal_piece_width:
@@ -2939,8 +2939,8 @@ class DoorFrameCalculator:
           • {translations[lang]["total_wood"]}\t: {math.ceil(((inner_width)*num_doors)/2400)}
                         """
                         report += f"""
-        ‣ {translations[lang]["total_wood_length"]}\t: {outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) +(horizontal_pieces_length * 2) + (gap_wood_lock_length*4) +(slats_length *slats_count) *num_doors:.2f} mm 
-        ‣ {translations[lang]["total_wood"]}\t: {math.ceil((outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) +(horizontal_pieces_length * 2) + (gap_wood_lock_length*4) +(slats_length *slats_count) *num_doors)/2400)}
+        ‣ {translations[lang]["total_wood_length"]}\t: {(outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) +(horizontal_pieces_length * 2) + (gap_wood_lock_length*4) +(slats_length *slats_count)) *num_doors:.2f} mm 
+        ‣ {translations[lang]["total_wood"]}\t: {math.ceil(((outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) +(horizontal_pieces_length * 2) + (gap_wood_lock_length*4) +(slats_length *slats_count)) *num_doors)/2400)}
                         """
                     
                 else:
@@ -3116,8 +3116,8 @@ class DoorFrameCalculator:
           • {translations[lang]["total_wood"]}\t: {math.ceil(((inner_width + inner_width)*num_doors)/2400)}
                       """
                         report += f"""
-        ‣ {translations[lang]["total_wood_length"]}\t: {outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) + very_upper_horizontal_piece_length + (gap_wood_lock_length*4) +(horizontal_pieces_length * 2) +(slats_length *slats_count) + reinforce_concealed_wood_length *num_doors:.2f} mm 
-        ‣ {translations[lang]["total_wood"]}\t: {math.ceil((outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) + very_upper_horizontal_piece_length + (gap_wood_lock_length*4) +(horizontal_pieces_length * 2) +(slats_length *slats_count) + reinforce_concealed_wood_length *num_doors)/2400)}
+        ‣ {translations[lang]["total_wood_length"]}\t: {(outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) + very_upper_horizontal_piece_length + (gap_wood_lock_length*4) +(horizontal_pieces_length * 2) +(slats_length *slats_count) + reinforce_concealed_wood_length) *num_doors:.2f} mm 
+        ‣ {translations[lang]["total_wood"]}\t: {math.ceil(((outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) + very_upper_horizontal_piece_length + (gap_wood_lock_length*4) +(horizontal_pieces_length * 2) +(slats_length *slats_count) + reinforce_concealed_wood_length) *num_doors)/2400)}
                   """
                     else:
                         if horizontal_piece_width:
@@ -3146,8 +3146,8 @@ class DoorFrameCalculator:
           • {translations[lang]["total_wood"]}\t: {math.ceil(((inner_width)*num_doors)/2400)}
                         """
                         report += f"""
-        ‣ {translations[lang]["total_wood_length"]}\t: {outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) +(horizontal_pieces_length * 2) + (gap_wood_lock_length*4) +(slats_length *slats_count) *num_doors:.2f} mm 
-        ‣ {translations[lang]["total_wood"]}\t: {math.ceil((outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) +(horizontal_pieces_length * 2) + (gap_wood_lock_length*4) +(slats_length *slats_count) *num_doors)/2400)}
+        ‣ {translations[lang]["total_wood_length"]}\t: {(outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) +(horizontal_pieces_length * 2) + (gap_wood_lock_length*4) +(slats_length *slats_count)) *num_doors:.2f} mm 
+        ‣ {translations[lang]["total_wood"]}\t: {math.ceil(((outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) +(horizontal_pieces_length * 2) + (gap_wood_lock_length*4) +(slats_length *slats_count)) *num_doors)/2400)}
                     """
                 elif door_type == self.box_lock_label:
                     report += f"""
@@ -3250,8 +3250,8 @@ class DoorFrameCalculator:
           • {translations[lang]["total_wood"]}\t: {math.ceil(((inner_width + inner_width)*num_doors)/2400)}
                       """
                         report += f"""
-        ‣ {translations[lang]["total_wood_length"]}\t: {outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) + very_upper_horizontal_piece_length + (gap_wood_lock_length*4) +(horizontal_pieces_length * 2) +(slats_length *slats_count) + reinforce_concealed_wood_length *num_doors:.2f} mm 
-        ‣ {translations[lang]["total_wood"]}\t: {math.ceil((outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) + very_upper_horizontal_piece_length + (gap_wood_lock_length*4) +(horizontal_pieces_length * 2) +(slats_length *slats_count) + reinforce_concealed_wood_length *num_doors)/2400)}
+        ‣ {translations[lang]["total_wood_length"]}\t: {(outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) + very_upper_horizontal_piece_length + (gap_wood_lock_length*4) +(horizontal_pieces_length * 2) +(slats_length *slats_count) + reinforce_concealed_wood_length) *num_doors:.2f} mm 
+        ‣ {translations[lang]["total_wood"]}\t: {math.ceil(((outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) + very_upper_horizontal_piece_length + (gap_wood_lock_length*4) +(horizontal_pieces_length * 2) +(slats_length *slats_count) + reinforce_concealed_wood_length) *num_doors)/2400)}
                   """
                     else:
                         if horizontal_piece_width:
@@ -3280,8 +3280,8 @@ class DoorFrameCalculator:
           • {translations[lang]["total_wood"]}\t: {math.ceil(((inner_width)*num_doors)/2400)}
                         """
                         report += f"""
-        ‣ {translations[lang]["total_wood_length"]}\t: {outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) +(horizontal_pieces_length * 2) + (gap_wood_lock_length*4) +(slats_length *slats_count) *num_doors:.2f} mm 
-        ‣ {translations[lang]["total_wood"]}\t: {math.ceil((outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) +(horizontal_pieces_length * 2) + (gap_wood_lock_length*4) +(slats_length *slats_count) *num_doors)/2400)}
+        ‣ {translations[lang]["total_wood_length"]}\t: {(outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) +(horizontal_pieces_length * 2) + (gap_wood_lock_length*4) +(slats_length *slats_count)) *num_doors:.2f} mm 
+        ‣ {translations[lang]["total_wood"]}\t: {math.ceil(((outer_wood_bottom + outer_wood_upper + (vertical_piece_length*2) +(horizontal_pieces_length * 2) + (gap_wood_lock_length*4) +(slats_length *slats_count)) *num_doors)/2400)}
                     """
                 else:
                     report += f"""
