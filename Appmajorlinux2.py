@@ -3666,7 +3666,7 @@ class DoorFrameCalculator:
         guidance_window.title("Application Guidance")
         
         # Add a title label
-        tk.Label(guidance_window, text="Maaf belum diinput, ditunggu sebentar (還沒準備好，稍等一下哦)", font=("Microsoft YaHei", 16, "bold")).pack(pady=10)
+        tk.Label(guidance_window, text="Cek video diluar aplikasi yaa (請在應用程式外檢查影片哦!)", font=("Microsoft YaHei", 16, "bold")).pack(pady=10)
         
         # # Frame for the video
         # video_frame = tk.Frame(guidance_window)
